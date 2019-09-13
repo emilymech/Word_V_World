@@ -3,3 +3,5 @@ venv
 
 text/*
 data/*
+
+word_v_world/*.txt
