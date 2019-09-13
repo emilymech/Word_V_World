@@ -1,10 +1,27 @@
-from src.WikiExtractor import main
-from src.preprocess1 import remove_tags
+from word_v_world.WikiExtractor import main
+from word_v_world.preprocess1 import remove_tags
 
 
 class Args:
     json = False
+    toHTML = False
+    acceptedNamespaces = ['w', 'wiktionary', 'wikt']
+    moduleNamespace = ''
+    templateNamespace = ''
+    templatePrefix = ''
+    knownNamespaces = {'Template': 10}
     namespaces = ''  # this is the default
+    keep_tables = True # need to test this out
+    keepSections = True # need to test this out
+    keepLists = True # need to test this out
+    min_text_length = 0
+    print_revision = False
+    escape_doc = False
+    expand_templates = True
+    filter_disambig_pages = False
+    urlbase = ''
+    -b = "50M" #need to double check if these arguments need to be written in the format of the main or the simple namespace
+
 
 
 def save_to_text():
@@ -21,7 +38,7 @@ def save_to_text():
         f2.write(flattened + '\n')
 
 
-def cluster_job(param2val):  # ENTRY POINT
+def main(param2val):  # ENTRY POINT
     #   use this integer to index into list of wikipedia chunks
     part = param2val['part']
 

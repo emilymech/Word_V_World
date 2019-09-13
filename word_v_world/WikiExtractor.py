@@ -2504,7 +2504,7 @@ def makeExternalLink(url, anchor):
 
 def makeExternalImage(url, alt=''):
     if options.keepLinks:
-        return '<img src="%s" alt="%s">' % (url, alt)
+        return '<img word_v_world="%s" alt="%s">' % (url, alt)
     else:
         return alt
 
@@ -3157,7 +3157,7 @@ def main(args):
     # default_process_count = max(1, cpu_count() - 1)
     # parser.add_argument("--processes", type=int, default=default_process_count,
     #                     help="Number of processes to use (default %(default)s)")
-
+    #
     # groupS = parser.add_argument_group('Special')
     # groupS.add_argument("-q", "--quiet", action="store_true",
     #                     help="suppress reporting progress info")
@@ -3173,7 +3173,7 @@ def main(args):
     # groupP.add_argument("--filter_category",
     #                     help="specify the file that listing the Categories you want to include or exclude. One line for"
     #                          " one category. starting with: 1) '#' comment, ignored; 2) '^' exclude; Note: excluding has higher priority than including")
-    # args = parser.parse_args()
+    args = parser.parse_args()
 
     options.keepLinks = args.links
     options.keepSections = args.sections
