@@ -2855,7 +2855,7 @@ def pages_from(input):
 
 
 def process_dump(input_file, template_file, out_file, file_size, file_compress,
-                 process_count):
+                 process_count, part):  # ph sept 2019: added argument "part"
     """
     :param input_file: name of the wikipedia dump file; '-' to read from stdin
     :param template_file: optional file with template definitions.
@@ -2863,6 +2863,7 @@ def process_dump(input_file, template_file, out_file, file_size, file_compress,
     :param file_size: max size of each extracted file, or None for no max (one file)
     :param file_compress: whether to compress files with bzip.
     :param process_count: number of extraction processes to spawn.
+    :param part: integer related to ludwigcluster
     """
 
     if input_file == '-':
@@ -2965,6 +2966,9 @@ def process_dump(input_file, template_file, out_file, file_size, file_compress,
     # Mapper process
     page_num = 0
     for page_data in pages_from(input):
+
+        # TODO on each worker: get every 7th page, starting at a different offset
+
         id, revid, title, ns, catSet, page = page_data
         if keepPage(ns, catSet, page):
             # slow down
@@ -3108,7 +3112,7 @@ def reduce_process(opts, output_queue, spool_length,
 minFileSize = 200 * 1024
 
 
-def extract_from_wiki(args, pages_part):
+def extract_from_wiki(args, part):  # ph sept 2019: added argument "part"
 
     # parser = argparse.ArgumentParser(prog=os.path.basename(sys.argv[0]),
     #                                  formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -3227,8 +3231,7 @@ def extract_from_wiki(args, pages_part):
     options.log_file = args.log_file
     createLogger(options.quiet, options.debug, options.log_file)
 
-    # input_file = args.input
-    input_file = None  # ph sept 2019
+    input_file = args.input
 
     if not options.keepLinks:
         ignoreTag('a')
@@ -3237,18 +3240,18 @@ def extract_from_wiki(args, pages_part):
     # manager = Manager()
     # templateCache = manager.dict()
 
-    # if args.article:
-    #     if args.templates:
-    #         if os.path.exists(args.templates):
-    #             with open(args.templates) as file:
-    #                 load_templates(file)
-    #
-    #     file = fileinput.FileInput(input_file, openhook=fileinput.hook_compressed)
-    #     for page_data in pages_from(file):
-    #         id, revid, title, ns,catSet, page = page_data
-    #         Extractor(id, revid, title, page).extract(sys.stdout)
-    #     file.close()
-    #     return
+    if args.article:
+        if args.templates:
+            if os.path.exists(args.templates):
+                with open(args.templates) as file:
+                    load_templates(file)
+
+        file = fileinput.FileInput(input_file, openhook=fileinput.hook_compressed)
+        for page_data in pages_from(file):
+            id, revid, title, ns,catSet, page = page_data
+            Extractor(id, revid, title, page).extract(sys.stdout)
+        file.close()
+        return
 
     output_path = args.output
     if output_path != '-' and not os.path.isdir(output_path):
@@ -3280,13 +3283,9 @@ def extract_from_wiki(args, pages_part):
             logging.info("Including categories:")
             logging.info(str(len(options.filter_category_include)))
 
-    # process_dump(input_file, args.templates, output_path, file_size,
-    #              args.compress, args.processes)
+    process_dump(input_file, args.templates, output_path, file_size,
+                 args.compress, args.processes, part) # ph sept 2019: added argument "part")
 
-    process_dump(pages_part, args.templates, output_path, file_size,
-                                    args.compress, args.processes)
-
-    # ph: do not return anything - this function saves results to disk, so load them back into memory
 
 
 def createLogger(quiet, debug, log_file):
@@ -3299,6 +3298,3 @@ def createLogger(quiet, debug, log_file):
     if log_file:
         fileHandler = logging.FileHandler(log_file)
         logger.addHandler(fileHandler)
-
-if __name__ == '__main__':
-    extract_from_wiki()

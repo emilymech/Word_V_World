@@ -1,7 +1,5 @@
-import fileinput
 from pathlib import Path
 import re
-import io
 
 from word_v_world.WikiExtractor import extract_from_wiki, pages_from
 from word_v_world.preprocess1 import remove_tags
@@ -10,6 +8,7 @@ from word_v_world.preprocess1 import remove_tags
 class Args:
 
     # doesn't need 'input' because we are explicitly passing the input (a part of the input)
+    input = '../Wiki_data/enwiki-20190801-pages-articles-multistream24.xml-p33503454p33952815'
     output = 'text'
     bytes = "50M"
     compress = True
@@ -60,34 +59,15 @@ def get_part(all_pages, param2val):
 
 def main(param2val):  # param2val will be different on each machine
     print('Starting the Wiki extracting + cleaning job')
-    input_file_name = param2val['input']
     assert not hasattr(Args, 'part')  # safety check
 
-    # load xml file + split huge xml into pages (each page is a string)
-    file_object = fileinput.FileInput(input_file_name, openhook=fileinput.hook_compressed)
-    all_pages = pages_from(file_object)  # a generator of strings
-
-    # TODO handle generator
-    # for now: just enumerate the generator
-    all_pages = list(all_pages)
-
-    # now split into 7 chunks (each chunk is a list of pages)
-    print('Splitting...')
-    pages_part = get_part(all_pages, param2val)  # list of pages
-
-    pages_part_strings = []
-    for i in pages_part:  # a page is actually a tuple of various data
-        string = '/n'.join(i)
-        pages_part_strings.append(string)
-
-    pages_part_file_like = io.StringIO('\n'.join(pages_part_strings))
-
     # step 1
-    print('extracting...')
-    extract_from_wiki(Args, pages_part_file_like)  # this saves extracted pages to disk
+    print('Word_V-World: Starting extraction...')
+    part = param2val['part']
+    extract_from_wiki(Args, part)  # this saves extracted pages to disk
 
     # step 2
-    print('removing tags...')
+    print('Word_V-World: Starting removal of html tags...')
     titles, bodies = remove_tags(Args.output)
 
     print(titles)
