@@ -2,8 +2,8 @@ import re
 from pathlib import Path
 
 
-def remove_tags():
-    files_path = Path.cwd().parent / 'text'
+def remove_tags(results_folder):
+    files_path = Path.cwd().parent / results_folder
 
     total_articles = 0
     titles = []
@@ -12,9 +12,6 @@ def remove_tags():
     for file in files_path.rglob('wiki_*'):
         print(file.name)
         text = file.read_text()
-
-
-
 
         compiled = re.compile('\n*.*<doc id=".*" url=".*" title=".*">\n(.*)\n*(.*)\n*')
         articles = re.split('</doc>', text)
@@ -31,15 +28,6 @@ def remove_tags():
                 titles.append(title)
                 bodies.append(body)
 
-
-
-    print(titles)
-    print(bodies)
     assert len(bodies) == len(titles)
     print('num articles', total_articles)
-
-    print(len(bodies))
-
-
-
     return titles, bodies

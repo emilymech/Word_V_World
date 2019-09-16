@@ -2,7 +2,7 @@ from pathlib import Path
 
 
 class RemoteDirs:
-    root = Path('/media/research_data') / 'Word_V_World'
+    root = Path('/Volumes/research_data') / 'Word_V_World'
     runs = root / 'runs'
 
 

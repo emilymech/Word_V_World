@@ -3108,7 +3108,7 @@ def reduce_process(opts, output_queue, spool_length,
 minFileSize = 200 * 1024
 
 
-def main(args):
+def extract_from_wiki(args, pages_part):
 
     # parser = argparse.ArgumentParser(prog=os.path.basename(sys.argv[0]),
     #                                  formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -3173,7 +3173,7 @@ def main(args):
     # groupP.add_argument("--filter_category",
     #                     help="specify the file that listing the Categories you want to include or exclude. One line for"
     #                          " one category. starting with: 1) '#' comment, ignored; 2) '^' exclude; Note: excluding has higher priority than including")
-    args = parser.parse_args()
+    # args = parser.parse_args()
 
     options.keepLinks = args.links
     options.keepSections = args.sections
@@ -3227,7 +3227,8 @@ def main(args):
     options.log_file = args.log_file
     createLogger(options.quiet, options.debug, options.log_file)
 
-    input_file = args.input
+    # input_file = args.input
+    input_file = None  # ph sept 2019
 
     if not options.keepLinks:
         ignoreTag('a')
@@ -3236,18 +3237,18 @@ def main(args):
     # manager = Manager()
     # templateCache = manager.dict()
 
-    if args.article:
-        if args.templates:
-            if os.path.exists(args.templates):
-                with open(args.templates) as file:
-                    load_templates(file)
-
-        file = fileinput.FileInput(input_file, openhook=fileinput.hook_compressed)
-        for page_data in pages_from(file):
-            id, revid, title, ns,catSet, page = page_data
-            Extractor(id, revid, title, page).extract(sys.stdout)
-        file.close()
-        return
+    # if args.article:
+    #     if args.templates:
+    #         if os.path.exists(args.templates):
+    #             with open(args.templates) as file:
+    #                 load_templates(file)
+    #
+    #     file = fileinput.FileInput(input_file, openhook=fileinput.hook_compressed)
+    #     for page_data in pages_from(file):
+    #         id, revid, title, ns,catSet, page = page_data
+    #         Extractor(id, revid, title, page).extract(sys.stdout)
+    #     file.close()
+    #     return
 
     output_path = args.output
     if output_path != '-' and not os.path.isdir(output_path):
@@ -3279,12 +3280,13 @@ def main(args):
             logging.info("Including categories:")
             logging.info(str(len(options.filter_category_include)))
 
-    process_dump(input_file, args.templates, output_path, file_size,
-                 args.compress, args.processes)
+    # process_dump(input_file, args.templates, output_path, file_size,
+    #              args.compress, args.processes)
 
-    # TODO do not dump - comment out any dumping/saving to disk
+    process_dump(pages_part, args.templates, output_path, file_size,
+                                    args.compress, args.processes)
 
-    return result  # TODO
+    # ph: do not return anything - this function saves results to disk, so load them back into memory
 
 
 def createLogger(quiet, debug, log_file):
@@ -3299,4 +3301,4 @@ def createLogger(quiet, debug, log_file):
         logger.addHandler(fileHandler)
 
 if __name__ == '__main__':
-    main()
+    extract_from_wiki()
