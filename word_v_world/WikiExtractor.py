@@ -2855,7 +2855,7 @@ def pages_from(input):
 
 
 def process_dump(input_file, template_file, out_file, file_size, file_compress,
-                 process_count, part):  # ph sept 2019: added argument "part"
+                 process_count, part, num_machines):  # ph sept 2019: added argument "part" and "num_machines"
     """
     :param input_file: name of the wikipedia dump file; '-' to read from stdin
     :param template_file: optional file with template definitions.
@@ -2864,6 +2864,7 @@ def process_dump(input_file, template_file, out_file, file_size, file_compress,
     :param file_compress: whether to compress files with bzip.
     :param process_count: number of extraction processes to spawn.
     :param part: integer related to ludwigcluster
+    :param num_machines: integer related to ludwigcluster
     """
 
     if input_file == '-':
@@ -2966,10 +2967,11 @@ def process_dump(input_file, template_file, out_file, file_size, file_compress,
     # Mapper process
     page_num = 0
     for page_data in pages_from(input):
-
-        # TODO on each worker: get every 7th page, starting at a different offset
-
         id, revid, title, ns, catSet, page = page_data
+
+        if int(id) % num_machines != part:  # ph sept 2019
+            continue
+
         if keepPage(ns, catSet, page):
             # slow down
             delay = 0
@@ -3112,7 +3114,7 @@ def reduce_process(opts, output_queue, spool_length,
 minFileSize = 200 * 1024
 
 
-def extract_from_wiki(args, part):  # ph sept 2019: added argument "part"
+def extract_from_wiki(args, part, num_machines):  # ph sept 2019: added argument "part" adn "num_machines"
 
     # parser = argparse.ArgumentParser(prog=os.path.basename(sys.argv[0]),
     #                                  formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -3283,8 +3285,9 @@ def extract_from_wiki(args, part):  # ph sept 2019: added argument "part"
             logging.info("Including categories:")
             logging.info(str(len(options.filter_category_include)))
 
+    # ph sept 2019: added argument "part" and "num_machines"
     process_dump(input_file, args.templates, output_path, file_size,
-                 args.compress, args.processes, part) # ph sept 2019: added argument "part")
+                 args.compress, args.processes, part, num_machines)
 
 
 

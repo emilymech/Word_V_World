@@ -1,22 +1,22 @@
 from pathlib import Path
 import re
+from multiprocessing import cpu_count
 
-from word_v_world.WikiExtractor import extract_from_wiki, pages_from
-from word_v_world.preprocess1 import remove_tags
+from word_v_world.WikiExtractor import extract_from_wiki
+from word_v_world.remove_tags import remove_tags
+from word_v_world import config
 
 
 class Args:
-
-    # doesn't need 'input' because we are explicitly passing the input (a part of the input)
-    input = '../Wiki_data/enwiki-20190801-pages-articles-multistream24.xml-p33503454p33952815'
-    output = 'text'
+    input = 'enwiki-20190801-pages-articles-multistream24.xml-p33503454p33952815'
+    output = config.Global.output
     bytes = "50M"
-    compress = True
+    compress = False
     json = False
     html = False
     links = False
-    sections = True
-    lists = True
+    sections = False
+    lists = False
     namespaces = ""
     templates = {}
     no_templates = True
@@ -26,7 +26,7 @@ class Args:
     ignored_tags = ""
     discard_elements = ""
     keep_tables = True
-    processes = "default_process_count"
+    processes = max(1, cpu_count() - 1)
     quiet = False
     debug = False
     article = False
@@ -49,29 +49,21 @@ def save_to_text(bodies, titles):
         f2.write(flattened + '\n')
 
 
-def get_part(all_pages, param2val):
-    num_pages_in_part = len(all_pages) // param2val['num_machines']  # the same for each machine
-
-    start_id = param2val['part'] * num_pages_in_part  # different for each machine because 'part' is different
-    stop_id = start_id + num_pages_in_part
-    return all_pages[start_id:stop_id]
-
-
 def main(param2val):  # param2val will be different on each machine
-    print('Starting the Wiki extracting + cleaning job')
-    assert not hasattr(Args, 'part')  # safety check
+
+    part = param2val['part']
+    num_machines = param2val['num_machines']
+    print('Word_V-World: Starting extraction with part={} and num_machines={}'.format(part, num_machines))
 
     # step 1
-    print('Word_V-World: Starting extraction...')
-    part = param2val['part']
-    extract_from_wiki(Args, part)  # this saves extracted pages to disk
+    extract_from_wiki(Args, part, num_machines)  # this saves extracted pages to disk
 
     # step 2
     print('Word_V-World: Starting removal of html tags...')
     titles, bodies = remove_tags(Args.output)
 
-    print(titles)
-    print(bodies)
+    print(titles[0])
+    print(bodies[0])
     raise SystemExit
 
     # step 3

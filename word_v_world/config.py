@@ -14,3 +14,5 @@ class LocalDirs:
 
 class Global:
     debug = False
+    min_article_length = 10
+    output = 'output'  # name of directory where output of wiki extractor script is saved

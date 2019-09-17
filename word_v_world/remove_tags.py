@@ -1,26 +1,28 @@
 import re
-from pathlib import Path
+
+from word_v_world import config
 
 
-def remove_tags(results_folder):
-    files_path = Path.cwd().parent / results_folder
+def remove_tags(output_folder_name):
+    files_path = config.LocalDirs.root / output_folder_name
 
-    total_articles = 0
+    num_articles = 0
     titles = []
     bodies = []
 
     for file in files_path.rglob('wiki_*'):
-        print(file.name)
+        print('Removing tags from articles in {}'.format(file.name))
         text = file.read_text()
 
         compiled = re.compile('\n*.*<doc id=".*" url=".*" title=".*">\n(.*)\n*(.*)\n*')
         articles = re.split('</doc>', text)
-        print(len(articles))
-        total_articles += len(articles)
+        num_articles += len(articles)
+
         for article in articles:
 
+            print(article)
 
-            if len(article) > 10:
+            if len(article) > config.Global.min_article_length:
                 res = compiled.match(article)
                 title = res.groups()[0]
                 body = res.groups()[1]
@@ -28,6 +30,12 @@ def remove_tags(results_folder):
                 titles.append(title)
                 bodies.append(body)
 
+
+            print(title)
+            print(body)
+            raise SystemExit('Debugging')
+
     assert len(bodies) == len(titles)
-    print('num articles', total_articles)
+    print('Removed tags from {} articles'.format(num_articles))
+
     return titles, bodies
