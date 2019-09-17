@@ -7,7 +7,7 @@ from word_v_world import config
 
 
 class Args:
-    input = 'enwiki-20190801-pages-articles-multistream24.xml-p33503454p33952815'
+    input = config.Global.input
     output = config.Global.output
     bytes = "50M"
     compress = False
