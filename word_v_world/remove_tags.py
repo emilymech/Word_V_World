@@ -14,13 +14,12 @@ def remove_tags(output_folder_name):
         print('Removing tags from articles in {}'.format(file.name))
         text = file.read_text()
 
-        compiled = re.compile('\n*.*<doc id=".*" url=".*" title=".*">\n(.*)\n*(.*)\n*')
+        compiled = re.compile('\n*.*<doc id=".*" url=".*" title=".*">\n([^\n]*)(.*\n*$)',
+                              flags=re.S)  # make dot match newline
         articles = re.split('</doc>', text)
         num_articles += len(articles)
 
         for article in articles:
-
-            print(article)
 
             if len(article) > config.Global.min_article_length:
                 res = compiled.match(article)
@@ -29,11 +28,6 @@ def remove_tags(output_folder_name):
 
                 titles.append(title)
                 bodies.append(body)
-
-
-            print(title)
-            print(body)
-            raise SystemExit('Debugging')
 
     assert len(bodies) == len(titles)
     print('Removed tags from {} articles'.format(num_articles))

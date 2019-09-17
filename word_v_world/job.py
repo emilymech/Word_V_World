@@ -1,4 +1,3 @@
-from pathlib import Path
 import re
 from multiprocessing import cpu_count
 
@@ -35,9 +34,12 @@ class Args:
     filter_category = None
 
 
-def save_to_text(bodies, titles):
-    out_titles_p = Path.cwd() / 'titles.txt'
-    out_bodies_p = Path.cwd() / 'bodies.txt'
+def save_to_text(titles, bodies, param2val):
+    param_p = config.RemoteDirs.runs / param2val['param_name']
+    if not param_p.is_dir():
+        param_p.mkdir()
+    out_titles_p = param_p / 'titles.txt'
+    out_bodies_p = config.RemoteDirs.runs / param2val['param_name'] / 'bodies.txt'
 
     f1 = out_titles_p.open('w')
     f2 = out_bodies_p.open('w')
@@ -62,11 +64,7 @@ def main(param2val):  # param2val will be different on each machine
     print('Word_V-World: Starting removal of html tags...')
     titles, bodies = remove_tags(Args.output)
 
-    print(titles[0])
-    print(bodies[0])
-    raise SystemExit
+    # step 3: save to shared drive
+    save_to_text(titles, bodies, param2val)
 
-    # step 3
-    save_to_text()  # saves to compute node but not server (inaccessible)
-
-    # step 4 - copy text files to server
+    return []  # TODO must return something for ludwigcluster
