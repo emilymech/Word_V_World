@@ -12,6 +12,7 @@ def remove_tags(output_folder_name):
 
     for file in files_path.rglob('wiki_*'):
         print('Removing tags from articles in {}'.format(file.name))
+        print(files_path)
         text = file.read_text()
 
         compiled = re.compile('\n*.*<doc id=".*" url=".*" title=".*">\n([^\n]*)(.*\n*$)',

@@ -14,8 +14,8 @@ class Args:
     json = False
     html = False
     links = False
-    sections = False
-    lists = False
+    sections = True
+    lists = True
     namespaces = ""
     templates = {}
     no_templates = True
@@ -24,7 +24,7 @@ class Args:
     filter_disambig_pages = False
     ignored_tags = ""
     discard_elements = ""
-    keep_tables = True
+    keep_tables = False
     processes = max(1, cpu_count() - 1)
     quiet = False
     debug = False
@@ -55,16 +55,17 @@ def main(param2val):  # param2val will be different on each machine
 
     part = param2val['part']
     num_machines = param2val['num_machines']
-    print('Word_V-World: Starting extraction with part={} and num_machines={}'.format(part, num_machines))
+    print('Word_V_World: Starting extraction with part={} and num_machines={}'.format(part, num_machines))
 
     # step 1
     extract_from_wiki(Args, part, num_machines)  # this saves extracted pages to disk
 
     # step 2
-    print('Word_V-World: Starting removal of html tags...')
+    print('Word_V_World: Starting removal of html tags...')
     titles, bodies = remove_tags(Args.output)
 
     # step 3: save to shared drive
+    print('Word_V_World: Saving to text...')
     save_to_text(titles, bodies, param2val)
 
     return []  # TODO must return something for ludwigcluster

@@ -14,6 +14,6 @@ class LocalDirs:
 
 class Global:
     debug = False
-    min_article_length = 10
-    input = 'enwiki-20190801-pages-articles-multistream24.xml-p33503454p33952815'
+    min_article_length = 1
+    input = 'data/enwiki-20190920-pages-articles-multistream.xml.bz2'
     output = 'output'  # name of directory where output of wiki extractor script is saved

@@ -3114,7 +3114,7 @@ def reduce_process(opts, output_queue, spool_length,
 minFileSize = 200 * 1024
 
 
-def extract_from_wiki(args, part, num_machines):  # ph sept 2019: added argument "part" adn "num_machines"
+def extract_from_wiki(args, part, num_machines):  # ph sept 2019: added argument "part" and "num_machines"
 
     # parser = argparse.ArgumentParser(prog=os.path.basename(sys.argv[0]),
     #                                  formatter_class=argparse.RawDescriptionHelpFormatter,

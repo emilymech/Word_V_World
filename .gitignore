@@ -3,5 +3,7 @@ venv
 
 text/*
 data/*
+output/*
+read_me/*
 
 word_v_world/*.txt
