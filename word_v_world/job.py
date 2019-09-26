@@ -1,7 +1,7 @@
 import re
 from multiprocessing import cpu_count
 
-from word_v_world.WikiExtractor import extract_from_wiki
+from wikiExtractor.WikiExtractor import extract_from_wiki
 from word_v_world.remove_tags import remove_tags
 from word_v_world import config
 
