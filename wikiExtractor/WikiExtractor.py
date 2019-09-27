@@ -3264,7 +3264,7 @@ def extract_from_wiki(args, part, num_machines):  # ph sept 2019: added argument
             return
 
     filter_category = args.filter_category
-    if (filter_category != None and len(filter_category)>0):
+    if filter_category != None and len(filter_category)>0:
         with open(filter_category) as f:
             error_cnt = 0
             for line in f.readlines():

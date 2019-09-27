@@ -26,4 +26,4 @@ class Global:
 
     if not Path(input).exists():
         print('WARNING: Using dummy xml file as input file because {} could not be found'.format(input))
-        input = 'dummy_input.xml'  # ~250 random wiki articles
+        input = 'data/dummy_input.xml'  # ~250 random wiki articles
