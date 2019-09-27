@@ -56,10 +56,6 @@ def main(param2val):  # param2val will be different on each machine
     num_machines = param2val['num_machines']
     input_file_name = param2val['input_file_name']
 
-    if not (config.RemoteDirs.root / input_file_name).exists():
-        print('WARNING: Using dummy xml file as input file because {} could not be found'.format(input_file_name))
-        input_file_name = param2default['input_file_name']
-
     # step 1
     print('Word_V_World: Starting extraction with part={} and num_machines={}'.format(part, num_machines))
     Args.input = str(config.RemoteDirs.data / input_file_name)  # always put xml file on shared drive
