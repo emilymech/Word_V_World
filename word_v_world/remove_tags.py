@@ -5,14 +5,14 @@ from word_v_world import config
 
 def remove_tags(output_folder_name):
     files_path = config.LocalDirs.root / output_folder_name
+    print('Removing tags from articles in {}'.format(files_path))
 
     num_articles = 0
     titles = []
     bodies = []
 
     for file in files_path.rglob('wiki_*'):
-        print('Removing tags from articles in {}'.format(file.name))
-        print(files_path)
+        print('-Removing tags from articles in {}'.format(file.name))
         text = file.read_text()
 
         compiled = re.compile('\n*.*<doc id=".*" url=".*" title=".*">\n([^\n]*)(.*\n*$)',

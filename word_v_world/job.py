@@ -3,12 +3,11 @@ from multiprocessing import cpu_count
 
 from wikiExtractor.WikiExtractor import extract_from_wiki
 from word_v_world.remove_tags import remove_tags
+from word_v_world.params import param2default
 from word_v_world import config
 
 
 class Args:
-    input = config.Global.input
-    output = config.Global.output
     bytes = "50M"
     compress = False
     json = False
@@ -34,12 +33,12 @@ class Args:
     filter_category = None
 
 
-def save_to_text(titles, bodies, param2val):
-    param_p = config.RemoteDirs.runs / param2val['param_name']
-    if not param_p.is_dir():
-        param_p.mkdir()
-    out_titles_p = param_p / 'titles.txt'
-    out_bodies_p = config.RemoteDirs.runs / param2val['param_name'] / 'bodies.txt'
+def save_text_to_shared_drive(titles, bodies, param2val):
+    job_name = config.RemoteDirs.runs / param2val['param_name'] / param2val['job_name']
+    if not job_name.is_dir():
+        job_name.mkdir(parents=True)  # this is not ideal, because folders are created before job has completed
+    out_titles_p = job_name / 'titles.txt'
+    out_bodies_p = job_name / 'bodies.txt'
 
     f1 = out_titles_p.open('w')
     f2 = out_bodies_p.open('w')
@@ -55,17 +54,24 @@ def main(param2val):  # param2val will be different on each machine
 
     part = param2val['part']
     num_machines = param2val['num_machines']
-    print('Word_V_World: Starting extraction with part={} and num_machines={}'.format(part, num_machines))
+    input_file_name = param2val['input_file_name']
+
+    if not (config.RemoteDirs.root / input_file_name).exists():
+        print('WARNING: Using dummy xml file as input file because {} could not be found'.format(input_file_name))
+        input_file_name = param2default['input_file_name']
 
     # step 1
-    extract_from_wiki(Args, part, num_machines)  # this saves extracted pages to disk
+    print('Word_V_World: Starting extraction with part={} and num_machines={}'.format(part, num_machines))
+    Args.input = str(config.RemoteDirs.data / input_file_name)  # always put xml file on shared drive
+    Args.output = str(config.LocalDirs.wiki_output)  # folder on ludwig worker (not on shared drive)
+    extract_from_wiki(Args, part, num_machines)  # this saves extracted pages to worker
 
     # step 2
     print('Word_V_World: Starting removal of html tags...')
     titles, bodies = remove_tags(Args.output)
 
-    # step 3: save to shared drive
+    # step 3
     print('Word_V_World: Saving to text...')
-    save_to_text(titles, bodies, param2val)
+    save_text_to_shared_drive(titles, bodies, param2val)
 
-    return []  # TODO must return something for ludwigcluster
+    return []  # ludwigcluster requires a list (empty, or containing pandas dataframes)

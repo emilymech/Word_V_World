@@ -16,3 +16,4 @@ with open(body_path) as bigfile:
         smallfile.write(line)
     if smallfile:
         smallfile.close()
+
