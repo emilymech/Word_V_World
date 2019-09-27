@@ -4,7 +4,7 @@ from collections import Counter, OrderedDict
 from word_v_world import config
 
 
-def word2frequency(words):
+def make_word2frequency(words):
     """
     input is a list of words
     returns a dictonary mapping a word to its frequency
@@ -18,13 +18,21 @@ def word2frequency(words):
     return result
 
 
-all_bodies = []
+all_words = []
 
 print('Looking for text files in {}'.format(config.RemoteDirs.wiki))
-for bodies_path in config.RemoteDirs.wiki.rglob('bodies.txt'):
+for titles_path in config.RemoteDirs.wiki.rglob('bodies.txt'):
+    print('Adding words from {}'.format(titles_path))
+    text = titles_path.read_text().replace('\n', ' ')
+    words = text.split(' ')
+    all_words += words
 
-    with bodies_path.open('r') as f:
-        bodies = f.readlines()
-        print(bodies[0])
+# count word frequencies
+w2f = make_word2frequency(all_words)
 
-    all_bodies += bodies
+# print ten most frequent words
+for n, (w, f) in enumerate(w2f.items()):  # dictionary is ordered by freq
+    if n == 10:
+        break
+
+    print('{:<20} {}'.format(w, f))
