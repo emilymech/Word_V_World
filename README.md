@@ -11,6 +11,7 @@ This is a new project that uses Wikipedia as a corpus from which to extract word
     * move some of the important variables from the wiki-extractor code to params.py
     * add other important variables related to corpus processing to params.py
 * add script that combines output files created by multiple machines with same params to form a single corpus
+* do not save bodies.txt to shred drive during job - do only after job completed
  
 ## Running the script
 
