@@ -1,3 +1,3 @@
--e git+https://github.com/languagelearninglab/LudwigCluster.git@6372579d2eddf1382c967f5519ee6a3c3406f365#egg=ludwigcluster
+git+https://github.com/languagelearninglab/LudwigCluster.git@c139cac864d06967620a6c4b96fa0d897ecd95f3
 numpy==1.17.2
 pandas==0.24.2
