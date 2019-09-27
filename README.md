@@ -16,7 +16,7 @@ This is a new project that uses Wikipedia as a corpus from which to extract word
 ## Running the script
 
 The corpus-creation is computationally expensive and is designed to be run iin parallel across multiple machines.
-To do so, ```ludwigcluster``` is used. 
+To do so, [ludwigcluster](https://github.com/phueb/LudwigCluster) is used. 
 Jobs are submitted by invoking the its command line interface:
 
 ```
@@ -25,7 +25,7 @@ ludwig -r 1 -c data/ wikiExtractor/
 
 The ```-r``` flag indicates how many times to run a job on each ```ludwigcluster``` machine. This should always be set to 1. 
 The ```-c``` flag ensures that all required data folders and source code folders are uploaded to each machine.
-Third-party code for Wikipedia-template expansion, available at [/wikiExtractor](../blob/master/wikiExtractor), is not part of source code folder, and therefore must be uploaded explicitly. 
+Third-party code for Wikipedia-template expansion, available at [/wikiExtractor](../tree/master/wikiExtractor), is not part of source code folder, and therefore must be uploaded explicitly. 
 Source code that is in a folder with a name that is equivalent to the name of the root folder will be uploaded to each machine automatically.
 Note that folders specified by the ```-c``` flag are not uploaded to each machine, but are uploaded to the remote root folder (on the shared drive), which is accessible by each machine.
 Python processes started by ```ludwigcluster``` can import modules found on the remote root folder because it is automatically appended to ```sys.path```.
