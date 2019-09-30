@@ -1,3 +1,11 @@
+"""
+tokenize wikipedia articles using a custom spacy tokenizer.
+do not name this module tokenizer.py as this name is reserved for Python functionality.
+
+make sure to  do this once:
+python -m spacy download en_core_web_sm
+"""
+
 import spacy
 from spacy.tokens import Doc
 
