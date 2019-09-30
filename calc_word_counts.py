@@ -1,7 +1,6 @@
-import spacy
 from collections import Counter, OrderedDict
 
-from word_v_world import config
+from word_v_world.articles import generate_articles
 
 
 def make_word2frequency(words):
@@ -18,13 +17,10 @@ def make_word2frequency(words):
     return result
 
 
+# make a list of words in all articles
 all_words = []
-
-print('Looking for text files in {}'.format(config.RemoteDirs.wiki))
-for titles_path in config.RemoteDirs.wiki.rglob('bodies.txt'):
-    print('Adding words from {}'.format(titles_path))
-    text = titles_path.read_text().replace('\n', ' ')
-    words = text.split(' ')
+for article in generate_articles():
+    words = article.split(' ')
     all_words += words
 
 # count word frequencies
