@@ -25,12 +25,12 @@ class WhitespaceTokenizer(object):
 
 # make a custom tokenizer
 nlp = spacy.load("en_core_web_sm")
-nlp.tokenizer = WhitespaceTokenizer(nlp.vocab)
+# nlp.tokenizer = WhitespaceTokenizer(nlp.vocab)
 
 # loop over articles, tokenizing each
 for article in generate_articles():
 
     # tokenize article
-    doc = nlp(article)
+    doc = nlp(article)  # tokenization, tagging, ner, etc...
     print([t.text for t in doc])
     raise SystemExit('Processed first article')

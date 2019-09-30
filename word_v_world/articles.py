@@ -14,5 +14,6 @@ def generate_articles(path=None):
 
     for titles_path in path.rglob('bodies.txt'):
         print('Adding words from {}'.format(titles_path))
-        article = titles_path.read_text().replace('\n', ' ')
-        yield article
+        articles = titles_path.read_text()
+        for article in articles.split('\n'):
+            yield article
