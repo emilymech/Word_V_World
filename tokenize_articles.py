@@ -28,7 +28,7 @@ class WhitespaceTokenizer(object):
 
 # make a custom tokenizer
 nlp = spacy.load("en_core_web_sm")
-# nlp.tokenizer = WhitespaceTokenizer(nlp.vocab)
+nlp.tokenizer = WhitespaceTokenizer(nlp.vocab)
 
 # loop over articles, tokenizing each
 for article in generate_articles(num_articles=NUM_ARTICLES):
