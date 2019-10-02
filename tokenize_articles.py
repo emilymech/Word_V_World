@@ -12,7 +12,9 @@ from spacy.tokens import Doc
 from word_v_world.articles import generate_articles
 
 
-NUM_ARTICLES = 100
+NUM_ARTICLES = 1
+
+nlp = spacy.load("en_core_web_sm")
 
 
 class WhitespaceTokenizer(object):
@@ -26,8 +28,19 @@ class WhitespaceTokenizer(object):
         return Doc(self.vocab, words=words, spaces=spaces)
 
 
+# loop over articles, tokenizing each with built-in tokenizer
+for article in generate_articles(num_articles=NUM_ARTICLES):
+
+    # tokenize article
+    doc = nlp(article)  # tokenization, tagging, ner, etc...
+
+    tokens = [t.text for t in doc]
+    print(tokens)
+    print(len(tokens))
+    print()
+
+
 # make a custom tokenizer
-nlp = spacy.load("en_core_web_sm")
 nlp.tokenizer = WhitespaceTokenizer(nlp.vocab)
 
 # loop over articles, tokenizing each
@@ -36,5 +49,7 @@ for article in generate_articles(num_articles=NUM_ARTICLES):
     # tokenize article
     doc = nlp(article)  # tokenization, tagging, ner, etc...
 
-    print([t.text for t in doc])
+    tokens = [t.text for t in doc]
+    print(tokens)
+    print(len(tokens))
     print()

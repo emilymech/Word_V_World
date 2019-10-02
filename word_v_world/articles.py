@@ -15,7 +15,7 @@ def generate_articles(path=None, num_articles=None):
     counter = 0
 
     for bodies_path in path.rglob('bodies.txt'):
-        print('Adding words from {}'.format(bodies_path))
+        print('Reading articles from {}'.format(bodies_path))
         f = bodies_path.open('r')
         for article in f:
             yield article
