@@ -1,3 +1,4 @@
+from itertools import islice
 
 from word_v_world import config
 
@@ -24,3 +25,8 @@ def generate_articles(path=None, num_articles=None):
             if num_articles is not None:
                 if counter == num_articles:
                     return
+
+
+def generate_articles_from_slice(start, stop, **kwargs):
+    for article in islice(generate_articles(**kwargs), start, stop):
+        yield article
