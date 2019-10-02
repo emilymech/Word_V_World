@@ -1,7 +1,13 @@
 from pathlib import Path
 import sys
 
-is_linux = sys.platform == 'linux'
+if 'win' in sys.platform:
+    raise SystemExit('LudwigCluster does not support Windows')
+elif 'linux' == sys.platform:
+    mnt_point = '/media'
+else:
+    # assume MacOS
+    mnt_point = '/Volumes'
 
 
 class RemoteDirs:
@@ -12,9 +18,10 @@ class RemoteDirs:
      and has MacOS, root must be changed to something like /Volumes/research_data
 
     """
-    root = Path('/{}/research_data'.format('media' if is_linux else 'Volumes')) / 'Word_V_World'
+    research_data = Path(mnt_point) / 'research_data'
+    root = research_data / 'Word_V_World'
     runs = root / 'runs'
-    wiki = Path('/{}/research_data'.format('media' if is_linux else 'Volumes')) / 'CreateWikiCorpus'
+    wiki = research_data / 'CreateWikiCorpus'
 
 
 class LocalDirs:

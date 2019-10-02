@@ -1,2 +1,3 @@
+https://github.com/phueb/LudwigCluster/archive/v1.0.1.tar.gz
 spacy==2.1.8
 pandas
