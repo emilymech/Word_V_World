@@ -5,7 +5,7 @@ from word_v_world.stats import make_word2frequency
 
 NUM_ARTICLES = 3
 NUM_WORDS = 10
-PARAM2REQUESTS = None
+PARAM2REQUESTS = None  # user can overwrite default by overwriting None
 
 
 paths_to_articles = []
