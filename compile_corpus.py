@@ -3,7 +3,7 @@ import sys
 
 from word_v_world import config
 
-from ludwigcluster.client import Client
+from ludwig.client import Client
 
 PATH_TO_CREATE_WIKI_CORPUS_ROOT = '/home/ph/CreateWikiCorpus'
 

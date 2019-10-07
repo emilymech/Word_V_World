@@ -3,7 +3,7 @@ from itertools import islice
 from word_v_world import config
 
 
-def generate_articles(path=None, num_articles=None):
+def generate_articles(path=None, num_articles=None):  # TODO filter by _param_name
     """
     a generator that yields wiki articles.
     :return: a generator of articles, (str, str, ...)

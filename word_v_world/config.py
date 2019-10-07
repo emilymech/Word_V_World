@@ -1,13 +1,12 @@
 from pathlib import Path
 import sys
 
-if 'win' in sys.platform:
+if sys.platform == 'darwin':
+    mnt_point = '/Volumes'
+elif 'win' in sys.platform:
     raise SystemExit('LudwigCluster does not support Windows')
 elif 'linux' == sys.platform:
     mnt_point = '/media'
-else:
-    # assume MacOS
-    mnt_point = '/Volumes'
 
 
 class RemoteDirs:
