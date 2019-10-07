@@ -1,22 +1,29 @@
 from itertools import islice
 
 from word_v_world import config
+from word_v_world.filter import allowed_paths
 
 
-def generate_articles(path=None, num_articles=None):  # TODO filter by _param_name
+def generate_articles(path_to_wiki_root=None, num_articles=None):
     """
     a generator that yields wiki articles.
     :return: a generator of articles, (str, str, ...)
     """
-    if path is None:
-        path = config.RemoteDirs.wiki
+    if path_to_wiki_root is None:
+        path_to_wiki_root = config.RemoteDirs.wiki
 
-    print('Looking for text files in {}'.format(path))
+    print('Looking for text files in {}'.format(path_to_wiki_root))
 
     counter = 0
 
-    for bodies_path in path.rglob('bodies.txt'):
+    for bodies_path in path_to_wiki_root.rglob('bodies.txt'):
         print('Reading articles from {}'.format(bodies_path))
+
+        # TODO filter by _param_name
+
+        if bodies_path not in allowed_paths:
+            continue
+
         f = bodies_path.open('r')
         for article in f:
             yield article
