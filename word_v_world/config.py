@@ -28,7 +28,17 @@ class LocalDirs:
     src = root / 'word_v_world'
     runs = root / '{}_runs'.format(src.name)
 
+    wiki = Path('/home/ph') / 'CreateWikiCorpus'  # TODO user must edit this
+
 
 class Global:
     debug = False
     min_article_length = 1
+
+
+class Default:
+
+    # this is the default parameter configuration for filtering paths to bodies.txt files
+    param2requests = {'part': [0, 1, 2, 3, 4, 5, 6],
+                      'num_machines': [7],
+                      'input_file_name': ['dummy_input.xml']}

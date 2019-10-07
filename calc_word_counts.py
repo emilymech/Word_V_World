@@ -1,29 +1,21 @@
-from collections import Counter, OrderedDict
 
-from word_v_world.articles import generate_articles
 
+from word_v_world.articles import get_paths_to_articles, generate_articles
+from word_v_world.stats import make_word2frequency
 
 NUM_ARTICLES = 3
 NUM_WORDS = 10
+PARAM2REQUESTS = None
 
 
-def make_word2frequency(words):
-    """
-    input is a list of words
-    returns a dictionary mapping a word to its frequency
-
-    words: List[str]
-    return: Dict[str, frequency]
-    """
-    c = Counter(words)
-    result = OrderedDict(
-        sorted(c.items(), key=lambda item: (item[1], item[0]), reverse=True))  # order matters
-    return result
-
+paths_to_articles = []
+for p in get_paths_to_articles(param2requests=PARAM2REQUESTS):
+    print(p)
+    paths_to_articles.append(p)
 
 # make a list of words in all articles
 all_words = []
-for article in generate_articles(num_articles=NUM_ARTICLES):
+for article in generate_articles(paths_to_articles, num_articles=NUM_ARTICLES):
     words = article.split(' ')
     all_words += words
 
