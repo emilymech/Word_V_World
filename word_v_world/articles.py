@@ -5,6 +5,7 @@ import importlib
 from word_v_world import config
 
 from ludwig.client import Client
+from ludwig.config import SFTP
 
 
 def get_paths_to_articles(param2requests=None, print_size=True):
@@ -16,9 +17,6 @@ def get_paths_to_articles(param2requests=None, print_size=True):
     if param2requests is None:
         param2requests = config.Default.param2requests
 
-    # TODO check that PARAM2REQUESTS only allows 1 corpus to be made
-    #  which means that at the most 7 param2vals are allowed to be created from PARAM2REQUESTS
-
     # load params module from CreateWikiCorpus (CreateWikiCorpus/createwikicorpus/params.py)
     if not config.LocalDirs.wiki.exists():
         raise FileNotFoundError('{} does not exist.'.format(config.LocalDirs.wiki))
@@ -27,9 +25,18 @@ def get_paths_to_articles(param2requests=None, print_size=True):
     sys.path.append(str(config.LocalDirs.wiki))
     wiki_params = importlib.import_module('createwikicorpus.params')
 
-    # loop over only those bodies.txt files which are associated with param2val.yaml that contains
-    # the configuration we are interested in (as specified in param2requests)
+    # load Ludwig client to access useful helper function
     client = Client('CreateWikiCorpus', wiki_params.param2default)
+
+    # check that param2requests is requesting no more than 1 corpus
+    param2val_list = client.list_all_param2vals(param2requests)
+    num_workers = len(SFTP.all_worker_names)
+    if len(param2val_list) > num_workers:
+        raise ValueError('Corpus cannot consist of more than {} text files.'
+                         'There are only {} Ludwig workers'.format(num_workers, num_workers))
+
+    # find only those paths which are associated with param2val.yaml that contains
+    # the configuration we are interested in (as specified in param2requests)
     allowed_paths = []
     for param_p, label in client.gen_param_ps(param2requests, verbose=False):
         path_to_article = list(param_p.glob('**/bodies.txt'))[0]
