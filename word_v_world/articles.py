@@ -34,14 +34,14 @@ def get_paths_to_articles(param2requests=None, print_size=True):
     for param_p, label in client.gen_param_ps(param2requests, verbose=False):
         path_to_article = list(param_p.glob('**/bodies.txt'))[0]
         allowed_paths.append(path_to_article)
-        print('Request matches {}'.format(path_to_article))
+        print(path_to_article.relative_to(config.RemoteDirs.research_data))
+        print('Request matches')
 
         # optional: measure size of bodies.txt file in MBs
         if print_size:
             num_bytes = path_to_article.stat().st_size
             num_megabytes = num_bytes >> 20
-            print('{} contains {} MBs'.format(path_to_article.relative_to(config.RemoteDirs.research_data),
-                                              num_megabytes))
+            print('Article contains {} MBs'.format(num_megabytes))
             print()
 
         yield path_to_article

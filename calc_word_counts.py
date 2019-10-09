@@ -10,7 +10,6 @@ PARAM2REQUESTS = None  # user can overwrite default by overwriting None
 
 paths_to_articles = []
 for p in get_paths_to_articles(param2requests=PARAM2REQUESTS):
-    print(p)
     paths_to_articles.append(p)
 
 # make a list of words in all articles
