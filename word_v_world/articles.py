@@ -61,6 +61,9 @@ def generate_articles(paths_to_articles, num_articles=None):
     """
     print('Looking for text files in {}'.format(config.RemoteDirs.wiki))
 
+    if not paths_to_articles:
+        raise ValueError('"paths_to_articles" is empty.')
+
     counter = 0
     for article_path in paths_to_articles:
         print('Reading articles from {}'.format(article_path))

@@ -1,4 +1,4 @@
-https://github.com/phueb/Ludwig/archive/v1.0.0.tar.gz
+https://github.com/phueb/Ludwig/archive/v1.1.0.tar.gz
 pandas
 psutil
 numpy
