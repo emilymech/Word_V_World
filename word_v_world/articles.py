@@ -78,6 +78,6 @@ def generate_articles(paths_to_articles, num_articles=None):
                     return
 
 
-def generate_articles_from_slice(start, stop, **kwargs):
-    for article in islice(generate_articles(**kwargs), start, stop):
+def generate_articles_from_slice(paths_to_articles, start, stop, **kwargs):
+    for article in islice(generate_articles(paths_to_articles, **kwargs), start, stop):
         yield article

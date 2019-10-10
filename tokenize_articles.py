@@ -64,7 +64,7 @@ for article in generate_articles(paths_to_articles, num_articles=NUM_ARTICLES):
 
 
 # retrieve a subset of articles using start and stop
-for article in generate_articles_from_slice(start=2, stop=3):
+for article in generate_articles_from_slice(paths_to_articles, start=2, stop=3):
 
     # tokenize article
     doc = nlp(article)  # tokenization, tagging, ner, etc...
