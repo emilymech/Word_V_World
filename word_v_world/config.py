@@ -1,4 +1,5 @@
 from pathlib import Path
+import socket
 
 from ludwig.config import mnt_point
 
@@ -22,8 +23,10 @@ class LocalDirs:
     src = root / 'word_v_world'
     runs = root / '{}_runs'.format(src.name)
 
-    wiki = Path('/home/ph') / 'CreateWikiCorpus'  # TODO user must edit this
-
+    if socket.gethostname() == 'wirelessprv-10-195-203-206.near.illinois.edu':
+        wiki = Path('/Volumes/GoogleDrive/My Drive/UIUC/PyCharm') / 'CreateWikiCorpus'  # TODO user must edit this
+    else:
+        wiki = Path('/home/ph/CreateWikiCorpus')
 
 class Global:
     debug = False
