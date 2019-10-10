@@ -1,12 +1,6 @@
 from pathlib import Path
-import sys
 
-if sys.platform == 'darwin':
-    mnt_point = '/Volumes'
-elif 'win' in sys.platform:
-    raise SystemExit('LudwigCluster does not support Windows')
-elif 'linux' == sys.platform:
-    mnt_point = '/media'
+from ludwig.config import mnt_point
 
 
 class RemoteDirs:
