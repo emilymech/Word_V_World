@@ -23,10 +23,13 @@ class LocalDirs:
     src = root / 'word_v_world'
     runs = root / '{}_runs'.format(src.name)
 
+    # TODO this is a hack - use .env file and dot_env package to remedy
+
     if socket.gethostname() == 'wirelessprv-10-195-203-206.near.illinois.edu':
-        wiki = Path('/Volumes/GoogleDrive/My Drive/UIUC/PyCharm') / 'CreateWikiCorpus'  # TODO user must edit this
+        wiki = Path('/Volumes/GoogleDrive/My Drive/UIUC/PyCharm') / 'CreateWikiCorpus'
     else:
         wiki = Path('/home/ph/CreateWikiCorpus')
+
 
 class Global:
     debug = False

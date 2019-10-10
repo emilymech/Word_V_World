@@ -9,7 +9,7 @@ python -m spacy download en_core_web_sm
 import spacy
 from spacy.tokens import Doc
 
-from word_v_world.articles import generate_articles, generate_articles_from_slice
+from word_v_world.articles import generate_articles, generate_articles_from_slice, get_paths_to_articles
 
 
 NUM_ARTICLES = 1
@@ -28,8 +28,16 @@ class WhitespaceTokenizer(object):
         return Doc(self.vocab, words=words, spaces=spaces)
 
 
+PARAM2REQUESTS = None  # user can overwrite default by overwriting None
+
+
+paths_to_articles = []
+for p in get_paths_to_articles(param2requests=PARAM2REQUESTS):
+    paths_to_articles.append(p)
+
+
 # loop over articles, tokenizing each with built-in tokenizer
-for article in generate_articles(num_articles=NUM_ARTICLES):
+for article in generate_articles(paths_to_articles, num_articles=NUM_ARTICLES):
 
     # tokenize article
     doc = nlp(article)  # tokenization, tagging, ner, etc...
@@ -44,7 +52,7 @@ for article in generate_articles(num_articles=NUM_ARTICLES):
 nlp.tokenizer = WhitespaceTokenizer(nlp.vocab)
 
 # loop over articles, tokenizing each
-for article in generate_articles(num_articles=NUM_ARTICLES):
+for article in generate_articles(paths_to_articles, num_articles=NUM_ARTICLES):
 
     # tokenize article
     doc = nlp(article)  # tokenization, tagging, ner, etc...
