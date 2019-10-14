@@ -27,6 +27,8 @@ class LocalDirs:
 
     if socket.gethostname() == 'wirelessprv-10-195-203-206.near.illinois.edu':
         wiki = Path('/Volumes/GoogleDrive/My Drive/UIUC/PyCharm') / 'CreateWikiCorpus'
+    elif socket.gethostname() == 'Emilys-MacBook-Pro.local':
+        wiki = Path('/Volumes/GoogleDrive/My Drive/UIUC/PyCharm') / 'CreateWikiCorpus'
     else:
         wiki = Path('/home/ph/CreateWikiCorpus')
 
