@@ -9,10 +9,6 @@ import tokenize_articles
 
 NUM_ARTICLES = 1  # total articles in 1/7 corpus evaluated here: 847,505 (10/11/19), 5934163 in total
 NUM_WORDS = 100
-PARAM2REQUESTS = {'part': [0, 1, 2, 3, 4, 5, 6],
-                  'num_machines': [7],
-                  'input_file_name': ['enwiki-20190920-pages-articles-multistream.xml.bz2']}
-# TODO need to ask Phil about how to change this from "None" the right way ^
 
 
 # make a list of words in all articles

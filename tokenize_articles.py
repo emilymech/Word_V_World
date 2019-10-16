@@ -10,19 +10,14 @@ import re
 import spacy
 
 
-from word_v_world.articles import generate_articles, generate_articles_from_slice, get_paths_to_articles
+from word_v_world.articles import generate_articles, get_paths_to_articles
+from word_v_world import config
 from spacy.tokenizer import Tokenizer
 
 
-PARAM2REQUESTS = {'part': [0, 1, 2, 3, 4, 5, 6],
-                  'num_machines': [7],
-                  'input_file_name': ['enwiki-20190920-pages-articles-multistream.xml.bz2']}
-# user can overwrite default by overwriting None
-
-
-def get_path():
+def get_path(param2requests=config.Default.param2requests):
     paths_to_articles = []
-    for p in get_paths_to_articles(param2requests=PARAM2REQUESTS):
+    for p in get_paths_to_articles(param2requests):
         paths_to_articles.append(p)
     return paths_to_articles
 

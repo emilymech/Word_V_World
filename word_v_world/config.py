@@ -40,7 +40,9 @@ class Global:
 
 class Default:
 
-    # this is the default parameter configuration for filtering paths to bodies.txt files
+    # if this does not work, check the defaults that are added from createwikicorpus.params
     param2requests = {'part': [0, 1, 2, 3, 4, 5, 6],
                       'num_machines': [7],
-                      'input_file_name': ['dummy_input.xml']}
+                      'no_templates': [True],
+                      'filter_disambig_pages': [False],
+                      'input_file_name': ['enwiki-20190920-pages-articles-multistream.xml.bz2']}
