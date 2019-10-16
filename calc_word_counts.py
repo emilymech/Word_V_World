@@ -18,6 +18,10 @@ all_words = tokenize_articles.tokenize(NUM_ARTICLES)
 w2f = make_word2frequency(all_words)
 
 # count the enters in the corpus
+
+# TODO below is incorrect - the if-statement evaluates to True every time!
+# TODO: you need to: if word == \n: count_enters += 1
+
 count_enters = 0
 for word in all_words:
     if '\n':
@@ -69,4 +73,4 @@ plt.scatter(
     s=100,
     label=word
 )
-#plt.show()
+plt.show()
