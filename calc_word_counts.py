@@ -18,13 +18,12 @@ all_words = tokenize_articles.tokenize(NUM_ARTICLES)
 w2f = make_word2frequency(all_words)
 
 # count the enters in the corpus
-
-# TODO below is incorrect - the if-statement evaluates to True every time!
-# TODO: you need to: if word == \n: count_enters += 1
-
+# TODO - need to check that counting enters works, and remove enters from the wsf.items
+# TODO - consider also stripping punctuation from w2f (regex?)
+# TODO - figure out where the 's is coming from in the frequency counts
 count_enters = 0
 for word in all_words:
-    if '\n':
+    if word == '\n':
         count_enters += 1
 print("Number of enters:", count_enters)
 
