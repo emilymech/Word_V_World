@@ -1,31 +1,24 @@
 import matplotlib.pyplot as plt
 import operator
-import re
 
+# TODO - once the all words count is done, need to strip punctuation
+# TODO - get rid of any counting in this and import the pickle object for the already counted items
 
 # from word_v_world.articles import get_paths_to_articles, generate_articles
 from word_v_world.stats import make_word2frequency
-import tokenize_articles
+from word_v_world import tokenization
 
 NUM_ARTICLES = 1  # total articles in 1/7 corpus evaluated here: 847,505 (10/11/19), 5934163 in total
 NUM_WORDS = 100
 
+# tokenization
+paths_to_articles = tokenization.get_path()
 
 # make a list of words in all articles
-all_words = tokenize_articles.tokenize(NUM_ARTICLES)
+all_words = tokenization.tokenize(NUM_ARTICLES, paths_to_articles)
 
 # count word frequencies
 w2f = make_word2frequency(all_words)
-
-# count the enters in the corpus
-# TODO - need to check that counting enters works, and remove enters from the wsf.items
-# TODO - consider also stripping punctuation from w2f (regex?)
-# TODO - figure out where the 's is coming from in the frequency counts
-count_enters = 0
-for word in all_words:
-    if word == '\n':
-        count_enters += 1
-print("Number of enters:", count_enters)
 
 
 # print most frequent words and plot them (at cut-offs of: 4096, 8192, 16384, 32768)
@@ -72,4 +65,4 @@ plt.scatter(
     s=100,
     label=word
 )
-plt.show()
+# plt.show()

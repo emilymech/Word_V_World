@@ -22,10 +22,8 @@ def get_path(param2requests=config.Default.param2requests):
     return paths_to_articles
 
 
-def tokenize(n):
-    paths_to_articles = get_path()
+def tokenize(n, paths_to_articles):
     all_tokens = []
-
     custom_nlp = spacy.load("en_core_web_sm")
     hyphen_contraction_re = re.compile(r"[A-Za-z]+(-|')[A-Za-z\.]+")
     prefix_re = spacy.util.compile_prefix_regex(custom_nlp.Defaults.prefixes)
@@ -52,9 +50,9 @@ def tokenize(n):
             print("Finished {} articles".format(i))
 
         # for debugging, print tokens in sample articles (only when num articles is small)
-        print(tokens)
-        print(len(tokens))
-        print()
+        # print(tokens)
+        # print(len(tokens))
+        # print()
 
     return all_tokens
 
