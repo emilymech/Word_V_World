@@ -35,14 +35,13 @@ class LocalDirs:
 
 class Global:
     debug = False
-    min_article_length = 1
 
 
 class Default:
 
     # if this does not work, check the defaults that are added from createwikicorpus.params
-    param2requests = {'part': [0, 1, 2, 3, 4, 5, 6],
-                      'num_machines': [7],
+    param2requests = {'part': [0, 1, 2, 3, 4, 5],
+                      'num_machines': [6],
                       'no_templates': [True],
                       'filter_disambig_pages': [False],
                       'input_file_name': ['enwiki-20190920-pages-articles-multistream.xml.bz2']}
