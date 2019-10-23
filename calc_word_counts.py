@@ -4,7 +4,6 @@ import pickle
 
 from word_v_world import config
 
-
 NUM_WORDS = 100
 NUM_LUDWIG_WORKERS = 6
 file_name = 'w2dfs_4800_ALL.pkl'
@@ -22,29 +21,33 @@ def get_pickles(wiki_param_name, w2dfs_file_name):
     return w2dfs  # this is a list of dicts by article in params
 
 
+def make_dict_lowercase(dict):
+    dict_lower = {k.lower(): v for k, v in dict.items()}
+    return dict_lower
+
+
 # loop over each individual pickle and add unique keys to dictionaries/update values of non-unique keys
 def make_master_dict(wiki_param_name):
     master_dict = {}
     for param in wiki_param_name:
         print("Adding {}".format(param))
         current_w2dfs = get_pickles(param, file_name)
-        # print(current_w2dfs)
         for current_dict in current_w2dfs:
-            for key in current_dict:
-                if current_dict[key] in master_dict:
-                    master_dict[key] += current_dict[key]
+            lower_dict = make_dict_lowercase(current_dict)
+            for key in lower_dict:
+                if lower_dict[key] in master_dict:
+                    master_dict[key] += lower_dict[key]
                 else:
-                    master_dict[key] = current_dict[key]
+                    master_dict[key] = lower_dict[key]
                 # print("New size is {}".format(len(master_dict)))
-                return master_dict
+    return master_dict
 
-
-print("This is master_dict", make_master_dict(wiki_param_name))  # TODO - fix make_master_dict
 
 # sort the freq dicts
 # TODO - fix this function once the dicts are figured out
-def sorted_freq_dict(master_dict):
+def sorted_freq_dict(master_dict, NUM_WORDS=NUM_WORDS):
     sorted_wiki_freqs = (sorted(master_dict.items(), key=operator.itemgetter(1)))[::-1]
+    print(sorted_wiki_freqs)
     for n, (w, f) in sorted_wiki_freqs:
         if n == NUM_WORDS:
             break
