@@ -1,10 +1,11 @@
 import pickle
 
+
 from word_v_world import config
 
 NUM_WORDS = 100
 NUM_LUDWIG_WORKERS = 6
-file_name = 'w2dfs_4800000_ALL.pkl'
+file_name = 'w2dfs_4800_ALL.pkl'
 wiki_param_name = ['param_{}'.format(22 + i) for i in range(NUM_LUDWIG_WORKERS)]
 
 
