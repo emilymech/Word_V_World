@@ -4,9 +4,10 @@ import pyprind
 
 
 from cytoolz import itertoolz
+from word_v_world import config, articles
 
+# TODO - save file list path to be loaded in later
 
-# TODO: write the function to get the files loaded in
 
 class CoocMatrix:
 
@@ -19,10 +20,10 @@ class CoocMatrix:
         self.window_type = None
 
         self.num_documents = 0
-        self.corpus_path = None
+        self.corpus_path = config.Default.param2requests
         self.document_list = []
 
-        self.num_words = None
+        self.num_words = 0
         self.word_list = None
         self.word_index_dict = None
 
@@ -41,15 +42,19 @@ class CoocMatrix:
         self.word_index_dict = {}
         self.num_words = 0
 
-        f = open(word_list_file)
-        for line in f:
-            word = line.strip().strip('\n').strip()
-            self.word_list.append(word)
-            self.word_index_dict[word] = self.num_words
-            self.num_words += 1
+        with open(word_list_file, "r") as f:
+            for line in f:
+                word = line.strip().strip('\n').strip()
+                self.word_list.append(word)
+                self.word_index_dict[word] = self.num_words
+                self.num_words += 1
 
-    def get_file_list(self, path_to_corpora):
-        pass
+    def get_file_list(self, corpus_path):
+        self.corpus_file_list = []
+
+        for p in articles.get_paths_to_articles(corpus_path):
+            self.corpus_file_list.append(p)
+        return self.corpus_file_list
         # create a list of the paths to all the param/bodies.txt files
         # save that as self.corpus_file_list
 
@@ -62,7 +67,6 @@ class CoocMatrix:
                 self.add_to_ww_matrix_fast(tokens)
 
     def add_to_ww_matrix_fast(self, tokens):  # no function call overhead - twice as fast
-
 
         pbar = pyprind.ProgBar(self.num_documents, stream=sys.stdout)
 

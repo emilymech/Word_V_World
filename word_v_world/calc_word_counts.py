@@ -3,7 +3,7 @@ import pickle
 
 from word_v_world import config
 
-# TODO print out a list of the N most frequent words and save to a file to pass to calc_coocs
+# TODO figure out why the file isn't being written to folder
 
 
 # get the pickle for each param folder individually
@@ -14,7 +14,6 @@ def get_pickles(wiki_param_name, w2dfs_file_name):
     full_path = wiki_param_path / w2dfs_file_name
     with full_path.open('rb') as file:
         w2dfs = pickle.load(file)
-        #print(w2dfs)
     return w2dfs  # this is a list of dicts by article in params
 
 
@@ -46,21 +45,23 @@ def sorted_freq_dict(dict, num_words):
     freq_list = [(dict[key], key) for key in dict]
     freq_list.sort()
     freq_list.reverse()
-    for n, pair in enumerate(freq_list):
-        if n == num_words:
-            break
-        print(str(pair))
+    with open('word_list_file.txt', 'w') as f:
+        for n, pair in enumerate(freq_list):
+            f.write(str(pair))
+            if n == num_words:
+                break
+            print(str(pair))
     return freq_list
 
 
 def main():
-    NUM_WORDS = 100
-    NUM_LUDWIG_WORKERS = 6
+    num_words = 2000
+    num_ludwig_workers = 6
     file_name = 'w2dfs_4800_ALL.pkl'
-    wiki_param_name = ['param_{}'.format(22 + i) for i in range(NUM_LUDWIG_WORKERS)]
+    wiki_param_name = ['param_{}'.format(22 + i) for i in range(num_ludwig_workers)]
 
     master_dict = make_master_dict(wiki_param_name, file_name)
-    sorted_freq_dict(master_dict, NUM_WORDS)
+    sorted_freq_dict(master_dict, num_words)
     return
 
 
