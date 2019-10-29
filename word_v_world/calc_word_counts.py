@@ -45,9 +45,9 @@ def sorted_freq_dict(dictionary, num_words):
     freq_list = [(dictionary[key], key) for key in dictionary]
     freq_list.sort()
     freq_list.reverse()
-    with open('/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/word_v_world/word_list_file.txt', 'w') as f:
+    with open('/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/output/word_list_file.txt', 'w') as f:
         for n, pair in enumerate(freq_list):
-            f.write(str(pair))
+            f.write(str(pair) + '\n')
             if n == num_words:
                 break
             print(str(pair))
@@ -55,9 +55,9 @@ def sorted_freq_dict(dictionary, num_words):
 
 
 def main():
-    num_words = 2000
+    num_words = 32000
     num_ludwig_workers = 6
-    file_name = 'w2dfs_4800_ALL.pkl'
+    file_name = 'w2dfs_4800000_ALL.pkl'
     wiki_param_name = ['param_{}'.format(22 + i) for i in range(num_ludwig_workers)]
 
     master_dict = make_master_dict(wiki_param_name, file_name)

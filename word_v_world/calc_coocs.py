@@ -6,8 +6,6 @@ import pyprind
 from cytoolz import itertoolz
 from word_v_world import config, articles
 
-# TODO - save file list path to be loaded in later
-
 
 class CoocMatrix:
 
@@ -20,7 +18,7 @@ class CoocMatrix:
         self.window_type = None
 
         self.num_documents = 0
-        self.corpus_path = config.Default.param2requests
+        self.corpus_path = None
         self.document_list = []
 
         self.num_words = 0
@@ -49,10 +47,9 @@ class CoocMatrix:
                 self.word_index_dict[word] = self.num_words
                 self.num_words += 1
 
-    def get_file_list(self, corpus_path):
+    def get_file_list(self, path_to_corpora):
         self.corpus_file_list = []
-
-        for p in articles.get_paths_to_articles(corpus_path):
+        for p in articles.get_paths_to_articles(path_to_corpora):
             self.corpus_file_list.append(p)
         return self.corpus_file_list
         # create a list of the paths to all the param/bodies.txt files
@@ -115,8 +112,8 @@ def main():
     window_size = 1
     window_weight = 'flat'
     window_type = 'forward'
-    word_list_file = 'file_location.txt'
-    path_to_corpora = 'path'
+    word_list_file = '/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/output/word_list_file.txt'
+    path_to_corpora = config.Default.param2requests
 
     the_cooc_matrix = CoocMatrix()
     the_cooc_matrix.init_ww_matrix(window_size, window_weight, window_type, word_list_file)
