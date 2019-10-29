@@ -58,10 +58,10 @@ class CoocMatrix:
     def add_documents_to_matrix(self):
         for i in range(len(self.corpus_file_list)):
             filename = self.corpus_file_list[i]
-            f = open(filename)
-            for line in f:
-                tokens = (line.strip().strip('\n').strip()).split()
-                self.add_to_ww_matrix_fast(tokens)
+            with open(filename) as f:
+                for line in f:
+                    tokens = (line.strip().strip('\n').strip()).split()
+                    self.add_to_ww_matrix_fast(tokens)
 
     def add_to_ww_matrix_fast(self, tokens):  # no function call overhead - twice as fast
 
