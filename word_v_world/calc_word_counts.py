@@ -41,11 +41,11 @@ def make_master_dict(wiki_param_name, file_name):
 
 
 # sort the freq dicts
-def sorted_freq_dict(dict, num_words):
-    freq_list = [(dict[key], key) for key in dict]
+def sorted_freq_dict(dictionary, num_words):
+    freq_list = [(dictionary[key], key) for key in dictionary]
     freq_list.sort()
     freq_list.reverse()
-    with open('word_list_file.txt', 'w') as f:
+    with open('/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/word_v_world/word_list_file.txt', 'w') as f:
         for n, pair in enumerate(freq_list):
             f.write(str(pair))
             if n == num_words:
