@@ -8,7 +8,6 @@ python -m spacy download en_core_web_sm
 import re
 import spacy
 
-
 from word_v_world.articles import generate_articles, get_paths_to_articles
 from word_v_world import config
 from spacy.tokenizer import Tokenizer
@@ -45,29 +44,13 @@ def tokenize(n, paths_to_articles):
             all_tokens += tokens
 
             # track print process
-            i += 1
-            if i % 100 == 0:
-                print("Finished {} articles".format(i))
-
-            # for debugging, print tokens in sample articles (only when num articles is small)
-            # print(tokens)
-            # print(len(tokens))
-            # print()
+            # i += 1
+            # if i % 100 == 0:
+            #     print("Finished {} articles".format(i))
             t_file.write(str(all_tokens))
 
     return all_tokens
 
-
-# # retrieve a subset of articles using start and stop
-# for article in generate_articles_from_slice(paths_to_articles, start=2, stop=3):
-#
-#     # tokenize article
-#     doc = nlp(article)  # tokenization, tagging, ner, etc...
-#
-#     tokens = [t.text.lower() for t in doc]
-#     print(tokens)
-#     print(len(tokens))
-#     print()
 
 def main():
     tokenize(4800000, get_path(param2requests=config.Default.param2requests))
