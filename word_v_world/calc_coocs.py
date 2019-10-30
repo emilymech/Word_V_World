@@ -5,6 +5,9 @@ import pyprind
 from cytoolz import itertoolz
 from word_v_world import config, articles, tokenization
 
+# TODO - This writes an empty matrix and the progress bar doesn't work. Debug
+
+
 class CoocMatrix:
 
     def __init__(self):
