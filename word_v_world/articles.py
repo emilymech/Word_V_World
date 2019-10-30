@@ -54,7 +54,7 @@ def get_paths_to_articles(param2requests=None, print_size=True):
         yield path_to_article
 
 
-def generate_articles(paths_to_articles, num_articles=None):
+def generate_articles(paths_to_articles, num_articles = None):
     """
     a generator that yields wiki articles.
     :return: a generator of articles, (str, str, ...)

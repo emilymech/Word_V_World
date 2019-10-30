@@ -3,8 +3,7 @@ import sys
 import pyprind
 
 from cytoolz import itertoolz
-from word_v_world import config, articles
-
+from word_v_world import config, articles, tokenization
 
 class CoocMatrix:
 
@@ -58,8 +57,8 @@ class CoocMatrix:
         for i in range(len(self.corpus_file_list)):
             filename = self.corpus_file_list[i]
             with open(filename) as f:
-                for path in f:
-                    tokens = (path.strip().strip('\n').strip()).split()
+                for article in f:
+                    tokens = tokenization.tokenize(article)
                     print(tokens)
                     #self.add_to_ww_matrix_fast(tokens)
 

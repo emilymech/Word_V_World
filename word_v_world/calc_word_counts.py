@@ -14,6 +14,7 @@ def get_pickles(wiki_param_name, w2dfs_file_name):
     full_path = wiki_param_path / w2dfs_file_name
     with full_path.open('rb') as file:
         w2dfs = pickle.load(file)
+        print(w2dfs)
     return w2dfs  # this is a list of dicts by article in params
 
 

@@ -22,36 +22,38 @@ def get_path(param2requests=config.Default.param2requests):
 
 
 def tokenize(n, paths_to_articles):
-    all_tokens = []
-    custom_nlp = spacy.load("en_core_web_sm")
-    hyphen_contraction_re = re.compile(r"[A-Za-z]+(-|')[A-Za-z\.]+")
-    prefix_re = spacy.util.compile_prefix_regex(custom_nlp.Defaults.prefixes)
-    infix_re = spacy.util.compile_infix_regex(custom_nlp.Defaults.infixes)
-    suffix_re = spacy.util.compile_suffix_regex(custom_nlp.Defaults.suffixes)
-    custom_nlp.tokenizer = Tokenizer(custom_nlp.vocab,
-                                     prefix_search=prefix_re.search,
-                                     infix_finditer=infix_re.finditer,
-                                     suffix_search=suffix_re.search,
-                                     token_match=hyphen_contraction_re.match)
+    with open("/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/output/tokenized_file.txt", "w") as t_file:
+        all_tokens = []
+        custom_nlp = spacy.load("en_core_web_sm")
+        hyphen_contraction_re = re.compile(r"[A-Za-z]+(-|')[A-Za-z\.]+")
+        prefix_re = spacy.util.compile_prefix_regex(custom_nlp.Defaults.prefixes)
+        infix_re = spacy.util.compile_infix_regex(custom_nlp.Defaults.infixes)
+        suffix_re = spacy.util.compile_suffix_regex(custom_nlp.Defaults.suffixes)
+        custom_nlp.tokenizer = Tokenizer(custom_nlp.vocab,
+                                         prefix_search=prefix_re.search,
+                                         infix_finditer=infix_re.finditer,
+                                         suffix_search=suffix_re.search,
+                                         token_match=hyphen_contraction_re.match)
 
-    # loop over articles, tokenizing each with built-in tokenizer
-    i = 0  # for tracking print process
-    for article in generate_articles(paths_to_articles, num_articles=n):
+        # loop over articles, tokenizing each with built-in tokenizer
+        i = 0  # for tracking print process
+        for article in generate_articles(paths_to_articles, num_articles=n):
 
-        # tokenize article
-        doc = custom_nlp(article)  # tokenization, tagging, ner, etc...
-        tokens = [t.text.lower() for t in doc]
-        all_tokens += tokens
+            # tokenize article
+            doc = custom_nlp(article)  # tokenization, tagging, ner, etc...
+            tokens = [t.text.lower() for t in doc]
+            all_tokens += tokens
 
-        # track print process
-        i += 1
-        if i % 100 == 0:
-            print("Finished {} articles".format(i))
+            # track print process
+            i += 1
+            if i % 100 == 0:
+                print("Finished {} articles".format(i))
 
-        # for debugging, print tokens in sample articles (only when num articles is small)
-        # print(tokens)
-        # print(len(tokens))
-        # print()
+            # for debugging, print tokens in sample articles (only when num articles is small)
+            # print(tokens)
+            # print(len(tokens))
+            # print()
+            t_file.write(str(all_tokens))
 
     return all_tokens
 
@@ -66,3 +68,9 @@ def tokenize(n, paths_to_articles):
 #     print(tokens)
 #     print(len(tokens))
 #     print()
+
+def main():
+    tokenize(4800000, get_path(param2requests=config.Default.param2requests))
+
+
+main()
