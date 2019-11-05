@@ -59,7 +59,7 @@ def generate_articles(paths_to_articles, num_articles = None):
     a generator that yields wiki articles.
     :return: a generator of articles, (str, str, ...)
     """
-    print('Looking for text files in {}'.format(config.RemoteDirs.wiki))
+    print('Looking for text files...')
 
     if not paths_to_articles:
         raise ValueError('"paths_to_articles" is empty.')

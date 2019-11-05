@@ -19,29 +19,24 @@ class CoocMatrix:
         self.window_weight = window_weight
         self.window_type = window_type
 
-        self.num_documents = 0
-        self.corpus_path = None
-        self.document_list = []
-
         self.num_words = 0
         self.word_list = []
-        self.word_index_dict = {}
+        self.w2id = {}
+        self.id2w = {}
 
         self.pad = '*PAD*'
         self.verbose = False
 
         self.cooc_matrix = None
 
-        with open(vocab, "r") as f:
-            for line in f:
-                word = line.strip().strip('\n').strip()
-                self.word_list.append(word)
-                self.word_index_dict[word] = self.num_words
-                self.id2w[self.num_words] = word
-                self.num_words += 1
+        for word in vocab:
+            self.word_list.append(word)
+            self.w2id[word] = self.num_words
+            self.id2w[self.num_words] = word
+            self.num_words += 1
 
         assert self.num_words > 0
-        self.cooc_matrix = np.zeros([self.num_words, self.num_words], int)
+        self.cooc_matrix = np.zeros([self.num_words, self.num_words], int)  # TODO needs to be sparse for wiki
 
     def update_from_file(self, param_name):
         with open(config.RemoteDirs.runs / param_name) as f:
@@ -54,8 +49,6 @@ class CoocMatrix:
         self.add_to_ww_matrix_fast(tokens)
 
     def add_to_ww_matrix_fast(self, tokens):  # no function call overhead - twice as fast
-        with open("/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/output/cooc_matrix_file.txt", "w") as cooc_file:
-            #pbar = pyprind.ProgBar(self.num_documents, stream=sys.stdout)
 
             print('\nCounting word-word co-occurrences in {}-word moving window'.format(self.window_size))
 
@@ -67,10 +60,10 @@ class CoocMatrix:
             for w in windows:
 
                 for t1, t2, dist in zip([w[0]] * self.window_size, w[1:], range(self.window_size)):
-                    if t1 in self.word_index_dict and t2 in self.word_index_dict:
+                    if t1 in self.w2id and t2 in self.w2id:
 
-                        t1_id = self.word_index_dict[t1]
-                        t2_id = self.word_index_dict[t2]
+                        t1_id = self.w2id[t1]
+                        t2_id = self.w2id[t2]
                         # increment
                         if t1_id == self.pad or t2_id == self.pad:
                             continue
@@ -96,7 +89,6 @@ class CoocMatrix:
             else:
                 raise AttributeError('Invalid arg to "window_type".')
             print('Shape of normalized matrix={}'.format(self.cooc_matrix.shape))
-            cooc_file.write(str(self.cooc_matrix))
 
 
 

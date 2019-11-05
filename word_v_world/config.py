@@ -15,7 +15,6 @@ class RemoteDirs:
     research_data = Path('/media') / 'research_data'
     root = research_data / 'Word_V_World'
     runs = root / 'runs'
-    wiki = research_data / 'CreateWikiCorpus'
 
 
 class LocalDirs:

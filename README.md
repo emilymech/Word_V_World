@@ -75,6 +75,14 @@ for article in generate_articles(paths_to_articles):
     all_articles.append(article)
 ```
 
+## Usage
+
+on MacOs
+
+```bash
+ludwig -mnt /Volumes/research_data -e data
+```
+
 In order to successfully execute the above code, a user must have a local copy of [CreateWikiCorpus](https://github.com/UIUCLearningLanguageLab/CreateWikiCorpus), and must point `config.LocalDirs.wiki` to its location.
 This is required in order to obtain a a full list of the default parameter configuration used to generate Wikipedia corpora.
 This allows the `param2requests` object to be incomplete; the remaining parameters (`keep_tables`, `expand_templates`, etc.) will be set to their default.
