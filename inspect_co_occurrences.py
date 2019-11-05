@@ -6,6 +6,10 @@ from ludwig.client import Client
 from word_v_world import config
 from word_v_world.params import param2requests, param2default
 
+# get co-occurrence counts for these word pairs
+query = [('.', 'the'),
+         ('to', 'the')]
+
 
 # specify which parameter configuration for which to retrieve results
 update_dict = {
@@ -31,3 +35,8 @@ for param_path, label in client.gen_param_ps(param2requests, verbose=False):
     partial_ww2cf = Counter(ww2cf)
     combined_ww2cf.update(partial_ww2cf)
     print(combined_ww2cf)
+
+
+# inspect co-occurrence counts
+for pair in query:
+    print(pair, ww2cf.get(pair, None))
