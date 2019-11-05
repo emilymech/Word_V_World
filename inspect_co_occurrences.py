@@ -13,8 +13,8 @@ query = [('.', 'the'),
 
 # specify which parameter configuration for which to retrieve results
 update_dict = {
-    'cwc_param_name': ['param_0', 'param_1'], # to sum over multiple, add the params in the list
-    'num_machines': [1],
+    'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'], # to sum over multiple, add the params in the list
+    'num_machines': [6],
 }
 param2requests.update(update_dict)
 
