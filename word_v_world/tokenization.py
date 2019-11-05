@@ -8,52 +8,29 @@ python -m spacy download en_core_web_sm
 import re
 import spacy
 
-from word_v_world.articles import generate_articles, get_paths_to_articles
-from word_v_world import config
+from word_v_world.articles import generate_articles
 from spacy.tokenizer import Tokenizer
 
-
-def get_path(param2requests=config.Default.param2requests):
-    paths_to_articles = []
-    for p in get_paths_to_articles(param2requests):
-        paths_to_articles.append(p)
-    return paths_to_articles
+custom_nlp = spacy.load("en_core_web_sm", disable=['tagger', 'ner'])
 
 
-def tokenize(n, paths_to_articles):
-    with open("/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/output/tokenized_file.txt", "w") as t_file:
-        all_tokens = []
-        custom_nlp = spacy.load("en_core_web_sm")
-        hyphen_contraction_re = re.compile(r"[A-Za-z]+(-|')[A-Za-z\.]+")
-        prefix_re = spacy.util.compile_prefix_regex(custom_nlp.Defaults.prefixes)
-        infix_re = spacy.util.compile_infix_regex(custom_nlp.Defaults.infixes)
-        suffix_re = spacy.util.compile_suffix_regex(custom_nlp.Defaults.suffixes)
-        custom_nlp.tokenizer = Tokenizer(custom_nlp.vocab,
-                                         prefix_search=prefix_re.search,
-                                         infix_finditer=infix_re.finditer,
-                                         suffix_search=suffix_re.search,
-                                         token_match=hyphen_contraction_re.match)
+def tokenize(paths_to_articles, num_articles=None):
+    all_tokens = []
 
-        # loop over articles, tokenizing each with built-in tokenizer
-        i = 0  # for tracking print process
-        for article in generate_articles(paths_to_articles, num_articles=n):
+    hyphen_contraction_re = re.compile(r"[A-Za-z]+(-|')[A-Za-z\.]+")
+    prefix_re = spacy.util.compile_prefix_regex(custom_nlp.Defaults.prefixes)
+    infix_re = spacy.util.compile_infix_regex(custom_nlp.Defaults.infixes)
+    suffix_re = spacy.util.compile_suffix_regex(custom_nlp.Defaults.suffixes)
+    custom_nlp.tokenizer = Tokenizer(custom_nlp.vocab,
+                                     prefix_search=prefix_re.search,
+                                     infix_finditer=infix_re.finditer,
+                                     suffix_search=suffix_re.search,
+                                     token_match=hyphen_contraction_re.match)
 
-            # tokenize article
-            doc = custom_nlp(article)  # tokenization, tagging, ner, etc...
-            tokens = [t.text.lower() for t in doc]
-            all_tokens += tokens
-
-            # track print process
-            # i += 1
-            # if i % 100 == 0:
-            #     print("Finished {} articles".format(i))
-            t_file.write(str(all_tokens))
+    # loop over articles, tokenizing each with custom tokenizer
+    for article in generate_articles(paths_to_articles, num_articles=num_articles):
+        doc = custom_nlp(article)
+        tokens = [t.text.lower() for t in doc]
+        all_tokens += tokens
 
     return all_tokens
-
-
-def main():
-    tokenize(4800000, get_path(param2requests=config.Default.param2requests))
-
-
-main()

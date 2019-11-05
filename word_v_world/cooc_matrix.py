@@ -3,67 +3,55 @@ import sys
 import pyprind
 
 from cytoolz import itertoolz
-from word_v_world import config, articles, tokenization
+from word_v_world import config, articles
 
 # TODO - This writes an empty matrix and the progress bar doesn't work. Debug
+# TODO - instead of a get file list, load in the tokenized file(s)
 
 
 class CoocMatrix:
 
-    def __init__(self):
+    def __init__(self, window_size, window_weight, window_type, vocab):
         self.corpus_name = None
         self.corpus_file_list = None
 
-        self.window_size = None
-        self.window_weight = None
-        self.window_type = None
+        self.window_size = window_size
+        self.window_weight = window_weight
+        self.window_type = window_type
 
         self.num_documents = 0
         self.corpus_path = None
         self.document_list = []
 
         self.num_words = 0
-        self.word_list = None
-        self.word_index_dict = None
+        self.word_list = []
+        self.word_index_dict = {}
 
         self.pad = '*PAD*'
         self.verbose = False
 
         self.cooc_matrix = None
 
-    def init_ww_matrix(self, window_size, window_weight, window_type, word_list_file):
-        self.window_size = window_size
-        self.window_weight = window_weight
-        self.window_type = window_type
-        self.cooc_matrix = np.zeros([self.num_words, self.num_words], int)
-
-        self.word_list = []
-        self.word_index_dict = {}
-        self.num_words = 0
-
-        with open(word_list_file, "r") as f:
+        with open(vocab, "r") as f:
             for line in f:
                 word = line.strip().strip('\n').strip()
                 self.word_list.append(word)
                 self.word_index_dict[word] = self.num_words
+                self.id2w[self.num_words] = word
                 self.num_words += 1
 
-    def get_file_list(self, path_to_corpora):
-        self.corpus_file_list = []
-        for p in articles.get_paths_to_articles(path_to_corpora):
-            self.corpus_file_list.append(p)
-        return self.corpus_file_list
-        # create a list of the paths to all the param/bodies.txt files
-        # save that as self.corpus_file_list
+        assert self.num_words > 0
+        self.cooc_matrix = np.zeros([self.num_words, self.num_words], int)
 
-    def add_documents_to_matrix(self):
-        for i in range(len(self.corpus_file_list)):
-            filename = self.corpus_file_list[i]
-            with open(filename) as f:
-                for article in f:
-                    tokens = tokenization.tokenize(article)
-                    print(tokens)
-                    #self.add_to_ww_matrix_fast(tokens)
+    def update_from_file(self, param_name):
+        with open(config.RemoteDirs.runs / param_name) as f:
+            for line in f:
+                tokens = line.strip('\n').split()  # convert string containing words into lsit of words
+                # print(tokens)
+                self.add_to_ww_matrix_fast(tokens)
+
+    def update_from_list(self, tokens):
+        self.add_to_ww_matrix_fast(tokens)
 
     def add_to_ww_matrix_fast(self, tokens):  # no function call overhead - twice as fast
         with open("/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/output/cooc_matrix_file.txt", "w") as cooc_file:
@@ -83,7 +71,7 @@ class CoocMatrix:
 
                         t1_id = self.word_index_dict[t1]
                         t2_id = self.word_index_dict[t2]
-                    # increment
+                        # increment
                         if t1_id == self.pad or t2_id == self.pad:
                             continue
                         if self.window_weight == "linear":
@@ -111,17 +99,4 @@ class CoocMatrix:
             cooc_file.write(str(self.cooc_matrix))
 
 
-def main():
-    window_size = 1
-    window_weight = 'flat'
-    window_type = 'forward'
-    word_list_file = '/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/output/word_list_file.txt'
-    path_to_corpora = config.Default.param2requests
 
-    the_cooc_matrix = CoocMatrix()
-    the_cooc_matrix.init_ww_matrix(window_size, window_weight, window_type, word_list_file)
-    the_cooc_matrix.get_file_list(path_to_corpora)
-    the_cooc_matrix.add_documents_to_matrix()
-
-
-main()

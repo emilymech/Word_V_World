@@ -1,7 +1,7 @@
 from pathlib import Path
 import socket
 
-from ludwig.config import mnt_point
+# from ludwig.config import mnt_point
 
 
 class RemoteDirs:
@@ -12,7 +12,7 @@ class RemoteDirs:
      and has MacOS, root must be changed to something like /Volumes/research_data
 
     """
-    research_data = Path(mnt_point) / 'research_data'
+    research_data = Path('/media') / 'research_data'
     root = research_data / 'Word_V_World'
     runs = root / 'runs'
     wiki = research_data / 'CreateWikiCorpus'
@@ -35,13 +35,3 @@ class LocalDirs:
 
 class Global:
     debug = False
-
-
-class Default:
-
-    # if this does not work, check the defaults that are added from createwikicorpus.params
-    param2requests = {'part': [0, 1, 2, 3, 4, 5],
-                      'num_machines': [6],
-                      'no_templates': [True],
-                      'filter_disambig_pages': [True],
-                      'input_file_name': ['enwiki-20190920-pages-articles-multistream.xml.bz2']}
