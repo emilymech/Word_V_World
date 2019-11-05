@@ -1,6 +1,5 @@
 import numpy as np
-import sys
-import pyprind
+from scipy import sparse
 
 from cytoolz import itertoolz
 from word_v_world import config, articles
@@ -36,7 +35,6 @@ class CoocMatrix:
             self.num_words += 1
 
         assert self.num_words > 0
-        self.cooc_matrix = np.zeros([self.num_words, self.num_words], int)  # TODO needs to be sparse for wiki
 
     def update_from_file(self, param_name):
         with open(config.RemoteDirs.runs / param_name) as f:
@@ -52,9 +50,11 @@ class CoocMatrix:
 
             print('\nCounting word-word co-occurrences in {}-word moving window'.format(self.window_size))
 
+            rows = []
+            cols = []
+            data = []
+
             tokens += [self.pad] * self.window_size  # add padding such that all co-occurrences in last window are captured
-            if self.verbose:
-                print(tokens)
             windows = itertoolz.sliding_window(self.window_size + 1, tokens)  # + 1 because window consists of t2s only
 
             for w in windows:
@@ -64,19 +64,18 @@ class CoocMatrix:
 
                         t1_id = self.w2id[t1]
                         t2_id = self.w2id[t2]
+                        rows.append(t1_id)
+                        cols.append(t2_id)
                         # increment
                         if t1_id == self.pad or t2_id == self.pad:
                             continue
                         if self.window_weight == "linear":
-                            self.cooc_matrix[t1_id, t2_id] += self.window_size - dist
+                            data.append(self.window_size - dist)
                         elif self.window_weight == "flat":
-                            self.cooc_matrix[t1_id, t2_id] += 1
-                        if self.verbose:
-                            print('row {:>3} col {:>3} set to {}'.format(t1_id, t2_id, self.cooc_matrix[t1_id, t2_id]))
+                            data.append(1)
 
-            if self.verbose:
-                print()
-            #pbar.update()
+            self.cooc_matrix = sparse.coo_matrix((np.array(data), (np.array(rows), np.array(cols))), dtype=np.int64)
+
             # window_type
             if self.window_type == 'forward':
                 self.cooc_matrix = self.cooc_matrix

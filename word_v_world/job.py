@@ -1,6 +1,6 @@
 import pickle
 from pathlib import Path
-from scipy.sparse import csr_matrix
+from scipy import sparse
 
 from word_v_world import config
 from word_v_world.cooc_matrix import CoocMatrix
@@ -54,7 +54,11 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
                                  vocab=vocab)
     the_cooc_matrix.update_from_list(all_tokens)
     print('Done updating')
-    ids2cf = csr_matrix(the_cooc_matrix.cooc_matrix).todok()  # TODO tghis should already be sparse
+    if config.Global.debug:
+        print(the_cooc_matrix.cooc_matrix.toarray())
+        print(the_cooc_matrix.cooc_matrix.shape)
+
+    ids2cf = sparse.dok_matrix(the_cooc_matrix.cooc_matrix).todok()
     ww2cf = {}
     print('Converting sparse matrix to dictionary...', flush=True)
     for ids, cf in ids2cf.items():
