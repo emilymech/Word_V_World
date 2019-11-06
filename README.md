@@ -4,7 +4,7 @@
 This repository contains research code for extracting co-occurrence statistics from Wikipedia articles.
 These co-occurrences will later be utilized as experimental stimuli to understand how regularities in language interact with our knowledge about regularities in the world.
 
-## Usage
+## Background
 
 The input text files are stored on the [UIUC Learning & Language Lab](http://learninglanguagelab.org/) file server.
 The Python package `Ludwig` is used to interact with files on the server.
