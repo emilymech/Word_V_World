@@ -43,7 +43,6 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     if len(path_to_articles) == 0:
         raise SystemExit('Did not find bodies.txt in {}'.format(param_path))
 
-
     all_tokens = tokenize(path_to_articles)
 
     # step 2

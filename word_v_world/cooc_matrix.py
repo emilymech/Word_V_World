@@ -4,9 +4,6 @@ from scipy import sparse
 from cytoolz import itertoolz
 from word_v_world import config, articles
 
-# TODO - This writes an empty matrix and the progress bar doesn't work. Debug
-# TODO - instead of a get file list, load in the tokenized file(s)
-
 
 class CoocMatrix:
 

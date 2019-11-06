@@ -1,8 +1,6 @@
 import pickle
 from pathlib import Path
 
-from word_v_world import config
-
 
 # get the pickle for each param folder individually
 def get_pickles(wiki_param_name, w2dfs_file_name):
