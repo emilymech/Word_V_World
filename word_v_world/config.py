@@ -6,7 +6,7 @@ import socket
 
 class RemoteDirs:
     """
-    Typically, when using LudwigCluster to execute code, root should always be /media/research_data
+    Typically, when using LudwigCluster to execute code, research_data should always be /media/research_data
      regardless of user's OS.
     However, when user intends to execute code on host only, and intends to retrieve data from shared drive,
      and has MacOS, root must be changed to something like /Volumes/research_data
