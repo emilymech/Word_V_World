@@ -31,7 +31,12 @@ The safest method for obtaining only those text files that make up a specific co
 
 ## Usage
 
-on MacOs
+Access to the UIUC file server is required. If the remote directory `research_data` is mounted at `/media/research_data` as is the default in Linux, you can:
+
+```bash
+ludwig -e data
+```
+If, `research_data` is not mounted at `media/research_data` (e.g. on MacOs, the default mounting point is `/Volumes/`, the mounting point needs to be specified:
 
 ```bash
 ludwig -mnt /Volumes/research_data -e data
