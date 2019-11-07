@@ -4,7 +4,7 @@
 This repository contains research code for extracting co-occurrence statistics from Wikipedia articles.
 These co-occurrences will later be utilized as experimental stimuli to understand how regularities in language interact with our knowledge about regularities in the world.
 
-## Usage
+## Background
 
 The input text files are stored on the [UIUC Learning & Language Lab](http://learninglanguagelab.org/) file server.
 The Python package `Ludwig` is used to interact with files on the server.
@@ -25,59 +25,18 @@ This is where a parameter configuration comes in.
 Each text file is co-located with a `param2val.yaml` file, which represents its parameter configuration.
 A parameter configuration is simply the set of parameters used to create a single corpus.
 Thus, in order to retrieve a single corpus, all text files associated with the same parameter configuration must be retrieved.
-The following code retrieves all articles as string objects and saves them in a list called `all_articles`: 
 
-```python
-from word_v_world.articles import generate_articles
+The safest method for obtaining only those text files that make up a specific corpus of interest, is to manually inspect the folders in `research_data/CreateWikiCorpus/runs`. Inspect each `param2val.yaml` file, and if the parameter configuration matches, note the parameter configuration id, a.ka. `param_name`. This unique ID can be used to programmatically retrieve a specifc set of text files that make up a specific corpus of interest.
 
-all_articles = []
-for article in generate_articles(paths_to_articles):
-    all_articles.append(article)
-```
-
-But first, we must define `paths_to_articles` in order to restrict retrieval to articles that belong to a single corpus.
-To do so:
-
-```python
-from word_v_world.articles import get_paths_to_articles
-
-paths_to_articles = []
-for p in get_paths_to_articles(param2requests):
-    paths_to_articles.append(p)
-```
-
-Notice, that we need to define `param2requests`.
-This is a Python dictionary, which represents the unique parameter configuration we are interested in.
-It is up to the user to define this object.
-The default is:
-
-```python
-param2requests = {'part': [0, 1, 2, 3, 4, 5, 6],
-                  'num_machines': [7],
-                  'input_file_name': ['dummy_input.xml']}
-```                      
-
-Putting it all together:
-
-```python
-from word_v_world.articles import generate_articles, get_paths_to_articles
-
-param2requests = {'part': [0, 1, 2, 3, 4, 5, 6],
-                  'num_machines': [7],
-                  'input_file_name': ['dummy_input.xml']}
-
-paths_to_articles = []
-for p in get_paths_to_articles(param2requests):
-    paths_to_articles.append(p)
-    
-all_articles = []
-for article in generate_articles(paths_to_articles):
-    all_articles.append(article)
-```
 
 ## Usage
 
-on MacOs
+Access to the UIUC file server is required. If the remote directory `research_data` is mounted at `/media/research_data` as is the default in Linux, you can:
+
+```bash
+ludwig -e data
+```
+If, `research_data` is not mounted at `media/research_data` (e.g. on MacOs, the default mounting point is `/Volumes/`, the mounting point needs to be specified:
 
 ```bash
 ludwig -mnt /Volumes/research_data -e data
