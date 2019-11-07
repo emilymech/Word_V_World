@@ -544,8 +544,7 @@ act_fe_query = [('traveled', 'airplane'),
                 ('held', 'wall')]
 
 curious_query = [('metal', 'airplane'),
-                 ('paper', 'airplane'),
-                 ('kara', 'federmeier')]
+                 ('paper', 'airplane')]
 # load in combined_ww2cf pickle
 combined_ww2cf_path = config.LocalDirs.root / 'data' / 'combined_ww2cf.pkl'
 combined_ww2cf = pickle.load(combined_ww2cf_path.open('rb'))
