@@ -74,4 +74,6 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
         ww2cf_path.parent.mkdir(parents=True)
     pickle.dump(ww2cf, ww2cf_path.open('wb'))
 
+    print("All done! :)")
+
     return []
