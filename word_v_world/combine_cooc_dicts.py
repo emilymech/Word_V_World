@@ -32,9 +32,12 @@ for param_path, label in client.gen_param_ps(param2requests, verbose=False):
     combined_ww2cf.update(partial_ww2cf)
     # print(combined_ww2cf)
 
-    # save combined ww2cf to pkl file
-    combined_ww2cf_path = config.LocalDirs.root / 'data' / 'combined_ww2cf.pkl'
-    pickle.dump(combined_ww2cf, open(combined_ww2cf_path, 'wb'))
+    # to save memory
+    del partial_ww2cf
+
+# save combined ww2cf to pkl file
+combined_ww2cf_path = config.LocalDirs.root / 'data' / 'combined_ww2cf.pkl'
+pickle.dump(combined_ww2cf, open(combined_ww2cf_path, 'wb'))
 
 
 
