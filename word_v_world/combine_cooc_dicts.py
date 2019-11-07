@@ -32,7 +32,7 @@ for param_path, label in client.gen_param_ps(param2requests, verbose=False):
     combined_ww2cf.update(partial_ww2cf)
     # print(combined_ww2cf)
 
-    # to save memory
+    # to save memory, delete current iteration partial memory
     del partial_ww2cf
 
 # save combined ww2cf to pkl file
