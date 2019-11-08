@@ -30,6 +30,8 @@ class CoocMatrix:
             self.id2w[self.num_words] = word
             self.num_words += 1
 
+            # TODO BREAK IF N > THRESHOLD
+
         assert self.num_words > 0
 
     def update_from_list(self, tokens):

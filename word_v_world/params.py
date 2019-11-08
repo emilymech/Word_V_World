@@ -1,4 +1,4 @@
-
+# TODO - add vocab name to keep track of which one to use
 
 param2requests = {'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
                   'num_machines': [6],
@@ -12,6 +12,7 @@ param2default = {
     'window_size': 1,
     'window_weight': 'flat',
     'window_type': 'forward',
+    'vocab_name': 'default'
 }
 
 param2debug = {

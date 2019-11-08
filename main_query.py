@@ -1,10 +1,8 @@
-import pickle
 
-from word_v_world.query_ww2cf import get_descriptives, query_by_key, query_by_value
-from word_v_world import config
+from word_v_world.query_ww2cf import query_by_value, query_by_key, get_descriptives
 
-# TODO - get query by value working
 # TODO - make more efficient re: memory usage
+# TODO - make different queries save to folders with a parameter sheet with it
 
 # load in combined_ww2cf pickle
 # combined_ww2cf_path = config.LocalDirs.root / 'data' / 'combined_ww2cf.pkl'

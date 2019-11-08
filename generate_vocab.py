@@ -2,6 +2,7 @@ from word_v_world.word_count import make_master_dict
 
 from word_v_world import config
 
+# TODO - need to generate a smaller vocab, make it save with a unique name
 
 def main():
     wiki_param_name = ['param_{}'.format(22 + i) for i in range(num_ludwig_workers)]
