@@ -2,7 +2,7 @@ import numpy as np
 from scipy import sparse
 
 from cytoolz import itertoolz
-from word_v_world import config, articles
+from word_v_world import config
 
 
 class CoocMatrix:

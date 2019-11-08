@@ -1,5 +1,6 @@
 import pickle
 from collections import Counter
+from pathlib import Path
 
 from ludwig.client import Client
 
@@ -15,7 +16,8 @@ update_dict = {
 param2requests.update(update_dict)
 
 combined_ww2cf = Counter()
-client = Client(config.RemoteDirs.root.name, param2default)
+project_name = Path.cwd().name
+client = Client(project_name, param2default)
 for param_path, label in client.gen_param_ps(param2requests, verbose=False):
 
     print(param_path)
