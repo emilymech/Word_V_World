@@ -25,8 +25,11 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     vocab_path = project_path / 'data' / 'vocab.txt'
     if not vocab_path.exists():
         raise FileNotFoundError('{} not found on server'.format(vocab_path))
-    vocab = vocab_path.read_text().split('\n')
+    vocab = set(vocab_path.read_text().split('\n'))
     assert len(vocab) > 10
+
+    if config.Global.debug:
+        vocab = {'the', 'on', 'you', 'i'}
 
     print('Loaded {} words from vocab'.format(len(vocab)))
 
