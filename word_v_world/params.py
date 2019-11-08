@@ -1,8 +1,8 @@
-# TODO - add vocab name to keep track of which one to use
 
 param2requests = {'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
                   'num_machines': [6],
                   'window_size': [7],
+                  'vocab_name': ['100000_vocab_20191108-14:54:35']
                   }
 
 
@@ -12,7 +12,7 @@ param2default = {
     'window_size': 1,
     'window_weight': 'flat',
     'window_type': 'forward',
-    'vocab_name': 'default'
+    'vocab_name': 'vocab'
 }
 
 param2debug = {
@@ -21,6 +21,7 @@ param2debug = {
     'window_size': 1,
     'window_weight': 'flat',
     'window_type': 'forward',
+    'vocab_name': 'vocab'
 }
 
 

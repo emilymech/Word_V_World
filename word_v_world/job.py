@@ -8,7 +8,6 @@ from word_v_world.tokenization import tokenize
 
 
 def main(param2val):  # param2val appears auto-magically via Ludwig
-
     cwc_param_name = param2val['cwc_param_name']
     window_size = param2val['window_size']
     window_weight = param2val['window_weight']
@@ -22,7 +21,7 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
 
     # step 0
     print('Making vocab...')
-    vocab_path = project_path / 'data' / 'vocab.txt'
+    vocab_path = project_path / 'data' / '100000_vocab_20191108-14:54:35.txt'
     if not vocab_path.exists():
         raise FileNotFoundError('{} not found on server'.format(vocab_path))
     vocab = set(vocab_path.read_text().split('\n'))
@@ -71,6 +70,6 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
         ww2cf_path.parent.mkdir(parents=True)
     pickle.dump(ww2cf, ww2cf_path.open('wb'))
 
-    print("All done! :)")
+    print("Emily is done making a wiki co-occurrence dictionary! :)")
 
     return []

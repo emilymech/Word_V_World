@@ -1,15 +1,18 @@
 import numpy as np
+from datetime import datetime
 
 from word_v_world import config
 from data.pairs import act_pairs, adj_pairs, ass_pairs, curious_pairs, part_pairs
 
-# TODO - generate yaml for each pair run and add unique date/time id
+# TODO - generate yaml for each pair run
 # TODO - visualize co-oc matrix
 
 
 # get co-occurrence counts for these word pairs
 def query_by_key(wiki_dictionary):
-    with (config.LocalDirs.root / 'output' / 'adj_co_query-UNIQUEID.txt').open('w') as f:
+    query_type = "adj_co"
+    event_id = str(query_type) + datetime.now().strftime('%Y%m%d-%H:%M:%S')
+    with (config.LocalDirs.root / 'output' / '{}.txt'.format(event_id)).open('w') as f:
         for pair in adj_pairs.adj_co_query:
             print(pair, wiki_dictionary.get(pair, None))
         f.write(str((pair, wiki_dictionary.get(pair, None))) + '\n')
@@ -36,3 +39,4 @@ def get_descriptives(wiki_dictionary):
     print("This is the minimum value:", wiki_dictionary[min_value])
 
     return
+
