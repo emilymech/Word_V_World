@@ -37,46 +37,46 @@ class CoocMatrix:
 
     def add_to_ww_matrix_fast(self, tokens):  # no function call overhead - twice as fast
 
-            print('\nCounting word-word co-occurrences in {}-word moving window'.format(self.window_size))
+        print('Counting word-word co-occurrences in {}-word moving window'.format(self.window_size))
 
-            rows = []
-            cols = []
-            data = []
+        rows = []
+        cols = []
+        data = []
 
-            tokens += [self.pad] * self.window_size  # add padding such that all co-occurrences in last window are captured
-            windows = itertoolz.sliding_window(self.window_size + 1, tokens)  # + 1 because window consists of t2s only
+        tokens += [self.pad] * self.window_size  # add padding such that all co-occurrences in last window are captured
+        windows = itertoolz.sliding_window(self.window_size + 1, tokens)  # + 1 because window consists of t2s only
 
-            for w in windows:
+        for w in windows:
 
-                for t1, t2, dist in zip([w[0]] * self.window_size, w[1:], range(self.window_size)):
-                    if t1 in self.w2id and t2 in self.w2id:
+            for t1, t2, dist in zip([w[0]] * self.window_size, w[1:], range(self.window_size)):
+                if t1 in self.w2id and t2 in self.w2id:
 
-                        t1_id = self.w2id[t1]
-                        t2_id = self.w2id[t2]
-                        rows.append(t1_id)
-                        cols.append(t2_id)
-                        # increment
-                        if t1_id == self.pad or t2_id == self.pad:
-                            continue
-                        if self.window_weight == "linear":
-                            data.append(self.window_size - dist)
-                        elif self.window_weight == "flat":
-                            data.append(1)
+                    t1_id = self.w2id[t1]
+                    t2_id = self.w2id[t2]
+                    rows.append(t1_id)
+                    cols.append(t2_id)
+                    # increment
+                    if t1_id == self.pad or t2_id == self.pad:
+                        continue
+                    if self.window_weight == "linear":
+                        data.append(self.window_size - dist)
+                    elif self.window_weight == "flat":
+                        data.append(1)
 
-            self.cooc_matrix = sparse.coo_matrix((np.array(data), (np.array(rows), np.array(cols))), dtype=np.int64)
+        self.cooc_matrix = sparse.coo_matrix((np.array(data), (np.array(rows), np.array(cols))), dtype=np.int64)
 
-            # window_type
-            if self.window_type == 'forward':
-                self.cooc_matrix = self.cooc_matrix
-            elif self.window_type == 'backward':
-                self.cooc_matrix = self.cooc_matrix.transpose()
-            elif self.window_type == 'summed':
-                self.cooc_matrix = self.cooc_matrix + self.cooc_matrix.transpose()
-            elif self.window_type == 'concatenated':
-                self.cooc_matrix = np.concatenate((self.cooc_matrix, self.cooc_matrix.transpose()), axis=1)
-            else:
-                raise AttributeError('Invalid arg to "window_type".')
-            print('Shape of normalized matrix={}'.format(self.cooc_matrix.shape))
+        # window_type
+        if self.window_type == 'forward':
+            self.cooc_matrix = self.cooc_matrix
+        elif self.window_type == 'backward':
+            self.cooc_matrix = self.cooc_matrix.transpose()
+        elif self.window_type == 'summed':
+            self.cooc_matrix = self.cooc_matrix + self.cooc_matrix.transpose()
+        elif self.window_type == 'concatenated':
+            self.cooc_matrix = np.concatenate((self.cooc_matrix, self.cooc_matrix.transpose()), axis=1)
+        else:
+            raise AttributeError('Invalid arg to "window_type".')
+        print('Shape of normalized matrix={}'.format(self.cooc_matrix.shape))
 
 
 
