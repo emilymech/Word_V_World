@@ -1,4 +1,4 @@
-from word_v_world.calc_word_counts import make_master_dict
+from word_v_world.word_count import make_master_dict
 
 from word_v_world import config
 
