@@ -1,11 +1,6 @@
 matplotlib
-https://github.com/phueb/Ludwig/archive/v1.3.1.tar.gz
+https://github.com/phueb/Ludwig/archive/v1.3.3.tar.gz
 pandas
-psutil
 numpy
-pysftp
-PyYAML
-watchdog==0.9.0
 spacy
-pyprind
 cytoolz
