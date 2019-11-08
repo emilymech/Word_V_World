@@ -7,12 +7,13 @@ from ludwig.client import Client
 from word_v_world import config
 from word_v_world.params import param2requests, param2default
 
+# TODO - save combined_dict to different folder within data for each config
 
 # specify which parameter configuration for which to retrieve results
 update_dict = {
     'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
     'num_machines': [6],
-    'vocab_name': ['100000_vocab_20191108-14:54:35']
+    'vocab_name': ['100000_vocab_20191108_15-17-19']
 }
 param2requests.update(update_dict)
 

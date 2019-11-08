@@ -2,7 +2,7 @@
 param2requests = {'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
                   'num_machines': [6],
                   'window_size': [7],
-                  'vocab_name': ['100000_vocab_20191108-14:54:35']
+                  'vocab_name': ['100000_vocab_20191108_15-17-19']
                   }
 
 

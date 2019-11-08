@@ -21,7 +21,7 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
 
     # step 0
     print('Making vocab...')
-    vocab_path = project_path / 'data' / '100000_vocab_20191108-14:54:35.txt'
+    vocab_path = project_path / 'data' / '100000_vocab_20191108_15-57-19.txt'
     if not vocab_path.exists():
         raise FileNotFoundError('{} not found on server'.format(vocab_path))
     vocab = set(vocab_path.read_text().split('\n'))
