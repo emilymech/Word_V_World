@@ -23,7 +23,7 @@ for param_path, label in client.gen_param_ps(param2requests, verbose=False):
     print(param_path)
 
     # get partial co-occurrence counts
-    pkl_paths = list(param_path.glob('**/ww2cf.pkl'))
+    pkl_paths = list(param_path.glob('**/ww2cf.pkl'))  # TODO talk to me if this no longer works for new jobs
     if len(pkl_paths) == 0:
         raise FileNotFoundError(f'Did not find ww2cf.pkl in {param_path}')
     pkl_path = pkl_paths[0]
