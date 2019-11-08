@@ -17,11 +17,6 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     for k, v in param2val.items():
         print(k, v)
 
-    if config.Global.debug:
-        config.RemoteDirs.root = Path('/Volumes') / 'research_data' / 'Word_V_World'
-        config.RemoteDirs.runs = Path('/Volumes') / 'research_data' / 'Word_V_World' / 'runs'
-        config.RemoteDirs.research_data = Path('/Volumes') / 'research_data'
-
     # step 0
     print('Making vocab...')
     vocab_path = config.RemoteDirs.root / 'data' / 'vocab.txt'
@@ -29,10 +24,6 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
         raise FileNotFoundError('{} not found on server'.format(vocab_path))
     vocab = vocab_path.read_text().split('\n')
     assert len(vocab) > 10
-
-    if config.Global.debug:
-        print("WARNING: DEBUGGING=True. Reducing vocab size")
-        vocab = ['the', '.', 'on', 'at', 'to']
 
     print('Loaded {} words from vocab'.format(len(vocab)))
 
