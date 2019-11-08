@@ -16,7 +16,7 @@ def main():
 
     # create unique vocab identifier
     vocab_name = "_vocab_"
-    event_id = str(vocab_size) + vocab_name + datetime.now().strftime('%Y%m%d-%H:%M:%S')
+    event_id = str(vocab_size) + vocab_name + datetime.now().strftime('%Y%m%d_%H-%M-%S')
 
     # save to file
     with (config.LocalDirs.root / 'data' / '{}.txt'.format(event_id)).open('w') as f:
