@@ -1,8 +1,10 @@
 from word_v_world.word_count import make_master_dict
+from datetime import datetime
 
 from word_v_world import config
 
-# TODO - need to generate a smaller vocab, make it save with a unique name
+vocab_size = 100000
+
 
 def main():
     wiki_param_name = ['param_{}'.format(22 + i) for i in range(num_ludwig_workers)]
@@ -12,9 +14,15 @@ def main():
     # sort
     vocab = sorted(w2f.keys(), key=lambda w: w2f[w], reverse=True)
 
+    # create unique vocab identifier
+    vocab_name = "_vocab_"
+    event_id = str(vocab_size) + vocab_name + datetime.now().strftime('%Y%m%d-%H:%M:%S')
+
     # save to file
-    with (config.LocalDirs.root / 'data' / 'vocab.txt').open('w') as f:
-        for w in vocab:
+    with (config.LocalDirs.root / 'data' / '{}.txt'.format(event_id)).open('w') as f:
+        for n, w in enumerate(vocab):
+            if n == vocab_size:
+                break
             f.write(w + '\n')
 
 
