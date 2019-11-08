@@ -42,6 +42,23 @@ If, `research_data` is not mounted at `media/research_data` (e.g. on MacOs, the 
 ludwig -mnt /Volumes/research_data -e data
 ```
 
-In order to successfully execute the above code, a user must have a local copy of [CreateWikiCorpus](https://github.com/UIUCLearningLanguageLab/CreateWikiCorpus), and must point `config.LocalDirs.wiki` to its location.
-This is required in order to obtain a a full list of the default parameter configuration used to generate Wikipedia corpora.
-This allows the `param2requests` object to be incomplete; the remaining parameters (`keep_tables`, `expand_templates`, etc.) will be set to their default.
+To run jobs locally, rather than on `Ludwig` workers:
+
+```bash
+ludwig-local --server
+```
+
+The `--server` flag is needed to tell `Ludwig` that it must access the file server to obtain corpus files.
+
+Running locally is especially useful for debugging. 
+To run a minimal configuration, using a small number of articles and a reduced vocabulary:
+
+```bash
+ludwig-local --server -d
+```
+
+You may also want to stop after the first job has completed:
+
+```bash
+ludwig-local --server -d --first_only
+```
