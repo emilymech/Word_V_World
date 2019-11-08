@@ -13,13 +13,16 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     window_size = param2val['window_size']
     window_weight = param2val['window_weight']
     window_type = param2val['window_type']
+    # added by Ludwig
+    project_path = Path(param2val['project_path'])
+    save_path = Path(param2val['save_path'])  # all data that is saved must be saved here
 
     for k, v in param2val.items():
         print(k, v)
 
     # step 0
     print('Making vocab...')
-    vocab_path = config.RemoteDirs.root / 'data' / 'vocab.txt'
+    vocab_path = project_path / 'data' / 'vocab.txt'
     if not vocab_path.exists():
         raise FileNotFoundError('{} not found on server'.format(vocab_path))
     vocab = vocab_path.read_text().split('\n')
@@ -29,7 +32,7 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
 
     # step 1
     print('Tokenizing...', flush=True)
-    param_path = config.RemoteDirs.research_data / 'CreateWikiCorpus' / 'runs' / cwc_param_name
+    param_path = project_path.parent / 'CreateWikiCorpus' / 'runs' / cwc_param_name
     path_to_articles = list(param_path.glob('**/bodies.txt'))
     if len(path_to_articles) == 0:
         raise SystemExit('Did not find bodies.txt in {}'.format(param_path))
@@ -59,8 +62,8 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
         ww2cf[ww] = cf
         print(ww, cf)
 
-    # step 3 - save the dictionary containing co-occurrence frequencies
-    ww2cf_path = config.RemoteDirs.runs / param2val['param_name'] / param2val['job_name'] / 'ww2cf.pkl'
+    # step 3 - save the dictionary containing co-occurrence frequencies to Ludwig-supplied save_path
+    ww2cf_path = save_path / 'ww2cf.pkl'
     if not ww2cf_path.parent.exists():
         ww2cf_path.parent.mkdir(parents=True)
     pickle.dump(ww2cf, ww2cf_path.open('wb'))
