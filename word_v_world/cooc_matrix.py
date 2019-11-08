@@ -2,7 +2,6 @@ import numpy as np
 from scipy import sparse
 
 from cytoolz import itertoolz
-from word_v_world import config
 
 
 class CoocMatrix:
@@ -32,13 +31,6 @@ class CoocMatrix:
             self.num_words += 1
 
         assert self.num_words > 0
-
-    def update_from_file(self, param_name):
-        with open(config.RemoteDirs.runs / param_name) as f:
-            for line in f:
-                tokens = line.strip('\n').split()  # convert string containing words into lsit of words
-                # print(tokens)
-                self.add_to_ww_matrix_fast(tokens)
 
     def update_from_list(self, tokens):
         self.add_to_ww_matrix_fast(tokens)
