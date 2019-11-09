@@ -51,14 +51,8 @@ ludwig --local
 Notice, however, that access to the server is still required for fetching corpus data.
 
 Running locally is especially useful for debugging. 
-To run a minimal configuration, using a small number of articles and a reduced vocabulary:
+To run a single minimal configuration, using a small number of articles and a reduced vocabulary:
 
 ```bash
 ludwig --local --minimal
-```
-
-You may also want to stop after the first job has completed:
-
-```bash
-ludwig --local --minimal --first_only
 ```

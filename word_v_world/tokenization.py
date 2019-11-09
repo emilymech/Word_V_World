@@ -34,6 +34,6 @@ def gen_tokenized_articles(bodies_path: Path,
     n = 0
     for doc in custom_nlp.pipe(generate_articles(bodies_path)):
         tokens = [t.text.lower() for t in doc]
-        print(f'{n:>12,} / {num_docs:,}') if n % 100 == 0 else None
+        print(f'{n:>12,} / {num_docs:,}', flush=True) if n % 100 == 0 else None
         n += 1
         yield tokens
