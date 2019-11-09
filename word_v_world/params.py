@@ -9,7 +9,7 @@ param2requests = {'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_
 param2default = {
     'cwc_param_name': 'param_22',
     'num_machines': 1,
-    'window_size': 1,
+    'window_size': 7,
     'window_weight': 'flat',
     'window_type': 'forward',
     'vocab_name': 'vocab'
@@ -18,7 +18,7 @@ param2default = {
 param2debug = {
     'cwc_param_name': 'param_0',
     'num_machines': 1,
-    'window_size': 1,
+    'window_size': 2,
     'window_weight': 'flat',
     'window_type': 'forward',
     'vocab_name': 'debug'

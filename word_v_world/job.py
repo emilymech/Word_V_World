@@ -1,10 +1,10 @@
 import pickle
 from pathlib import Path
 from scipy import sparse
+from sortedcontainers import SortedSet
 
-from word_v_world import config
-from word_v_world.cooc_matrix import CoocMatrix
-from word_v_world.tokenization import tokenize
+from word_v_world.cooc_matrix import make_sparse_ww_matrix
+from word_v_world.tokenization import gen_tokenized_articles
 
 
 def main(param2val):  # param2val appears auto-magically via Ludwig
@@ -25,11 +25,9 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     vocab_path = project_path / 'data' / '{}.txt'.format(vocab_name)
     if not vocab_path.exists():
         raise FileNotFoundError('{} not found on server'.format(vocab_path))
-    vocab = set(vocab_path.read_text().split('\n'))
-    assert len(vocab) > 10
-
-    if config.Global.debug:
-        vocab = {'the', 'on', 'you', 'i'}
+    vocab = SortedSet(vocab_path.read_text().split('\n'))
+    vocab.discard('')  # not sure why empty string is in vocab - but it is
+    assert len(vocab) > 0
 
     print('Loaded {} words from vocab'.format(len(vocab)))
 
@@ -39,31 +37,39 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     path_to_articles = list(param_path.glob('**/bodies.txt'))
     if len(path_to_articles) == 0:
         raise SystemExit('Did not find bodies.txt in {}'.format(param_path))
-
-    all_tokens = tokenize(path_to_articles)
+    tokenized_docs = gen_tokenized_articles(path_to_articles)
 
     # step 2
     print('Making co-occurrence matrix', flush=True)
-    the_cooc_matrix = CoocMatrix(window_size=window_size,
-                                 window_weight=window_weight,
-                                 window_type=window_type,
-                                 vocab=vocab)
-    the_cooc_matrix.update_from_list(all_tokens)
+    w2id = {w: n for n, w in enumerate(vocab)}  # python 3 integers have dynamic size
+    id2w = {n: w for n, w in enumerate(vocab)}
+    # noinspection PyTypeChecker
+    cooc_matrix = make_sparse_ww_matrix(tokenized_docs,
+                                        w2id,
+                                        window_size=window_size,
+                                        window_type=window_type,
+                                        window_weight=window_weight,
+                                        )
     print('Done updating')
-    if config.Global.debug:
-        print(the_cooc_matrix.cooc_matrix.toarray())
-        print(the_cooc_matrix.cooc_matrix.shape)
 
-    ids2cf = sparse.dok_matrix(the_cooc_matrix.cooc_matrix).todok()
+    verbose = True if cooc_matrix.size < 1000 else False
+    ids2cf = sparse.dok_matrix(cooc_matrix).todok()
     ww2cf = {}
     print('Converting sparse matrix to dictionary...', flush=True)
     for ids, cf in ids2cf.items():
         i1, i2 = ids
-        word1 = the_cooc_matrix.id2w[i1]
-        word2 = the_cooc_matrix.id2w[i2]
+        word1 = id2w[i1]
+        word2 = id2w[i2]
         ww = (word1, word2)
         ww2cf[ww] = cf
-        print(ww, cf)
+        if verbose:
+            print(ww, cf)
+
+    # check
+    if verbose:
+        print(w2id)
+        print(cooc_matrix.toarray())
+        print(cooc_matrix.shape)
 
     # step 3 - save the dictionary containing co-occurrence frequencies to Ludwig-supplied save_path
     ww2cf_path = save_path / 'ww2cf.pkl'

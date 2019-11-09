@@ -1,3 +1,4 @@
+sortedcontainers
 matplotlib
 https://github.com/phueb/Ludwig/archive/v2.0.0.tar.gz
 pandas
@@ -5,3 +6,4 @@ numpy
 spacy
 cytoolz
 scipy
+pytest
