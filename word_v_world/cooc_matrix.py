@@ -33,8 +33,6 @@ def make_sparse_ww_matrix(docs: Generator[List[str], None, None],
                                     range(window_size)):
                 if w1 in w2id and w2 in w2id:
 
-                    print(w1, w2)
-
                     w1_id = w2id[w1]
                     w2_id = w2id[w2]
                     rows.append(w1_id)
