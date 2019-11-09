@@ -12,6 +12,7 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     window_size = param2val['window_size']
     window_weight = param2val['window_weight']
     window_type = param2val['window_type']
+    vocab_name = param2val['vocab']
     # added by Ludwig
     project_path = Path(param2val['project_path'])
     save_path = Path(param2val['save_path'])  # all data that is saved must be saved here
@@ -21,7 +22,7 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
 
     # step 0
     print('Making vocab...')
-    vocab_path = project_path / 'data' / '100000_vocab_20191108_15-57-19.txt'
+    vocab_path = project_path / 'data' / '{}.txt'.format(vocab_name)
     if not vocab_path.exists():
         raise FileNotFoundError('{} not found on server'.format(vocab_path))
     vocab = set(vocab_path.read_text().split('\n'))
