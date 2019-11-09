@@ -4,9 +4,10 @@ def get_text_file_path(param_path, pattern):
     """
     return path to bodies.txt or titles.txt depending on "pattern"
     """
-    bodies_paths = list(param_path.glob(f'**/{pattern}.txt'))
+    glob_pattern = f'**/{pattern}.txt'
+    bodies_paths = list(param_path.glob(glob_pattern))
     if len(bodies_paths) == 0:
-        raise SystemExit('Did not find bodies.txt in {}'.format(param_path))
+        raise SystemExit(f'Did not find {pattern}.txt in {param_path}')
     elif len(bodies_paths) > 1:
         raise SystemExit('Found more than one path to articles')
     else:
