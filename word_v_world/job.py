@@ -12,7 +12,7 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     window_size = param2val['window_size']
     window_weight = param2val['window_weight']
     window_type = param2val['window_type']
-    vocab_name = param2val['vocab']
+    vocab_name = param2val['vocab_name']
     # added by Ludwig
     project_path = Path(param2val['project_path'])
     save_path = Path(param2val['save_path'])  # all data that is saved must be saved here
