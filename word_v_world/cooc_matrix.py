@@ -1,6 +1,6 @@
 import numpy as np
 from scipy import sparse
-from typing import Generator, Set, List, Dict, Any
+from typing import Generator, Set, List, Dict, Optional
 from cytoolz import itertoolz
 from itertools import chain
 
@@ -19,6 +19,7 @@ def make_sparse_ww_matrix(docs: Generator[List[str], None, None],
     rows = []
     cols = []
     data = []
+
 
     for tokens in docs:
 

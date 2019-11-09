@@ -8,7 +8,7 @@ python -m spacy download en_core_web_sm
 import re
 import spacy
 from pathlib import Path
-from typing import Generator, List
+from typing import Generator, List, Optional
 
 from word_v_world.articles import generate_articles
 from spacy.tokenizer import Tokenizer
@@ -16,8 +16,8 @@ from spacy.tokenizer import Tokenizer
 custom_nlp = spacy.load("en_core_web_sm", disable=['tagger', 'ner'])
 
 
-def gen_tokenized_articles(paths_to_articles: List[Path],
-                           num_articles: int = None,
+def gen_tokenized_articles(bodies_path: Path,
+                           num_docs: Optional[int] = None,
                            ) -> Generator[List[str], None, None]:
 
     hyphen_contraction_re = re.compile(r"[A-Za-z]+(-|')[A-Za-z\.]+")
@@ -31,7 +31,9 @@ def gen_tokenized_articles(paths_to_articles: List[Path],
                                      token_match=hyphen_contraction_re.match)
 
     # loop over articles, tokenizing each with custom tokenizer
-    for article in generate_articles(paths_to_articles, num_articles=num_articles):
-        doc = custom_nlp(article)
+    n = 0
+    for doc in custom_nlp.pipe(generate_articles(bodies_path)):
         tokens = [t.text.lower() for t in doc]
+        print(f'{n:>12,} / {num_docs:,}') if n % 100 == 0 else None
+        n += 1
         yield tokens

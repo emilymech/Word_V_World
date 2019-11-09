@@ -5,6 +5,7 @@ from sortedcontainers import SortedSet
 
 from word_v_world.cooc_matrix import make_sparse_ww_matrix
 from word_v_world.tokenization import gen_tokenized_articles
+from word_v_world.articles import get_text_file_path
 
 
 def main(param2val):  # param2val appears auto-magically via Ludwig
@@ -34,10 +35,11 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     # step 1
     print('Tokenizing...', flush=True)
     param_path = project_path.parent / 'CreateWikiCorpus' / 'runs' / cwc_param_name
-    path_to_articles = list(param_path.glob('**/bodies.txt'))
-    if len(path_to_articles) == 0:
-        raise SystemExit('Did not find bodies.txt in {}'.format(param_path))
-    tokenized_docs = gen_tokenized_articles(path_to_articles)
+    bodies_path = get_text_file_path(param_path, 'bodies')
+    titles_path = get_text_file_path(param_path, 'titles')
+    num_docs = len(titles_path.read_text().split('\n')) - 1  # "wc -l" says there is 1 less line
+    print(f'Number of articles in text file={num_docs}')
+    tokenized_docs = gen_tokenized_articles(bodies_path, num_docs)
 
     # step 2
     print('Making co-occurrence matrix', flush=True)
