@@ -21,7 +21,7 @@ param2debug = {
     'window_size': 1,
     'window_weight': 'flat',
     'window_type': 'forward',
-    'vocab_name': 'vocab'
+    'vocab_name': 'debug'
 }
 
 

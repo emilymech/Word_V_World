@@ -45,20 +45,20 @@ ludwig -mnt /Volumes/research_data -e data
 To run jobs locally, rather than on `Ludwig` workers:
 
 ```bash
-ludwig-local --server
+ludwig --local
 ```
 
-The `--server` flag is needed to tell `Ludwig` that it must access the file server to obtain corpus files.
+Notice, however, that access to the server is still required for fetching corpus data.
 
 Running locally is especially useful for debugging. 
 To run a minimal configuration, using a small number of articles and a reduced vocabulary:
 
 ```bash
-ludwig-local --server -d
+ludwig --local --minimal
 ```
 
 You may also want to stop after the first job has completed:
 
 ```bash
-ludwig-local --server -d --first_only
+ludwig --local --minimal --first_only
 ```

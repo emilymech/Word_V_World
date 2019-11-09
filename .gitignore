@@ -4,5 +4,7 @@ venv
 text/*
 data/*
 output/*
-
 word_v_world/*.txt
+param_*
+param_*/*
+runs/*
