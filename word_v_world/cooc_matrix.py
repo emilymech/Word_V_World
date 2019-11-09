@@ -46,7 +46,7 @@ def make_sparse_ww_matrix(docs: Generator[List[str], None, None],
                     elif window_weight == "flat":
                         data.append(1)
 
-    matrix = sparse.coo_matrix((np.array(data), (np.array(rows), np.array(cols))), dtype=np.int64)
+    matrix = sparse.coo_matrix((data, (rows, cols)), dtype=np.int64)
 
     # window_type
     if window_type == 'forward':
