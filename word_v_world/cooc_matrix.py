@@ -3,6 +3,7 @@ from scipy import sparse
 from typing import Generator, Set, List, Dict, Optional
 from cytoolz import itertoolz
 from itertools import chain
+from itertools import islice
 
 
 def make_sparse_ww_matrix(docs: Generator[List[str], None, None],
@@ -10,6 +11,7 @@ def make_sparse_ww_matrix(docs: Generator[List[str], None, None],
                           window_size: int,
                           window_type: str,
                           window_weight: str,
+                          max_num_docs: Optional[int] = None,
                           pad='*PAD*',
                           ) -> sparse.coo_matrix:
 
@@ -20,9 +22,10 @@ def make_sparse_ww_matrix(docs: Generator[List[str], None, None],
     cols = []
     data = []
 
+    if max_num_docs is not None:
+        docs = islice(docs, max_num_docs)
 
     for tokens in docs:
-
         # pad tokens such that all co-occurrences in last window are captured
         padding = (pad for _ in range(window_size))
         tokens_padded = chain(tokens, padding)
@@ -46,7 +49,7 @@ def make_sparse_ww_matrix(docs: Generator[List[str], None, None],
                     elif window_weight == "flat":
                         data.append(1)
 
-    matrix = sparse.coo_matrix((data, (rows, cols)), dtype=np.int64)
+    matrix = sparse.coo_matrix((np.array(data, dtype=np.int32), (rows, cols)))
 
     # window_type
     if window_type == 'forward':

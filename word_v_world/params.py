@@ -2,7 +2,8 @@
 param2requests = {'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
                   'num_machines': [6],
                   'window_size': [7],
-                  'vocab_name': ['100000_vocab_20191108_15-17-19']
+                  'vocab_name': ['100000_vocab_20191108_15-17-19'],
+                  'article_coverage': [0.1],
                   }
 
 
@@ -12,7 +13,8 @@ param2default = {
     'window_size': 7,
     'window_weight': 'flat',
     'window_type': 'forward',
-    'vocab_name': 'vocab'
+    'vocab_name': 'vocab',
+    'article_coverage': 0.1,  # percent of articles used; 0.1 results in 1GB pickle file with window-size=7
 }
 
 param2debug = {
@@ -21,7 +23,9 @@ param2debug = {
     'window_size': 2,
     'window_weight': 'flat',
     'window_type': 'forward',
-    'vocab_name': 'debug'
+    'vocab_name': 'debug',
+    'article_coverage': 1.0,
+
 }
 
 

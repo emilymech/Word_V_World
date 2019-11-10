@@ -14,6 +14,7 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     window_weight = param2val['window_weight']
     window_type = param2val['window_type']
     vocab_name = param2val['vocab_name']
+    article_coverage = param2val['article_coverage']
     # added by Ludwig
     project_path = Path(param2val['project_path'])
     save_path = Path(param2val['save_path'])  # all data that is saved must be saved here
@@ -45,15 +46,14 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     print('Making co-occurrence matrix', flush=True)
     w2id = {w: n for n, w in enumerate(vocab)}  # python 3 integers have dynamic size
     id2w = {n: w for n, w in enumerate(vocab)}
-    # noinspection PyTypeChecker
+    max_num_docs = int(num_docs * article_coverage)
     cooc_matrix = make_sparse_ww_matrix(tokenized_docs,
                                         w2id,
+                                        max_num_docs=max_num_docs,
                                         window_size=window_size,
                                         window_type=window_type,
                                         window_weight=window_weight,
                                         )
-    print('Done updating')
-
     verbose = True if cooc_matrix.size < 1000 else False
     ids2cf = sparse.dok_matrix(cooc_matrix).todok()
     ww2cf = {}
@@ -64,9 +64,6 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
         word2 = id2w[i2]
         ww = (word1, word2)
         ww2cf[ww] = cf
-        if verbose:
-            print(ww, cf)
-
     # check
     if verbose:
         print(w2id)
@@ -74,6 +71,7 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
         print(cooc_matrix.shape)
 
     # step 3 - save the dictionary containing co-occurrence frequencies to Ludwig-supplied save_path
+    print('Saving dictionary to disk...')
     ww2cf_path = save_path / 'ww2cf.pkl'
     if not ww2cf_path.parent.exists():
         ww2cf_path.parent.mkdir(parents=True)
