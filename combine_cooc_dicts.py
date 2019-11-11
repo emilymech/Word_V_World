@@ -5,6 +5,7 @@ from pathlib import Path
 from ludwig.results import gen_param_paths
 
 from word_v_world import config
+from word_v_world.memory import set_memory_limit
 from word_v_world.params import param2requests, param2default
 
 # TODO - save combined_dict to different folder within data for each config
@@ -34,11 +35,18 @@ for param_path, label in gen_param_paths(project_name,
         print(f'Found {pkl_paths[0]}')
     paths_to_ww2cf.append(pkl_paths[0])
 
+set_memory_limit(prop=0.9)
+
 # accumulate co-occurrence counts (across multiple jobs)
 for path_to_ww2cf in paths_to_ww2cf:
-    ww2cf = pickle.load(path_to_ww2cf.open('rb'))
-    partial_ww2cf = Counter(ww2cf)
-    combined_ww2cf.update(partial_ww2cf)
+    print(f'Accumulating co-occurrence data from {path_to_ww2cf}')
+    try:
+        ww2cf = pickle.load(path_to_ww2cf.open('rb'))
+        partial_ww2cf = Counter(ww2cf)
+        combined_ww2cf.update(partial_ww2cf)
+    except MemoryError as e:
+        raise MemoryError('Reached memory limit')
+
     del partial_ww2cf
 
 # save combined ww2cf to pkl file
