@@ -1,12 +1,14 @@
 import pickle
-import shelve
+import sqlite3
 from pathlib import Path
 
 from ludwig.results import gen_param_paths
 
 from word_v_world import config
 from word_v_world.memory import set_memory_limit
-from word_v_world.params import param2requests, param2default
+from word_v_world.params import param2requests, param2default, param2debug
+
+MINIMAL = True
 
 # specify which parameter configuration for which to retrieve results
 update_dict = {
@@ -16,6 +18,9 @@ update_dict = {
     'article_coverage': [0.25]
 }
 param2requests.update(update_dict)
+
+if MINIMAL:
+    param2requests.update({k: [v] for k, v in param2debug.items()})
 
 # get paths from which to load co-occurrence data
 project_name = Path.cwd().name
@@ -34,8 +39,15 @@ for param_path, label in gen_param_paths(project_name,
 
 set_memory_limit(prop=0.9)
 
-# accumulate co-occurrence counts (across multiple jobs) in database
-s = shelve.open('test_shelf.db')
+# create database
+conn = sqlite3.connect('test.sqlite')
+c = conn.cursor()
+try:
+    c.execute('CREATE TABLE cfs (w1 text, w2 text, cf integer)')
+except sqlite3.OperationalError:   # table already exists
+    pass
+
+# populate database
 for path_to_ww2cf in paths_to_ww2cf:
     print(f'Accumulating co-occurrence data from {path_to_ww2cf}')
 
@@ -46,17 +58,22 @@ for path_to_ww2cf in paths_to_ww2cf:
         raise MemoryError('Reached memory limit')
     except KeyboardInterrupt:
         f.close()
-    else:
-        del partial_ww2cf
+        conn.close()
+        raise KeyboardInterrupt
 
-        # TODO add to database
-        for ww, cf in partial_ww2cf.items():
-            s[ww] = cf
-
-
+    # add to database
+    for ww, cf in partial_ww2cf.items():
+        values = (ww[0], ww[1], cf.item())  # cf is numpy int32
+        c.execute("INSERT INTO cfs VALUES (?, ?, ?)", values)
+    # remove no longer needed object
+    del partial_ww2cf
 
     break  # TODO test
 
-print(s[('the', 'on')])
+conn.commit()  # save changes
+conn.close()
 
 
+# TODO each duplicate key is given a separate entry - but cfs must be added
+
+# TODO ideally, this script should be run directly on server to prevent loading data over network
