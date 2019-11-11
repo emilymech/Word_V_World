@@ -9,6 +9,12 @@ class LocalDirs:
     if not data.exists():
         data.mkdir()
 
-    research_data = Path('/') / 'Volumes' / 'research_data'  # needed by ludwig Python API to retrieve results
     if 'LUDWIG_MNT' in os.environ:
-        research_data = os.environ["LUDWIG_MNT"]
+        mnt_path = Path(os.environ["LUDWIG_MNT"])
+    else:
+        mnt_path = Path('/') / 'Volumes'
+
+    print(f'Setting mount path to {mnt_path}')
+
+
+    research_data = mnt_path / 'research_data'  # needed by ludwig Python API to retrieve results

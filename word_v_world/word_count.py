@@ -3,12 +3,13 @@ from pathlib import Path
 from collections import Counter
 from typing import List, Dict
 
+from word_v_world import config
+
 
 # get the pickle for each param folder individually
 def gen_w2dfs(wiki_param_name: str,
               w2dfs_file_name: str):
-    research_data = Path('/Volumes') / 'research_data'
-    remote_root = research_data / 'CreateWikiCorpus'
+    remote_root = config.LocalDirs.research_data / 'CreateWikiCorpus'
     wiki_param_path = remote_root / 'runs' / wiki_param_name
     if not wiki_param_path.exists():
         raise FileNotFoundError('{} does not exist'.format(wiki_param_path))
