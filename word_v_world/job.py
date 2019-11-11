@@ -69,6 +69,7 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
         print(w2id)
         print(cooc_matrix.toarray())
         print(cooc_matrix.shape)
+        print(ww2cf)
 
     # step 3 - save the dictionary containing co-occurrence frequencies to Ludwig-supplied save_path
     print('Saving dictionary to disk...')
