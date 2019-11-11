@@ -8,7 +8,7 @@ from word_v_world import config
 from word_v_world.memory import set_memory_limit
 from word_v_world.params import param2requests, param2default, param2debug
 
-MINIMAL = True
+MINIMAL = False
 
 # specify which parameter configuration for which to retrieve results
 update_dict = {
@@ -40,7 +40,8 @@ for param_path, label in gen_param_paths(project_name,
 set_memory_limit(prop=0.9)
 
 # create database
-conn = sqlite3.connect('test.sqlite')
+db_name = 'test.sqlite'  # TODO use multiple databases?
+conn = sqlite3.connect(db_name)
 c = conn.cursor()
 try:
     c.execute('CREATE TABLE cfs (w1 text, w2 text, cf integer)')
@@ -49,7 +50,7 @@ except sqlite3.OperationalError:   # table already exists
 
 # populate database
 for path_to_ww2cf in paths_to_ww2cf:
-    print(f'Accumulating co-occurrence data from {path_to_ww2cf}')
+    print(f'Adding co-occurrence data from {path_to_ww2cf} to {db_name}')
 
     f = path_to_ww2cf.open('rb')
     try:

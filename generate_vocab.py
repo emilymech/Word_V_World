@@ -1,4 +1,4 @@
-from word_v_world.word_count import make_master_dict
+from word_v_world.word_count import make_master_w2f
 from datetime import datetime
 
 from word_v_world import config
@@ -7,9 +7,9 @@ vocab_size = 100000
 
 
 def main():
-    wiki_param_name = ['param_{}'.format(22 + i) for i in range(num_ludwig_workers)]
+    wiki_param_names = ['param_{}'.format(22 + i) for i in range(num_ludwig_workers)]
 
-    w2f = make_master_dict(wiki_param_name, file_name)
+    w2f = make_master_w2f(wiki_param_names, file_name, vocab_size)
 
     # sort
     vocab = sorted(w2f.keys(), key=lambda w: w2f[w], reverse=True)

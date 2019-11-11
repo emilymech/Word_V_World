@@ -1,9 +1,12 @@
 import pickle
 from pathlib import Path
+from collections import Counter
+from typing import List, Dict
 
 
 # get the pickle for each param folder individually
-def get_pickles(wiki_param_name, w2dfs_file_name):
+def gen_w2dfs(wiki_param_name: str,
+              w2dfs_file_name: str):
     research_data = Path('/Volumes') / 'research_data'
     remote_root = research_data / 'CreateWikiCorpus'
     wiki_param_path = remote_root / 'runs' / wiki_param_name
@@ -12,30 +15,25 @@ def get_pickles(wiki_param_name, w2dfs_file_name):
     full_path = wiki_param_path / w2dfs_file_name
     with full_path.open('rb') as file:
         w2dfs = pickle.load(file)
-    return w2dfs  # this is a list of dicts by article in params
+    for w2df in w2dfs:  # this is a list of dicts by article in params
+        yield w2df
 
 
-def make_dict_lowercase(dict):
-    dict_lower = {k.lower(): v for k, v in dict.items()}
-    return dict_lower
-
-
-# loop over each individual pickle and add unique keys to dictionaries/update values of non-unique keys
-def make_master_dict(wiki_param_name, file_name):
-    master_dict = {}
-    for param in wiki_param_name:
+def make_master_w2f(wiki_param_names: List[str],
+                    file_name: str,
+                    size: int,
+                    ) -> Dict[str, int]:
+    print('Making master_w2f')
+    res = Counter()
+    for param in wiki_param_names:
         print("Adding {}".format(param))
-        current_w2dfs = get_pickles(param, file_name)
-        for current_dict in current_w2dfs:
+        for w2df in gen_w2dfs(param, file_name):
 
-            lower_dict = make_dict_lowercase(current_dict)
-            for key in lower_dict:
-                if key in master_dict:
-                    master_dict[key] += lower_dict[key]
-                else:
-                    master_dict[key] = lower_dict[key]
-                # print("New size is {}".format(len(master_dict)))
-    return master_dict
+            # TODO exclude single letter words + numeric types ....
+
+            res.update(w2df)
+    print(f'Done. Length={len(res)}')
+    return dict(res.most_common(size))
 
 
 
