@@ -2,7 +2,7 @@ import pickle
 from collections import Counter
 from pathlib import Path
 
-from ludwig.client import Client
+from ludwig.results import gen_param_paths
 
 from word_v_world import config
 from word_v_world.params import param2requests, param2default
@@ -18,30 +18,31 @@ update_dict = {
 }
 param2requests.update(update_dict)
 
+# get paths from which to load co-occurrence data
 combined_ww2cf = Counter()
 project_name = Path.cwd().name
-client = Client(project_name, param2default)
-for param_path, label in client.gen_param_ps(param2requests, verbose=False):
-
-    print(param_path)
-
-    # get partial co-occurrence counts
-    pkl_paths = list(param_path.glob('**/ww2cf.pkl'))  # TODO talk to me if this no longer works for new jobs
+paths_to_ww2cf = []
+for param_path, label in gen_param_paths(project_name,
+                                         param2requests,
+                                         param2default,
+                                         research_data_path=config.LocalDirs.research_data,
+                                         verbose=True):
+    pkl_paths = list(param_path.glob('**/saves/ww2cf.pkl'))
     if len(pkl_paths) == 0:
         raise FileNotFoundError(f'Did not find ww2cf.pkl in {param_path}')
-    pkl_path = pkl_paths[0]
-    ww2cf = pickle.load(pkl_path.open('rb'))
+    else:
+        print(f'Found {pkl_paths[0]}')
+    paths_to_ww2cf.append(pkl_paths[0])
 
-    # accumulate co-occurrence counts (across multiple jobs)
+# accumulate co-occurrence counts (across multiple jobs)
+for path_to_ww2cf in paths_to_ww2cf:
+    ww2cf = pickle.load(path_to_ww2cf.open('rb'))
     partial_ww2cf = Counter(ww2cf)
     combined_ww2cf.update(partial_ww2cf)
-    # print(combined_ww2cf)
-
-    # to save memory, delete current iteration partial memory
     del partial_ww2cf
 
 # save combined ww2cf to pkl file
-combined_ww2cf_path = config.LocalDirs.root / 'data' / 'combined_ww2cf.pkl'
+combined_ww2cf_path = config.LocalDirs.data / 'combined_ww2cf.pkl'
 pickle.dump(combined_ww2cf, open(combined_ww2cf_path, 'wb'))
 
 
