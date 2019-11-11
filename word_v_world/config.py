@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 
 
-class LocalDirs:
+class Dirs:
     root = Path(__file__).parent.parent
     data = root / 'data'
 

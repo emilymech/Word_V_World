@@ -28,7 +28,7 @@ paths_to_ww2cf = []
 for param_path, label in gen_param_paths(project_name,
                                          param2requests,
                                          param2default,
-                                         research_data_path=config.LocalDirs.research_data,
+                                         research_data_path=config.Dirs.research_data,
                                          verbose=False):
     pkl_paths = list(param_path.glob('**/saves/ww2cf.pkl'))
     if len(pkl_paths) == 0:

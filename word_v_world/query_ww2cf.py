@@ -12,7 +12,7 @@ from data.pairs import act_pairs, adj_pairs, ass_pairs, curious_pairs, part_pair
 def query_by_key(wiki_dictionary):
     query_type = "adj_co"
     event_id = str(query_type) + datetime.now().strftime('%Y%m%d-%H:%M:%S')
-    with (config.LocalDirs.root / 'output' / '{}.txt'.format(event_id)).open('w') as f:
+    with (config.Dirs.root / 'output' / '{}.txt'.format(event_id)).open('w') as f:
         for pair in adj_pairs.adj_co_query:
             print(pair, wiki_dictionary.get(pair, None))
         f.write(str((pair, wiki_dictionary.get(pair, None))) + '\n')
