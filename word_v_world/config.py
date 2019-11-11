@@ -18,3 +18,7 @@ class Dirs:
 
 
     research_data = mnt_path / 'research_data'  # needed by ludwig Python API to retrieve results
+
+    # TODO remove
+    if not research_data.exists():
+        research_data = Path(mnt_path) / 'alternate_research_data'
