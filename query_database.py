@@ -43,6 +43,12 @@ def main():
         num_entries += 1
     print(f'mean co-occurrence frequency={cf_sum / num_entries:.2f}')
 
+    # example 4: get co-occurrence frequency for a specific pair
+    words = ('zebra', 'giraffe')
+    command = 'select * from cfs where w1 = (?) and w2 = (?)'
+    cfs = [row[2] for row in c.execute(command, words).fetchall()]
+    print(f'Word-pair={words} co-occur {sum(cfs)} times')
+
 
 if __name__ == '__main__':
     main()
