@@ -5,7 +5,6 @@ from pathlib import Path
 from ludwig.results import gen_param_paths
 
 from word_v_world import config
-from word_v_world.memory import set_memory_limit
 from word_v_world.params import param2requests, param2default, param2debug
 
 MINIMAL = False
@@ -37,8 +36,6 @@ for param_path, label in gen_param_paths(project_name,
     else:
         print(f'Found {pkl_paths[0]}')
     paths_to_ww2cf.append(pkl_paths[0])
-
-set_memory_limit(prop=0.9)
 
 # create database
 db_name = 'test.sqlite'  # TODO use multiple databases?

@@ -1,11 +1,18 @@
 import resource
+import sys
 
 
 def set_memory_limit(prop: float = 0.5):
+
     """
     :param prop: proportion of free memory that is allowed to be used
     :return: None
     """
+
+    # only works on linux
+    if sys.platform != 'linux':
+        return
+
     soft, hard = resource.getrlimit(resource.RLIMIT_AS)  # maximum area (in bytes) of address space
     limit = get_memory() * 1000 * prop
     print(f'WARNING: Limiting memory to {limit / 1000}kB')
