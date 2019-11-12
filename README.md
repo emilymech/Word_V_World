@@ -1,7 +1,7 @@
 # Word vs. World
 
 
-This repository contains research code for extracting co-occurrence statistics from Wikipedia articles.
+This repository contains code for extracting co-occurrence statistics from Wikipedia articles.
 These co-occurrences will later be utilized as experimental stimuli to understand how regularities in language interact with our knowledge about regularities in the world.
 
 ## Background
