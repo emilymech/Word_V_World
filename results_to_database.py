@@ -8,14 +8,15 @@ from word_v_world import config
 from word_v_world.params import param2requests, param2default, param2debug
 
 MINIMAL = False
-VERBOSE= True
+VERBOSE = True
 
 # specify which parameter configuration for which to retrieve results
 update_dict = {
     'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
     'num_machines': [6],
-    'vocab_name': ['mcrae_vocab_concepts'],
-    'article_coverage': [0.01]
+    'vocab_name': ['mcrae_concepts_features_20191112_16-46'],
+    'article_coverage': [1.0],
+    'window_size': [4]
 }
 param2requests.update(update_dict)
 
