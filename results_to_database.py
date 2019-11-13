@@ -16,6 +16,7 @@ update_dict = {
     'num_machines': [6],
     'vocab_name': ['mcrae_concepts_features_20191112_16-46'],
     'article_coverage': [1.0],
+    'window_type': ['backward'],
     'window_size': [4]
 }
 param2requests.update(update_dict)
