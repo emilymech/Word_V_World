@@ -1,6 +1,8 @@
 import sqlite3
 from datetime import datetime
 
+from data.pairs import act_pairs, adj_pairs, ass_pairs, curious_pairs, part_pairs
+
 """
 WARNING:
 A database is not like a dictionary.
@@ -45,16 +47,17 @@ def main():
     print(f'mean co-occurrence frequency={cf_sum / num_entries:.2f}')
 
     # example 4: get co-occurrence frequency for a specific pair
-    words = ('paper', 'airplane')
-    command = 'select * from cfs where w1 = (?) and w2 = (?)'
-    cfs = [row[2] for row in c.execute(command, words).fetchall()]
-    pair_cooc = str(f'{words}, {sum(cfs)}')
-    print(f'Word-pair={words} co-occur {sum(cfs)} times')
 
-    # save the co-occurrence values
-    filename = 'query_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    command = 'select * from cfs where w1 = (?) and w2 = (?)'
+    filename = 'adj_fe_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
     with open('/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/output/{}.txt'.format(filename), 'w') as f:
-        f.write(pair_cooc)
+        for word_pair in adj_pairs.adj_fe_query:
+            cfs = [row[2] for row in c.execute(command, word_pair).fetchall()]
+            pair_cooc = str(f'{word_pair}, {sum(cfs)}')
+            print(f'Word-pair={word_pair} co-occur {sum(cfs)} times')
+
+            # write the co-occurrence values to text file
+            f.write(pair_cooc + '\n')
 
 
 if __name__ == '__main__':
