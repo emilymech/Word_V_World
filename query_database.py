@@ -2,6 +2,8 @@ import sqlite3
 from datetime import datetime
 
 from data.pairs import act_pairs, adj_pairs, ass_pairs, curious_pairs, part_pairs
+from word_v_world import config
+
 
 """
 WARNING:
@@ -25,7 +27,7 @@ def main():
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
 
-    # example 1: get all entries where word 1 = 'zebra'
+    # example 1: get all entries where word 1 = 'airplane'
     word_1 = ('airplane',)
     command = 'select * from cfs where w1 = (?)'
     for row in c.execute(command, word_1).fetchall():
@@ -49,9 +51,9 @@ def main():
     # example 4: get co-occurrence frequency for a specific pair
 
     command = 'select * from cfs where w1 = (?) and w2 = (?)'
-    filename = 'adj_fe_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
-    with open('/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/output/{}.txt'.format(filename), 'w') as f:
-        for word_pair in adj_pairs.adj_fe_query:
+    filename = 'curious_is_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    with (config.Dirs.root / 'output' / '{}.txt'.format(filename)).open('w') as f:
+        for word_pair in curious_pairs.curious_is_query:
             cfs = [row[2] for row in c.execute(command, word_pair).fetchall()]
             pair_cooc = str(f'{word_pair}, {sum(cfs)}')
             print(f'Word-pair={word_pair} co-occur {sum(cfs)} times')
@@ -59,6 +61,7 @@ def main():
             # write the co-occurrence values to text file
             f.write(pair_cooc + '\n')
 
+    # example 5: get PMI
 
 if __name__ == '__main__':
     main()
