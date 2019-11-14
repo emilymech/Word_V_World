@@ -27,39 +27,39 @@ def main():
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
 
-    # example 1: get all entries where word 1 = 'airplane'
-    word_1 = ('airplane',)
-    command = 'select * from cfs where w1 = (?)'
-    for row in c.execute(command, word_1).fetchall():
-        print(row)
-
-    # example 2: get all entries where co-occurrence f = 2
-    cf = (2,)
-    command = 'select * from cfs where cf = (?)'
-    for row in c.execute(command, cf).fetchall():
-        print(row)
-
-    # example 3: get mean co-occurrence frequency
-    cf_sum = 0
-    num_entries = 0
-    command = 'select cf from cfs'
-    for row in c.execute(command).fetchall():
-        cf_sum += row[0]
-        num_entries += 1
-    print(f'mean co-occurrence frequency={cf_sum / num_entries:.2f}')
-
-    # example 4: get co-occurrence frequency for a specific pair
-
-    command = 'select * from cfs where w1 = (?) and w2 = (?)'
-    filename = 'curious_is_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
-    with (config.Dirs.root / 'output' / '{}.txt'.format(filename)).open('w') as f:
-        for word_pair in curious_pairs.curious_is_query:
-            cfs = [row[2] for row in c.execute(command, word_pair).fetchall()]
-            pair_cooc = str(f'{word_pair}, {sum(cfs)}')
-            print(f'Word-pair={word_pair} co-occur {sum(cfs)} times')
-
-            # write the co-occurrence values to text file
-            f.write(pair_cooc + '\n')
+    # # example 1: get all entries where word 1 = 'airplane'
+    # word_1 = ('airplane',)
+    # command = 'select * from cfs where w1 = (?)'
+    # for row in c.execute(command, word_1).fetchall():
+    #     print(row)
+    #
+    # # example 2: get all entries where co-occurrence f = 2
+    # cf = (2,)
+    # command = 'select * from cfs where cf = (?)'
+    # for row in c.execute(command, cf).fetchall():
+    #     print(row)
+    #
+    # # example 3: get mean co-occurrence frequency
+    # cf_sum = 0
+    # num_entries = 0
+    # command = 'select cf from cfs'
+    # for row in c.execute(command).fetchall():
+    #     cf_sum += row[0]
+    #     num_entries += 1
+    # print(f'mean co-occurrence frequency={cf_sum / num_entries:.2f}')
+    #
+    # # example 4: get co-occurrence frequency for a specific pair
+    #
+    # command = 'select * from cfs where w1 = (?) and w2 = (?)'
+    # filename = 'curious_is_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    # with (config.Dirs.root / 'output' / '{}.txt'.format(filename)).open('w') as f:
+    #     for word_pair in curious_pairs.curious_is_query:
+    #         cfs = [row[2] for row in c.execute(command, word_pair).fetchall()]
+    #         pair_cooc = str(f'{word_pair}, {sum(cfs)}')
+    #         print(f'Word-pair={word_pair} co-occur {sum(cfs)} times')
+    #
+    #         # write the co-occurrence values to text file
+    #         f.write(pair_cooc + '\n')
 
     # example 5: get PMI
     # change pmi_form in calculate_pmi to save more specific filename
