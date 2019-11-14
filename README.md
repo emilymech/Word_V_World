@@ -4,6 +4,14 @@
 This repository contains code for extracting co-occurrence statistics from Wikipedia articles.
 These co-occurrences will later be utilized as experimental stimuli to understand how regularities in language interact with our knowledge about regularities in the world.
 
+## Order of Operations
+
+1. Generate vocab based on desired size and constraints.
+2. Update params.py with vocab_name to be utilized.
+3. Submit job to Ludwig.
+4. Retrieve results and save to database.
+5. Query database to find desired word pairs.
+
 ## Background
 
 The input text files are stored on the [UIUC Learning & Language Lab](http://learninglanguagelab.org/) file server.
@@ -56,3 +64,4 @@ To run a single minimal configuration, using a small number of articles and a re
 ```bash
 ludwig --local --minimal
 ```
+
