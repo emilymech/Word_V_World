@@ -3,7 +3,7 @@ from datetime import datetime
 
 from data.pairs import act_pairs, adj_pairs, ass_pairs, curious_pairs, part_pairs
 from word_v_world import config
-
+from word_v_world.calculate_pmi import pmi, combine_wf_cf_dicts, get_word_freq, get_pair_cf
 
 """
 WARNING:
@@ -62,6 +62,9 @@ def main():
             f.write(pair_cooc + '\n')
 
     # example 5: get PMI
+    # change pmi_form in calculate_pmi to save more specific filename
+    pmi(combine_wf_cf_dicts(get_word_freq(), get_pair_cf()), 4)
+
 
 if __name__ == '__main__':
     main()

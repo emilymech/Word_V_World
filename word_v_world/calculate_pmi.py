@@ -65,11 +65,4 @@ def pmi(wf_cf, window_size):
     return
 
 
-def main():
-    # get_word_freq()
-    # get_pair_cf()
-    # combine_wf_cf_dicts(get_word_freq(), get_pair_cf())
-    pmi(combine_wf_cf_dicts(get_word_freq(), get_pair_cf()), 4)
 
-
-main()

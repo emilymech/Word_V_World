@@ -21,30 +21,30 @@ def main():
 
     sorted_master_vocab = (w for w, f in master_w2f.most_common())  # returns all words, most frequent first
 
-#     # sort
-#     vocab = set()
-#     while len(vocab) < VOCAB_SIZE:
-#         w: str = next(sorted_master_vocab)
-#
-#         # filter words
-#         if w.isnumeric():
-#             continue
-#         if len(w) == 1:
-#             continue
-#
-#         vocab.add(w)
-#
-#     # create unique vocab identifier
-#     vocab_name = "_vocab_"
-#     event_id = str(VOCAB_SIZE) + vocab_name + datetime.now().strftime('%Y%m%d_%H-%M-%S')
-#
-#     # save to file
-#     with (config.Dirs.root / 'data' / '{}.txt'.format(event_id)).open('w') as f:
-#         for n, w in enumerate(vocab):
-#             f.write(w + '\n')
-#
-#     return sorted_master_vocab
-#
-#
+    # sort
+    vocab = set()
+    while len(vocab) < VOCAB_SIZE:
+        w: str = next(sorted_master_vocab)
+
+        # filter words
+        if w.isnumeric():
+            continue
+        if len(w) == 1:
+            continue
+
+        vocab.add(w)
+
+    # create unique vocab identifier
+    vocab_name = "_vocab_"
+    event_id = str(VOCAB_SIZE) + vocab_name + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+
+    # save to file
+    with (config.Dirs.root / 'data' / '{}.txt'.format(event_id)).open('w') as f:
+        for n, w in enumerate(vocab):
+            f.write(w + '\n')
+
+    return sorted_master_vocab
+
+
 if __name__ == '__main__':
     main()
