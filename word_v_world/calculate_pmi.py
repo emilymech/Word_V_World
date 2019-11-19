@@ -1,13 +1,14 @@
 import re
-import math
 import numpy as np
 from datetime import datetime
+import sqlite3
 
 from word_v_world import config
 
+total_words_in_wiki = 2112763117
 
 def get_word_freq():
-    with (config.Dirs.root / 'data' / 'wf_pairs_20191114_11-29-38.txt').open('r') as file:
+    with (config.Dirs.root / 'data' / 'wf_pairs_allwiki_20191118_15-54-35.txt').open('r') as file:
         before_comma = re.compile(r'[^,]+')
         after_comma = re.compile(r'(?<=\s).*')
         wf_dict = {}
@@ -19,7 +20,7 @@ def get_word_freq():
 
 
 def get_pair_cf():
-    with (config.Dirs.root / 'output' / 'curious_is_20191113_11-06-18.txt').open('r') as file:
+    with (config.Dirs.root / 'output' / 'curious_ass_20191118_10-40-56.txt').open('r') as file:
         inner_re = re.compile("\('([^']+)', '([^']+)'\)")
         cf_dict = {}
         for line in file:
@@ -52,20 +53,22 @@ def combine_wf_cf_dicts(wf_dict, cf_dict):
 
 def pmi(wf_cf, window_size):
     # pmi = math.log10(cf / (window_size * word_1 * word_2))
-    pmi_form = 'pmi_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    pmi_form = 'pmi_ass_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
     with (config.Dirs.root / 'output' / '{}.txt'.format(pmi_form)).open('w') as file:
         for k, v in wf_cf.items():
-
-            print("word1:", k[0], "word2:", k[1], "word 1 freq:", v[0][0],
+            print(k, v)
+            print("    ", "word1:", k[0], "word2:", k[1], "word 1 freq:", v[0][0],
                   'word 2 freq:', v[1][0], "pair cooc:", v[0][1])
 
-            if v[0][1] != 0:  # can't log 0
-                prob_word1 = v[0][0] / float(sum(v[0][0] for v in wf_cf.values() if v))
-                prob_word2 = v[1][0] / float(sum(v[1][0] for v in wf_cf.values() if v))
-                prob_word1_word2 = v[0][1] / float(sum(v[0][1] for v in wf_cf.values() if v))
-
-                pmi = math.log10(prob_word1_word2 / (window_size * prob_word1 * prob_word2))
-                wf_cf.setdefault(k, []).append((pmi))
+            if v[0][1] == 0:
+                pmi = 0
+            else:
+                prob_word1 = v[0][0] / total_words_in_wiki * window_size
+                prob_word2 = v[1][0] / total_words_in_wiki * window_size
+                prob_word1_word2 = v[0][1] / total_words_in_wiki * window_size
+                print("     ", prob_word1, prob_word2, prob_word1_word2)
+                pmi = np.log(prob_word1_word2 / (prob_word1 * prob_word2))
+            wf_cf[k].append(pmi)
 
         for k, v in wf_cf.items():
             file.write('{0}, {1}\n'.format(k, v))

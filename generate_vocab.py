@@ -3,7 +3,7 @@ from datetime import datetime
 
 from word_v_world import config
 
-VOCAB_SIZE = 1000
+VOCAB_SIZE = 10000000000  # using this to use all of wiki
 NUM_LUDWIG_WORKERS = 6
 W2DF_FILE_NAME = 'w2dfs_4800000_ALL.pkl'
 
@@ -14,7 +14,7 @@ def main():
     master_w2f = make_master_w2f(wiki_param_names, W2DF_FILE_NAME)
 
     # save word and frequency pair to file
-    wf_pairs = 'wf_pairs_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    wf_pairs = 'wf_pairs_allwiki_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
     with (config.Dirs.root / 'data' / '{}.txt'.format(wf_pairs)).open('w') as file:
         for w, f in master_w2f.items():
             file.write(str(w.lower()) + ', ' + str(f) + '\n')

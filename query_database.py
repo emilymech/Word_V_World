@@ -23,37 +23,37 @@ This must be considered when querying a single word-pair,
 def main():
 
     # open connection to database
-    db_name = 'test.sqlite'  # TODO use multiple databases?
+    db_name = 'summed_ws4_isfeatures.sqlite'  # TODO use multiple databases?
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
 
     # # example 1: get all entries where word 1 = 'airplane'
-    # word_1 = ('airplane',)
-    # command = 'select * from cfs where w1 = (?)'
-    # for row in c.execute(command, word_1).fetchall():
-    #     print(row)
-    #
-    # # example 2: get all entries where co-occurrence f = 2
-    # cf = (2,)
-    # command = 'select * from cfs where cf = (?)'
-    # for row in c.execute(command, cf).fetchall():
-    #     print(row)
-    #
+    word_1 = ('airplane',)
+    command = 'select * from cfs where w1 = (?)'
+    for row in c.execute(command, word_1).fetchall():
+        print(row)
+
+    # example 2: get all entries where co-occurrence f = 2
+    cf = (2,)
+    command = 'select * from cfs where cf = (?)'
+    for row in c.execute(command, cf).fetchall():
+        print(row)
+
     # # example 3: get mean co-occurrence frequency
-    # cf_sum = 0
-    # num_entries = 0
-    # command = 'select cf from cfs'
-    # for row in c.execute(command).fetchall():
-    #     cf_sum += row[0]
-    #     num_entries += 1
-    # print(f'mean co-occurrence frequency={cf_sum / num_entries:.2f}')
-    #
-    # # example 4: get co-occurrence frequency for a specific pair
+    cf_sum = 0
+    num_entries = 0
+    command = 'select cf from cfs'
+    for row in c.execute(command).fetchall():
+        cf_sum += row[0]
+        num_entries += 1
+    print(f'mean co-occurrence frequency={cf_sum / num_entries:.2f}')
+
+    # example 4: get co-occurrence frequency for a specific pair
     #
     # command = 'select * from cfs where w1 = (?) and w2 = (?)'
-    # filename = 'curious_is_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    # filename = 'curious_ass_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
     # with (config.Dirs.root / 'output' / '{}.txt'.format(filename)).open('w') as f:
-    #     for word_pair in curious_pairs.curious_is_query:
+    #     for word_pair in curious_pairs.curious_ass_query:
     #         cfs = [row[2] for row in c.execute(command, word_pair).fetchall()]
     #         pair_cooc = str(f'{word_pair}, {sum(cfs)}')
     #         print(f'Word-pair={word_pair} co-occur {sum(cfs)} times')
@@ -63,7 +63,7 @@ def main():
 
     # example 5: get PMI
     # change pmi_form in calculate_pmi to save more specific filename
-    pmi(combine_wf_cf_dicts(get_word_freq(), get_pair_cf()), 4)
+    # pmi(combine_wf_cf_dicts(get_word_freq(), get_pair_cf()), 4)
 
 
 if __name__ == '__main__':
