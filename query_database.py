@@ -1,9 +1,9 @@
 import sqlite3
 from datetime import datetime
 
-from data.pairs import act_pairs, adj_pairs, ass_pairs, curious_pairs, part_pairs
+from data.pairs import is_pairs
+from word_v_world.calculate_pmi import pmi, combine_wf_cf_dicts, get_pair_cf, get_word_freq
 from word_v_world import config
-from word_v_world.calculate_pmi import pmi, combine_wf_cf_dicts, get_word_freq, get_pair_cf, sum_cf
 
 """
 WARNING:
@@ -23,7 +23,7 @@ This must be considered when querying a single word-pair,
 def main():
 
     # open connection to database
-    db_name = 'summed_ws4_isfeatures.sqlite'  # TODO use multiple databases?
+    db_name = 'backward_ws4_isfeatures.sqlite'  # TODO use multiple databases?
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
 
@@ -49,11 +49,10 @@ def main():
     # print(f'mean co-occurrence frequency={cf_sum / num_entries:.2f}')
 
     # example 4: get co-occurrence frequency for a specific pair
-    #
     # command = 'select * from cfs where w1 = (?) and w2 = (?)'
-    # filename = 'curious_ass_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    # filename = 'is_pairs_backward_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
     # with (config.Dirs.root / 'output' / '{}.txt'.format(filename)).open('w') as f:
-    #     for word_pair in curious_pairs.curious_ass_query:
+    #     for word_pair in is_pairs.is_pairs_query:
     #         cfs = [row[2] for row in c.execute(command, word_pair).fetchall()]
     #         pair_cooc = str(f'{word_pair}, {sum(cfs)}')
     #         print(f'Word-pair={word_pair} co-occur {sum(cfs)} times')
@@ -63,7 +62,7 @@ def main():
 
     # example 5: get PMI
     # change pmi_form in calculate_pmi to save more specific filename
-    pmi(combine_wf_cf_dicts(get_word_freq(), sum_cf(get_pair_cf())), 4)
+    pmi(combine_wf_cf_dicts(get_word_freq(), get_pair_cf()), 4)
 
 
 if __name__ == '__main__':

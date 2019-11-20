@@ -14,9 +14,9 @@ VERBOSE = True
 update_dict = {
     'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
     'num_machines': [6],
-    'vocab_name': ['mcrae_concepts_is_features_20191118_15-43'],
+    'vocab_name': ['mcrae_concepts_is_features_20191120_08-07'],
     'article_coverage': [1.0],
-    'window_type': ['summed'],
+    'window_type': ['summed'],  # TODO - figure out why summed only used 5 machines, rerun
     'window_size': [4]
 }
 param2requests.update(update_dict)
@@ -40,7 +40,7 @@ for param_path, label in gen_param_paths(project_name,
     paths_to_ww2cf.append(pkl_paths[0])
 
 # create database
-db_name = 'summed_ws4_isfeatures.sqlite'  # TODO use multiple databases?
+db_name = 'backward_ws4_isfeatures.sqlite'
 conn = sqlite3.connect(db_name)
 c = conn.cursor()
 try:
