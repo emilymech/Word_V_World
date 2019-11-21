@@ -28,8 +28,8 @@ def get_word_freq():
 
 def get_pair_cf():
     print("Getting pair cf...")
-    with (config.Dirs.root / 'output' / 'is_pairs_backward_20191120_10-46-43.txt').open('r') as file:
-        inner_re = re.compile('\("([^"]+)", "([^"]+)"\)')  # TODO - change this to accommodate " instead of '
+    with (config.Dirs.root / 'output' / 'is_pairs_forward_20191120_09-00-20.txt').open('r') as file:
+        inner_re = re.compile('\("([^"]+)", "([^"]+)"\)')
         cf_dict = {}
         for line in file:
             m = inner_re.search(line)
@@ -63,23 +63,24 @@ def combine_wf_cf_dicts(wf_dict, cf_dict):
     return pop_wf_cf
 
 
-def pmi(pop_wf_cf, window_size):
-    # pmi = log(cf/(total_words_in_wiki * window size) /
-    # ((word_1 * window size)/(total_words_in_wiki * window size) *
-    # (word_2 * window size)/(total_words_in_wiki * window size))
+def pmi(pop_wf_cf, window_size, all_pair_list):
+    # pmi = log(cf/(total_words_in_wiki* window_size) /
+    # ((word_1)/(total_words_in_wiki* window_size) *
+    # (word_2)/(total_words_in_wiki* window_size))
+
     print('Calculating pmi...')
-    pmi_form = 'pmi_all_backward_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
-    with (config.Dirs.root / 'output' / '{}.txt'.format(pmi_form)).open('w') as file:
+    pmi_form = 'pmi_all_features_concepts_forward_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    with (config.Dirs.root / 'output' / 'forward' / '{}.txt'.format(pmi_form)).open('w') as file:
         for k, v in pop_wf_cf.items():
-            print("    ", "word1:", k[0], "word2:", k[1], "word 1 freq:", v[0][0],
-                  'word 2 freq:', v[1][0], "pair cooc:", v[0][1])
+            # print("    ", "word1:", k[0], "word2:", k[1], "word 1 freq:", v[0][0],
+            #       'word 2 freq:', v[1][0], "pair cooc:", v[0][1])
 
             if v[0][1] == 0:
                 pmi = 0
 
             else:
-                prob_word1 = (v[0][0] * window_size) / (total_words_in_wiki * window_size)
-                prob_word2 = (v[1][0] * window_size) / (total_words_in_wiki * window_size)
+                prob_word1 = v[0][0] / (total_words_in_wiki * window_size)
+                prob_word2 = v[1][0] / (total_words_in_wiki * window_size)
                 prob_word1_word2 = v[0][1] / (total_words_in_wiki * window_size)
                 print("     ", prob_word1, prob_word2, prob_word1_word2)
                 pmi = np.log(prob_word1_word2 / (prob_word1 * prob_word2))

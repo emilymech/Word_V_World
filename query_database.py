@@ -1,8 +1,7 @@
 import sqlite3
 from datetime import datetime
 
-from data.pairs import is_pairs
-from word_v_world.calculate_pmi import pmi, combine_wf_cf_dicts, get_pair_cf, get_word_freq
+from data import adjective_list, concept_list
 from word_v_world import config
 
 """
@@ -23,46 +22,59 @@ This must be considered when querying a single word-pair,
 def main():
 
     # open connection to database
-    db_name = 'backward_ws4_isfeatures.sqlite'  # TODO use multiple databases?
+    db_name = 'forward_ws4_isfeatures.sqlite'  # TODO use multiple databases?
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
 
-    # # # example 1: get all entries where word 1 = 'airplane'
-    # word_1 = ('airplane',)
-    # command = 'select * from cfs where w1 = (?)'
-    # for row in c.execute(command, word_1).fetchall():
-    #     print(row)
-    #
-    # # example 2: get all entries where co-occurrence f = 2
-    # cf = (2,)
-    # command = 'select * from cfs where cf = (?)'
-    # for row in c.execute(command, cf).fetchall():
-    #     print(row)
-    #
-    # # # example 3: get mean co-occurrence frequency
-    # cf_sum = 0
-    # num_entries = 0
-    # command = 'select cf from cfs'
-    # for row in c.execute(command).fetchall():
-    #     cf_sum += row[0]
-    #     num_entries += 1
-    # print(f'mean co-occurrence frequency={cf_sum / num_entries:.2f}')
+    # example 1: get all entries where word 1 = 'airplane'
+    word_1 = ('airplane',)
+    command = 'select * from cfs where w1 = (?)'
+    for row in c.execute(command, word_1).fetchall():
+        print(row)
+
+    # example 2: get all entries where co-occurrence f = 2
+    cf = (2,)
+    command = 'select * from cfs where cf = (?)'
+    for row in c.execute(command, cf).fetchall():
+        print(row)
+
+    # example 3: get mean co-occurrence frequency
+    cf_sum = 0
+    num_entries = 0
+    command = 'select cf from cfs'
+    for row in c.execute(command).fetchall():
+        cf_sum += row[0]
+        num_entries += 1
+    print(f'mean co-occurrence frequency={cf_sum / num_entries:.2f}')
 
     # example 4: get co-occurrence frequency for a specific pair
-    # command = 'select * from cfs where w1 = (?) and w2 = (?)'
-    # filename = 'is_pairs_backward_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
-    # with (config.Dirs.root / 'output' / '{}.txt'.format(filename)).open('w') as f:
-    #     for word_pair in is_pairs.is_pairs_query:
-    #         cfs = [row[2] for row in c.execute(command, word_pair).fetchall()]
-    #         pair_cooc = str(f'{word_pair}, {sum(cfs)}')
-    #         print(f'Word-pair={word_pair} co-occur {sum(cfs)} times')
-    #
-    #         # write the co-occurrence values to text file
-    #         f.write(pair_cooc + '\n')
+    command = 'select * from cfs where w1 = (?) and w2 = (?)'
+    filename = 'all_feature_concept_combos_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    full_concept_list = []
+    full_adjective_list = []
+    all_pair_list = []
 
-    # example 5: get PMI
-    # change pmi_form in calculate_pmi to save more specific filename
-    pmi(combine_wf_cf_dicts(get_word_freq(), get_pair_cf()), 4)
+    for line in concept_list.concept_list:
+        concept = line.strip().strip('\n').strip()
+        full_concept_list.append(concept)
+
+    for line in adjective_list.adjective_list:
+        adjective = line.strip().strip('\n').strip()
+        full_adjective_list.append(adjective)
+
+    for concept in full_concept_list:
+        for adjective in full_adjective_list:
+            all_pair_list.append((concept, adjective))
+
+    with (config.Dirs.root / 'output' / '{}.txt'.format(filename)).open('w') as f:
+        for word_pair in all_pair_list:
+            cfs = [row[2] for row in c.execute(command, word_pair).fetchall()]
+            pair_cooc = str(f'{word_pair}, {sum(cfs)}')
+            # print(f'Word-pair={word_pair} co-occur {sum(cfs)} times')
+
+            # write the co-occurrence values to text file
+            f.write(pair_cooc + '\n')
+
 
 
 if __name__ == '__main__':

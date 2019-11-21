@@ -16,7 +16,7 @@ update_dict = {
     'num_machines': [6],
     'vocab_name': ['mcrae_concepts_is_features_20191120_08-07'],
     'article_coverage': [1.0],
-    'window_type': ['summed'],  # TODO - figure out why summed only used 5 machines, rerun
+    'window_type': ['summed'],
     'window_size': [4]
 }
 param2requests.update(update_dict)
