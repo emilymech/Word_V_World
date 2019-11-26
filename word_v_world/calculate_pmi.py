@@ -7,6 +7,14 @@ from word_v_world import config
 
 total_words_in_wiki = 2112763117
 
+''' To Update:
+    1. Update database name
+    2. Update word frequency text file name
+    3. Update cf file name
+    4. Update cf folder path to match params
+    5. Update name of pmi output file
+    6. Update folder of pmi output file'''
+
 # open connection to database
 db_name = 'forward_ws4_isfeatures.sqlite'
 conn = sqlite3.connect(db_name)
@@ -15,7 +23,7 @@ c = conn.cursor()
 
 def get_word_freq():
     print("Getting word frequency...")
-    with (config.Dirs.root / 'data' / 'mcrae_concepts_is_features_20191120_08-07.txt').open('r') as file:
+    with (config.Dirs.root / 'data' / 'wf_allwiki_20191126_08-13-06.txt').open('r') as file:
         before_comma = re.compile(r'[^,]+')
         after_comma = re.compile(r'(?<=\s).*')
         wf_dict = {}
