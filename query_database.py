@@ -76,6 +76,5 @@ def main():
             f.write(pair_cooc + '\n')
 
 
-
 if __name__ == '__main__':
     main()

@@ -15,7 +15,7 @@ c = conn.cursor()
 
 def get_word_freq():
     print("Getting word frequency...")
-    with (config.Dirs.root / 'data' / 'wf_pairs_allwiki_20191118_15-54-35.txt').open('r') as file:
+    with (config.Dirs.root / 'data' / 'mcrae_concepts_is_features_20191120_08-07.txt').open('r') as file:
         before_comma = re.compile(r'[^,]+')
         after_comma = re.compile(r'(?<=\s).*')
         wf_dict = {}
@@ -28,7 +28,7 @@ def get_word_freq():
 
 def get_pair_cf():
     print("Getting pair cf...")
-    with (config.Dirs.root / 'output' / 'is_pairs_forward_20191120_09-00-20.txt').open('r') as file:
+    with (config.Dirs.root / 'output' / 'window_size_4' / 'forward' / 'all_feature_concept_combos_20191121_10-04-04.txt').open('r') as file:
         inner_re = re.compile('\("([^"]+)", "([^"]+)"\)')
         cf_dict = {}
         for line in file:
@@ -63,14 +63,14 @@ def combine_wf_cf_dicts(wf_dict, cf_dict):
     return pop_wf_cf
 
 
-def pmi(pop_wf_cf, window_size, all_pair_list):
+def pmi(pop_wf_cf, window_size):
     # pmi = log(cf/(total_words_in_wiki* window_size) /
     # ((word_1)/(total_words_in_wiki* window_size) *
     # (word_2)/(total_words_in_wiki* window_size))
 
     print('Calculating pmi...')
     pmi_form = 'pmi_all_features_concepts_forward_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
-    with (config.Dirs.root / 'output' / 'forward' / '{}.txt'.format(pmi_form)).open('w') as file:
+    with (config.Dirs.root / 'output' / 'window_size_4' / 'forward' / '{}.txt'.format(pmi_form)).open('w') as file:
         for k, v in pop_wf_cf.items():
             # print("    ", "word1:", k[0], "word2:", k[1], "word 1 freq:", v[0][0],
             #       'word 2 freq:', v[1][0], "pair cooc:", v[0][1])
