@@ -36,7 +36,8 @@ def get_word_freq():
 
 def get_pair_cf():
     print("Getting pair cf...")
-    with (config.Dirs.root / 'output' / 'window_size_4' / 'forward' / 'all_feature_concept_combos_20191121_10-04-04.txt').open('r') as file:
+    with (config.Dirs.root / 'output' / 'window_size_4' / 'forward' /
+          'all_feature_concept_combos_20191121_10-04-04.txt').open('r') as file:
         inner_re = re.compile('\("([^"]+)", "([^"]+)"\)')
         cf_dict = {}
         for line in file:
