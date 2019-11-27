@@ -18,38 +18,46 @@ This must be considered when querying a single word-pair,
 
 """
 
+''' To Update:
+    1. Update database name
+    2. Update filename with direction and ws
+    3. Update file save path'''
+
+# TODO - query backward 1 & 7, forward 1 & 7, summed 1 & 7
+# TODO ...ne - forward4, backward4, summed 4
+
 
 def main():
 
     # open connection to database
-    db_name = 'forward_ws4_isfeatures.sqlite'  # TODO use multiple databases?
+    db_name = 'summed_ws4_isfeatures.sqlite'
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
 
-    # example 1: get all entries where word 1 = 'airplane'
-    word_1 = ('airplane',)
-    command = 'select * from cfs where w1 = (?)'
-    for row in c.execute(command, word_1).fetchall():
-        print(row)
+    # # example 1: get all entries where word 1 = 'airplane'
+    # word_1 = ('airplane',)
+    # command = 'select * from cfs where w1 = (?)'
+    # for row in c.execute(command, word_1).fetchall():
+    #     print(row)
+    #
+    # # example 2: get all entries where co-occurrence f = 2
+    # cf = (2,)
+    # command = 'select * from cfs where cf = (?)'
+    # for row in c.execute(command, cf).fetchall():
+    #     print(row)
 
-    # example 2: get all entries where co-occurrence f = 2
-    cf = (2,)
-    command = 'select * from cfs where cf = (?)'
-    for row in c.execute(command, cf).fetchall():
-        print(row)
-
-    # example 3: get mean co-occurrence frequency
-    cf_sum = 0
-    num_entries = 0
-    command = 'select cf from cfs'
-    for row in c.execute(command).fetchall():
-        cf_sum += row[0]
-        num_entries += 1
-    print(f'mean co-occurrence frequency={cf_sum / num_entries:.2f}')
+    # # example 3: get mean co-occurrence frequency
+    # cf_sum = 0
+    # num_entries = 0
+    # command = 'select cf from cfs'
+    # for row in c.execute(command).fetchall():
+    #     cf_sum += row[0]
+    #     num_entries += 1
+    # print(f'mean co-occurrence frequency={cf_sum / num_entries:.2f}')
 
     # example 4: get co-occurrence frequency for a specific pair
     command = 'select * from cfs where w1 = (?) and w2 = (?)'
-    filename = 'all_feature_concept_combos_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    filename = 'all_feature_concept_combos_summed4_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
     full_concept_list = []
     full_adjective_list = []
     all_pair_list = []
@@ -66,7 +74,7 @@ def main():
         for adjective in full_adjective_list:
             all_pair_list.append((concept, adjective))
 
-    with (config.Dirs.root / 'output' / '{}.txt'.format(filename)).open('w') as f:
+    with (config.Dirs.root / 'output' / 'window_size_4' / 'summed' / '{}.txt'.format(filename)).open('w') as f:
         for word_pair in all_pair_list:
             cfs = [row[2] for row in c.execute(command, word_pair).fetchall()]
             pair_cooc = str(f'{word_pair}, {sum(cfs)}')

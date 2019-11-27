@@ -16,7 +16,7 @@ total_words_in_wiki = 2112763117
     6. Update folder of pmi output file'''
 
 # open connection to database
-db_name = 'forward_ws4_isfeatures.sqlite'
+db_name = 'summed_ws4_isfeatures.sqlite'
 conn = sqlite3.connect(db_name)
 c = conn.cursor()
 
@@ -36,8 +36,8 @@ def get_word_freq():
 
 def get_pair_cf():
     print("Getting pair cf...")
-    with (config.Dirs.root / 'output' / 'window_size_4' / 'forward' /
-          'all_feature_concept_combos_20191121_10-04-04.txt').open('r') as file:
+    with (config.Dirs.root / 'output' / 'window_size_4' / 'summed' /
+          'all_feature_concept_combos_summed4_20191127_07-14-24.txt').open('r') as file:
         inner_re = re.compile('\("([^"]+)", "([^"]+)"\)')
         cf_dict = {}
         for line in file:
@@ -78,8 +78,8 @@ def pmi(pop_wf_cf, window_size):
     # (word_2)/(total_words_in_wiki* window_size))
 
     print('Calculating pmi...')
-    pmi_form = 'pmi_all_features_concepts_forward_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
-    with (config.Dirs.root / 'output' / 'window_size_4' / 'forward' / '{}.txt'.format(pmi_form)).open('w') as file:
+    pmi_form = 'pmi_all_features_concepts_summed4_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    with (config.Dirs.root / 'output' / 'window_size_4' / 'summed' / '{}.txt'.format(pmi_form)).open('w') as file:
         for k, v in pop_wf_cf.items():
             # print("    ", "word1:", k[0], "word2:", k[1], "word 1 freq:", v[0][0],
             #       'word 2 freq:', v[1][0], "pair cooc:", v[0][1])
