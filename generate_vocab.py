@@ -19,7 +19,7 @@ def main():
     wf_pairs = 'wf_allwiki_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
     with (config.Dirs.root / 'data' / '{}.txt'.format(wf_pairs)).open('w') as file:
         for w, f in master_w2f.items():
-            file.write(str(w) + ', ' + str(f) + '\n')
+            file.write(str(w) + ' ' + str(f) + '\n')
 
     # # sort
     # vocab = set()
