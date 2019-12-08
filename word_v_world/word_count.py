@@ -22,6 +22,9 @@ def gen_w2dfs(wiki_param_name: str,
 
     # yield word counts by document
     for w2df in w2dfs:
+
+        raise NotImplementedError('This needs to be fixed')  # FIXME
+
         w2df_new = {k.lower(): v for k, v in w2df.items() if v}
         yield w2df_new
 
