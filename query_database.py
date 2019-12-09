@@ -23,14 +23,13 @@ This must be considered when querying a single word-pair,
     2. Update filename with direction and ws
     3. Update file save path'''
 
-# TODO - query backward 1 & 7, forward 1 & 7, summed 1 & 7
-# TODO ...ne - forward4, backward4, summed 4
+# TODO - query, summed 1
 
 
 def main():
 
     # open connection to database
-    db_name = 'summed_ws4_isfeatures.sqlite'
+    db_name = 'summed_ws1_isfeatures.sqlite'
     conn = sqlite3.connect(db_name)
     c = conn.cursor()
 
@@ -57,7 +56,7 @@ def main():
 
     # example 4: get co-occurrence frequency for a specific pair
     command = 'select * from cfs where w1 = (?) and w2 = (?)'
-    filename = 'all_feature_concept_combos_summed4_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
+    filename = 'all_feature_concept_combos_summed1_' + datetime.now().strftime('%Y%m%d_%H-%M-%S')
     full_concept_list = []
     full_adjective_list = []
     all_pair_list = []
@@ -74,7 +73,7 @@ def main():
         for adjective in full_adjective_list:
             all_pair_list.append((concept, adjective))
 
-    with (config.Dirs.root / 'output' / 'window_size_4' / 'summed' / '{}.txt'.format(filename)).open('w') as f:
+    with (config.Dirs.root / 'output' / 'window_size_1' / 'summed' / '{}.txt'.format(filename)).open('w') as f:
         for word_pair in all_pair_list:
             cfs = [row[2] for row in c.execute(command, word_pair).fetchall()]
             pair_cooc = str(f'{word_pair}, {sum(cfs)}')

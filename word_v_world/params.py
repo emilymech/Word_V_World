@@ -10,7 +10,7 @@
 param2requests = {'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
                   'num_machines': [6],
                   'window_size': [1],
-                  'window_type': ['summed'],  # TODO - run sum7
+                  'window_type': ['summed'],
                   'vocab_name': ['mcrae_concepts_is_features_20191122_11-52'],
                   'article_coverage': [1.0],
                   }

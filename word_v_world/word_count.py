@@ -4,6 +4,7 @@ from typing import List, Dict
 
 from word_v_world import config
 
+# TODO - get a word count from a tokenized file
 
 # get the pickle for each param folder individually
 def gen_w2dfs(wiki_param_name: str,
@@ -22,11 +23,7 @@ def gen_w2dfs(wiki_param_name: str,
 
     # yield word counts by document
     for w2df in w2dfs:
-
-        raise NotImplementedError('This needs to be fixed')  # FIXME
-
-        w2df_new = {k.lower(): v for k, v in w2df.items() if v}
-        yield w2df_new
+        yield w2df
 
 
 def make_master_w2f(wiki_param_names: List[str],
@@ -35,8 +32,8 @@ def make_master_w2f(wiki_param_names: List[str],
     res = Counter()
     for wiki_param_name in wiki_param_names:
         print("Adding word counts from {} to master_w2f".format(wiki_param_name))
-        for w2df_new in gen_w2dfs(wiki_param_name, file_name):
-            res.update(w2df_new)
+        for w2df in gen_w2dfs(wiki_param_name, file_name):
+            res.update(w2df)
 
     print(f'Length of master_w2f={len(res)}')
     return res
