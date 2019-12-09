@@ -22,10 +22,7 @@ VERBOSE = True
 update_dict = {
     'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
     'num_machines': [6],
-    'vocab_name': ['mcrae_concepts_is_features_20191122_11-52'],
     'article_coverage': [1.0],
-    'window_type': ['summed'],
-    'window_size': [1]
 }
 param2requests.update(update_dict)
 
@@ -34,21 +31,21 @@ if MINIMAL:
 
 # get paths from which to load co-occurrence data
 project_name = Path.cwd().name
-paths_to_ww2cf = []
+paths_to_n2c2f = []
 for param_path, label in gen_param_paths(project_name,
                                          param2requests,
                                          param2default,
                                          research_data_path=config.Dirs.research_data,
                                          verbose=False):
-    pkl_paths = list(param_path.glob('**/saves/ww2cf.pkl'))
+    pkl_paths = list(param_path.glob('**/saves/n2c2f.pkl'))
     if len(pkl_paths) == 0:
-        raise FileNotFoundError(f'Did not find ww2cf.pkl in {param_path}')
+        raise FileNotFoundError(f'Did not find n2c2f.pkl in {param_path}')
     else:
         print(f'Found {pkl_paths[0]}')
-    paths_to_ww2cf.append(pkl_paths[0])
+    paths_to_n2c2f.append(pkl_paths[0])
 
 # create database
-db_name = 'summed_ws1_isfeatures.sqlite'
+db_name = 'noun_child_cooc.sqlite'
 conn = sqlite3.connect(db_name)
 c = conn.cursor()
 try:
@@ -57,12 +54,12 @@ except sqlite3.OperationalError:   # table already exists
     pass
 
 # populate database
-for path_to_ww2cf in paths_to_ww2cf:
-    print(f'Adding co-occurrence data from {path_to_ww2cf} to {db_name}')
+for path_to_n2c2f in paths_to_n2c2f:
+    print(f'Adding co-occurrence data from {path_to_n2c2f} to {db_name}')
 
-    f = path_to_ww2cf.open('rb')
+    f = path_to_n2c2f.open('rb')
     try:
-        partial_ww2cf = pickle.load(f)
+        partial_n2c2f = pickle.load(f)
     except MemoryError as e:
         raise MemoryError('Reached memory limit')
     except KeyboardInterrupt:
@@ -71,15 +68,16 @@ for path_to_ww2cf in paths_to_ww2cf:
         raise KeyboardInterrupt
 
     # add to database
-    for ww, cf in partial_ww2cf.items():
-        values = (ww[0], ww[1], cf.item())  # cf is numpy int32
-        command = "INSERT INTO cfs VALUES (?, ?, ?)"
-        if VERBOSE:
-            print(values)
-        c.execute(command, values)
+    for n, c2f in partial_n2c2f.items():
+        for child in c2f:
+            values = (n, child, c2f[child])
+            command = "INSERT INTO cfs VALUES (?, ?, ?)"
+            if VERBOSE:
+                print(values)
+            c.execute(command, values)
 
     # remove no longer needed object
-    del partial_ww2cf
+    del partial_n2c2f
 
 conn.commit()  # save changes
 conn.close()

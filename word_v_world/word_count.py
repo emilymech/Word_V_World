@@ -4,7 +4,7 @@ from timeit import default_timer as timer
 from pathos.pools import ProcessPool
 
 from word_v_world import config
-from word_v_world.tokenization import tokenizer
+from word_v_world.dependencies import tokenizer
 
 
 def count_words_in_text_file(wiki_param_name: str,

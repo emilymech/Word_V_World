@@ -1,11 +1,12 @@
-from word_v_world.calculate_pmi import pmi, combine_wf_cf_dicts, get_pair_cf, get_word_freq
+from word_v_world.calculate_pmi import make_pmi_data_frame, get_pair2cooc, get_word_freq, make_master_w2f
+from word_v_world.params import param2requests
 
-''' To Update:
-    1. Update window size'''
+
+wiki_param_names = param2requests['cwc_param_name']
 
 # get PMI
 word_freq_dict = get_word_freq()
-pair_cooc_dict = get_pair_cf()
-combined_dict = combine_wf_cf_dicts(word_freq_dict, pair_cooc_dict)
-window_size = 7
-pmi(combined_dict, window_size)
+pair2cooc_dict = get_pair2cooc()
+master_w2f = make_master_w2f(wiki_param_names)
+
+make_pmi_data_frame(word_freq_dict, pair2cooc_dict, master_w2f)

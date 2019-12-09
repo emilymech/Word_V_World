@@ -14,25 +14,31 @@ from typing import Generator, List, Optional
 from word_v_world.articles import generate_articles
 
 
-nlp = spacy.load('en_core_web_sm', disable = ['ner', 'tagger'])
+nlp = spacy.load('en_core_web_sm', disable = ['ner'])
 custom_re = re.compile(r"[A-Za-z]+(-|')[A-Za-z\.]+")
 tokenizer = English().Defaults.create_tokenizer(nlp)  # tokenizer must be created this way
 tokenizer.token_match = custom_re.match
 nlp.tokenizer = tokenizer
 
 
-def gen_tokenized_articles(bodies_path: Path,
-                           num_docs: Optional[int] = None,
-                           ) -> Generator[List[str], None, None]:
+def make_n2c2f(bodies_path: Path,
+               num_docs: Optional[int] = None,
+               ) -> Generator[List[str], None, None]:
 
     # loop over articles, tokenizing each with custom tokenizer
     n = 0
+    res = {}   # noun -> Dict[child, f]
     for doc in nlp.pipe(generate_articles(bodies_path)):
-
-
+        nouns = [t.lower_ for t in doc if t.pos_ == "NOUN"]
+        amod_children = [noun.children for noun in nouns if noun.dep_ == "amod"]
+        for noun, children in zip(nouns, amod_children):
+            for child in children:
+                child2f = res.setdefault(noun, {})
+                if child not in child2f:
+                    child2f[child] = 1
+                else:
+                    child2f[child] += 1
         print(f'{n:>12,} / {num_docs:,}', flush=True) if n % 100 == 0 else None
         n += 1
 
-        for noun_chunk in doc.noun_chunks:
-            tokens = [t.lower_ for t in noun_chunk]
-            yield tokens
+    return res
