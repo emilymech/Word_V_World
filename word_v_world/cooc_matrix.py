@@ -5,6 +5,8 @@ from cytoolz import itertoolz
 from itertools import chain
 from itertools import islice
 
+# TODO - initialize the matrix to be the same size so the transpose works
+
 
 def make_sparse_ww_matrix(docs: Generator[List[str], None, None],
                           w2id: Dict[str, int],
@@ -24,6 +26,8 @@ def make_sparse_ww_matrix(docs: Generator[List[str], None, None],
 
     if max_num_docs is not None:
         docs = islice(docs, max_num_docs)
+
+    print(len(w2id))
 
     for tokens in docs:
         # pad tokens such that all co-occurrences in last window are captured
