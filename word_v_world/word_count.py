@@ -2,6 +2,7 @@ from collections import Counter
 from typing import List
 from timeit import default_timer as timer
 from pathos.pools import ProcessPool
+from itertools import islice
 
 from word_v_world import config
 from word_v_world.tokenization import tokenizer
@@ -39,18 +40,19 @@ def make_master_w2f(wiki_param_names: List[str],
         print(f'Reading bodies.txt in {wiki_param_path}')
         path_to_articles = list(wiki_param_path.glob('**/bodies.txt'))[0]
 
-        line_reader = path_to_articles.open('r')
+        line_reader = islice(path_to_articles.open('r'), 8000)
         texts = [doc for doc in zip(*(line_reader,) * NUM_TEXTS_PER_PROCESS)]
         num_texts = len(texts)
         print('Number of text chunks: {}'.format(num_texts))
 
         # count in multiple processes
         pool = ProcessPool(NUM_WORKERS)
-        w2param_f = pool.map(make_w2dfs, texts)
+        w2_param_f_list = pool.map(make_w2dfs, texts)
 
         # add to master
         print("Adding word counts from {} to master_w2f".format(wiki_param_name))
-        res.update(w2param_f)
+        for w2param_f in w2_param_f_list:
+            res.update(w2param_f)
 
     print(f'Length of master_w2f={len(res)}')
     return res
