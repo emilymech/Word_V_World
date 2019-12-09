@@ -4,6 +4,11 @@
 This repository contains code for extracting co-occurrence statistics from Wikipedia articles.
 These co-occurrences will later be utilized as experimental stimuli to understand how regularities in language interact with our knowledge about regularities in the world.
 
+## Branches
+
+* master branch : count co-occurrences in windows
+* no-window: count co-occurrences in noun chunks
+
 ## Order of Operations
 
 1. Generate vocab based on desired size and constraints.
