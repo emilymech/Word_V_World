@@ -40,7 +40,7 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     titles_path = get_text_file_path(param_path, 'titles')
     num_docs = len(titles_path.read_text().split('\n')) - 1  # "wc -l" says there is 1 less line
     print(f'Number of articles in text file={num_docs}')
-    tokenized_docs = gen_tokenized_articles(bodies_path, num_docs)
+    tokenized_docs = gen_tokenized_articles(bodies_path, num_docs)  # this also lower-cases
 
     # step 2
     print('Making co-occurrence matrix', flush=True)

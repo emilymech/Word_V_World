@@ -27,7 +27,7 @@ def gen_tokenized_articles(bodies_path: Path,
     # loop over articles, tokenizing each with custom tokenizer
     n = 0
     for doc in tokenizer.pipe(generate_articles(bodies_path)):
-        tokens = [t.text.lower() for t in doc]
+        tokens = [t.lower_ for t in doc]
         print(f'{n:>12,} / {num_docs:,}', flush=True) if n % 100 == 0 else None
         n += 1
         yield tokens
