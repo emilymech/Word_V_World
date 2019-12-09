@@ -19,6 +19,9 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     project_path = Path(param2val['project_path'])
     save_path = Path(param2val['save_path'])  # all data that is saved must be saved here
 
+    if param2val['window_type'] == 'summed' and param2val['window_size'] == 1:
+        raise NotImplementedError('No guarantee that row and column vocab are equivalent')
+
     for k, v in param2val.items():
         print(k, v)
 

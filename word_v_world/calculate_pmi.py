@@ -7,6 +7,8 @@ from word_v_world import config
 
 total_words_in_wiki = 2112763117
 
+# TODO - change this vocab to be one with all the different features and that is space separated
+
 ''' To Update:
     1. Update database name
     2. Update word frequency text file name

@@ -44,3 +44,5 @@ if len(param2requests['cwc_param_name']) != param2requests['num_machines'][0]:
 
 if len(param2requests['num_machines']) != 1:
     raise ValueError('It does not make sense to vary "num_machines" across jobs')
+
+

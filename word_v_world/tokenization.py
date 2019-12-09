@@ -14,10 +14,11 @@ from typing import Generator, List, Optional
 from word_v_world.articles import generate_articles
 
 
-nlp = spacy.load('en_core_web_sm')
+nlp = spacy.load('en_core_web_sm', disable = ['ner', 'tagger'])
 custom_re = re.compile(r"[A-Za-z]+(-|')[A-Za-z\.]+")
 tokenizer = English().Defaults.create_tokenizer(nlp)  # tokenizer must be created this way
 tokenizer.token_match = custom_re.match
+nlp.tokenizer = tokenizer
 
 
 def gen_tokenized_articles(bodies_path: Path,
@@ -26,8 +27,12 @@ def gen_tokenized_articles(bodies_path: Path,
 
     # loop over articles, tokenizing each with custom tokenizer
     n = 0
-    for doc in tokenizer.pipe(generate_articles(bodies_path)):
-        tokens = [t.lower_ for t in doc]
+    for doc in nlp.pipe(generate_articles(bodies_path)):
+
+
         print(f'{n:>12,} / {num_docs:,}', flush=True) if n % 100 == 0 else None
         n += 1
-        yield tokens
+
+        for noun_chunk in doc.noun_chunks:
+            tokens = [t.lower_ for t in noun_chunk]
+            yield tokens
