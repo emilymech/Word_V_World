@@ -1,5 +1,4 @@
 
-
 def get_text_file_path(param_path, pattern):
     """
     return path to bodies.txt or titles.txt depending on "pattern"
@@ -22,4 +21,4 @@ def generate_articles(bodies_path):
 
     with bodies_path.open('r') as f:
         for article in f:
-            yield article
+            yield article.strip('\n')
