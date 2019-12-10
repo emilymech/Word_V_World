@@ -9,7 +9,7 @@ import re
 from spacy.lang.en import English
 import spacy
 from pathlib import Path
-from typing import Generator, List, Optional
+from typing import Dict, Optional
 
 from word_v_world.articles import generate_articles
 
@@ -23,7 +23,7 @@ nlp.tokenizer = tokenizer
 
 def make_n2c2f(bodies_path: Path,
                num_docs: Optional[int] = None,
-               ) -> Generator[List[str], None, None]:
+               ) -> Dict[str, Dict[str, int]]:
 
     # loop over articles, tokenizing each with custom tokenizer
     n = 0
