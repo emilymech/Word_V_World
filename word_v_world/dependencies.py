@@ -29,7 +29,7 @@ def make_n2c2f(bodies_path: Path,
     n = 0
     res = {}   # noun -> Dict[child, f]
     for doc in nlp.pipe(generate_articles(bodies_path)):
-        nouns = [t.lower_ for t in doc if t.pos_ == "NOUN"]
+        nouns = [t for t in doc if t.pos_ == "NOUN"]
         amod_children = [noun.children for noun in nouns if noun.dep_ == "amod"]  # TODO - str object has no attribute dep_
         for noun, children in zip(nouns, amod_children):
             for child in children:
