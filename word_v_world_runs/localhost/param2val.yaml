@@ -1,0 +1,7 @@
+cwc_param_name: param_0
+job_name: null
+num_machines: 1
+param_name: localhost
+window_size: 1
+window_type: forward
+window_weight: flat
