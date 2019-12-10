@@ -29,15 +29,15 @@ def make_n2c2f(bodies_path: Path,
     n = 0
     res = {}   # noun -> Dict[child, f]
     for doc in nlp.pipe(generate_articles(bodies_path)):
-        nouns = [t for t in doc if t.pos_ == "NOUN"]
-        amod_children = [noun.children for noun in nouns if noun.dep_ == "amod"]  # TODO - str object has no attribute dep_
+        nouns = [t for t in doc if t.pos_ == "NOUN"]  # list of spacy tokens
+        amod_children = [noun.children for noun in nouns if noun.dep_ == "amod"]  # list of spacy tokens
         for noun, children in zip(nouns, amod_children):
             for child in children:
-                child2f = res.setdefault(noun, {})
+                child2f = res.setdefault(noun.lower_, {})  # convert spacy token to string
                 if child not in child2f:
-                    child2f[child] = 1
+                    child2f[child.lower_] = 1  # convert spacy token to string
                 else:
-                    child2f[child] += 1
+                    child2f[child.lower_] += 1  # convert spacy token to string
         print(f'{n:>12,} / {num_docs:,}', flush=True) if n % 100 == 0 else None
         n += 1
 
