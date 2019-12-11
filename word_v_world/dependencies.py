@@ -33,17 +33,16 @@ def make_n2c2f(bodies_path: Path,
         nouns = [t for t in doc if t.pos_ == "NOUN"]  # list of spacy tokens
         for noun in nouns:
             for child in noun.children:
+                if child.dep_ == 'amod':
 
-                # TODO debugging segmentation fault
-                # print(noun.lower_)
-                # print(child.lower_, child.dep_)
-                # print()
+                    # print
+                    print(noun, child)
 
-                child2f = res.setdefault(noun.lower_, {})  # convert spacy token to string
-                if child not in child2f:
-                    child2f[child.lower_] = 1  # convert spacy token to string
-                else:
-                    child2f[child.lower_] += 1  # convert spacy token to string
+                    child2f = res.setdefault(noun.lower_, {})  # convert spacy token to string
+                    if child not in child2f:
+                        child2f[child.lower_] = 1  # convert spacy token to string
+                    else:
+                        child2f[child.lower_] += 1  # convert spacy token to string
 
         print(f'{n:>12,} / {num_docs:,}', flush=True) if n % 100 == 0 else None
         n += 1
