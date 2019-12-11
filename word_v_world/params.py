@@ -9,13 +9,13 @@ param2requests = {'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_
 param2default = {
     'cwc_param_name': 'param_22',
     'num_machines': 1,
-    'article_coverage': 0.1,  # percent of articles used; 0.1 results in 1GB pickle file with window-size=7
+    'article_coverage': 1.0,  # percent of articles used; 0.1 results in 1GB pickle file with window-size=7
 }
 
 param2debug = {
-    'cwc_param_name': 'param_0',
+    'cwc_param_name': 'param_22',
     'num_machines': 1,
-    'article_coverage': 1.0,
+    'article_coverage': 0.01,
 
 }
 
