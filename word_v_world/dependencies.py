@@ -23,21 +23,18 @@ nlp = spacy.load('en_core_web_sm', disable = ['ner'])
 
 def make_n2c2f(bodies_path: Path,
                num_docs: Optional[int] = None,
-               stop_doc: Optional[int] = None
+               stop_doc: Optional[int] = None,
+               max_num_characters: Optional[int] = None,
                ) -> Dict[str, Dict[str, int]]:
 
     # loop over articles, tokenizing each with custom tokenizer
     n = 0
     res = {}   # noun -> Dict[child, f]
-    for doc in nlp.pipe(generate_articles(bodies_path)):
+    for doc in nlp.pipe(generate_articles(bodies_path, max_num_characters)):
         nouns = [t for t in doc if t.pos_ == "NOUN"]  # list of spacy tokens
         for noun in nouns:
             for child in noun.children:
                 if child.dep_ == 'amod':
-
-                    # print
-                    print(noun, child)
-
                     child2f = res.setdefault(noun.lower_, {})  # convert spacy token to string
                     if child not in child2f:
                         child2f[child.lower_] = 1  # convert spacy token to string

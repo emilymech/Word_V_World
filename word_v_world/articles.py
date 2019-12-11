@@ -13,12 +13,20 @@ def get_text_file_path(param_path, pattern):
         return bodies_paths[0]
 
 
-def generate_articles(bodies_path):
+def generate_articles(bodies_path, max_num_characters):
     """
     a generator that yields wiki articles from a single file
     """
     print('Reading articles from {}'.format(bodies_path))
 
+    num_skipped = 0
     with bodies_path.open('r') as f:
         for article in f:
+
+            if len(article) > max_num_characters:
+                num_skipped += 1
+                continue
+
             yield article.strip('\n')
+
+    print(f'Skipped {num_skipped} articles')

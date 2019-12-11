@@ -10,6 +10,7 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     # params
     cwc_param_name = param2val['cwc_param_name']
     article_coverage = param2val['article_coverage']
+    max_num_characters = param2val['max_num_characters']
     project_path = Path(param2val['project_path'])  # added by Ludwig
     save_path = Path(param2val['save_path'])  # all data that is saved must be saved here
 
@@ -21,7 +22,10 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
     num_docs = len(titles_path.read_text().split('\n')) - 1  # "wc -l" says there is 1 less line
     stop_doc = int(num_docs * article_coverage)
     print(f'Number of articles in text file={num_docs}')
-    n2c2f = make_n2c2f(bodies_path, num_docs, stop_doc=stop_doc)  # this also lower-cases
+    n2c2f = make_n2c2f(bodies_path, num_docs,
+                       stop_doc=stop_doc,
+                       max_num_characters=max_num_characters,
+                       )  # this also lower-cases
 
     # step 3 - save the dictionary containing co-occurrence frequencies to Ludwig-supplied save_path
     print('Saving dictionary to disk...')
