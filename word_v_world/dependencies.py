@@ -15,10 +15,10 @@ from word_v_world.articles import generate_articles
 
 
 nlp = spacy.load('en_core_web_sm', disable = ['ner'])
-# custom_re = re.compile(r'''[A-Za-z]+([-'])[A-Za-z.]+''')
-# tokenizer = English().Defaults.create_tokenizer(nlp)  # tokenizer must be created this way
-# tokenizer.token_match = custom_re.match
-# nlp.tokenizer = tokenizer
+custom_re = re.compile(r'''[A-Za-z]+([-'])[A-Za-z.]+''')
+tokenizer = English().Defaults.create_tokenizer(nlp)  # tokenizer must be created this way
+tokenizer.token_match = custom_re.match
+nlp.tokenizer = tokenizer
 
 
 def make_n2c2f(bodies_path: Path,
