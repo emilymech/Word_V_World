@@ -10,13 +10,6 @@ from word_v_world.params import param2requests, param2default, param2debug
 MINIMAL = False
 VERBOSE = True
 
-''' To Update:
-    1. Update params in the update_dict dictionary
-    2. Update database name'''
-
-#  TODO - run ws 7, sum (all ws 4 are done), run ws 1, summed
-# Done: All ws 4
-#       backward 1
 
 # specify which parameter configuration for which to retrieve results
 update_dict = {
@@ -31,18 +24,18 @@ if MINIMAL:
 
 # get paths from which to load co-occurrence data
 project_name = Path.cwd().name
-paths_to_n2c2f = []
+paths_to_n2n2f = []
 for param_path, label in gen_param_paths(project_name,
                                          param2requests,
                                          param2default,
                                          research_data_path=config.Dirs.research_data,
                                          verbose=False):
-    pkl_paths = list(param_path.glob('**/saves/n2c2f.pkl'))
+    pkl_paths = list(param_path.glob('**/saves/n2n2f.pkl'))
     if len(pkl_paths) == 0:
-        raise FileNotFoundError(f'Did not find n2c2f.pkl in {param_path}')
+        raise FileNotFoundError(f'Did not find n2n2f.pkl in {param_path}')
     else:
         print(f'Found {pkl_paths[0]}')
-    paths_to_n2c2f.append(pkl_paths[0])
+    paths_to_n2n2f.append(pkl_paths[0])
 
 # create database
 db_name = 'noun_child_cooc.sqlite'
@@ -54,12 +47,12 @@ except sqlite3.OperationalError:   # table already exists
     pass
 
 # populate database
-for path_to_n2c2f in paths_to_n2c2f:
-    print(f'Adding co-occurrence data from {path_to_n2c2f} to {db_name}')
+for path_to_n2n2f in paths_to_n2n2f:
+    print(f'Adding co-occurrence data from {path_to_n2n2f} to {db_name}')
 
-    f = path_to_n2c2f.open('rb')
+    f = path_to_n2n2f.open('rb')
     try:
-        partial_n2c2f = pickle.load(f)
+        partial_n2n2f = pickle.load(f)
     except MemoryError as e:
         raise MemoryError('Reached memory limit')
     except KeyboardInterrupt:
@@ -68,7 +61,7 @@ for path_to_n2c2f in paths_to_n2c2f:
         raise KeyboardInterrupt
 
     # add to database
-    for n, c2f in partial_n2c2f.items():
+    for n, c2f in partial_n2n2f.items():
         for child in c2f:
             values = (n, child, c2f[child])
             command = "INSERT INTO cfs VALUES (?, ?, ?)"
@@ -77,7 +70,7 @@ for path_to_n2c2f in paths_to_n2c2f:
             c.execute(command, values)
 
     # remove no longer needed object
-    del partial_n2c2f
+    del partial_n2n2f
 
 conn.commit()  # save changes
 conn.close()

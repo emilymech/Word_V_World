@@ -54,7 +54,7 @@ def get_pair2cooc():
     return pair2cooc
 
 
-def make_pmi_data_frame(word_freq_dict, pair2cooc_dict,master_w2f):
+def make_pmi_data_frame(word_freq_dict, pair2cooc_dict, master_w2f):
     # pmi = log(cf/(total_words_in_wiki) /
     # ((word_1)/(total_words_in_wiki) *
     # (word_2)/(total_words_in_wiki))
