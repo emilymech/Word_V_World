@@ -1,11 +1,14 @@
-from word_v_world.calculate_pmi import pmi, combine_wf_cf_dicts, get_pair_cf, get_word_freq
+import pickle
 
-''' To Update:
-    1. Update window size'''
+from word_v_world.pmi_calc import make_pmi_data_frame, get_pair2cooc, get_word_freq_dict
+
+total_tokens = pickle.load(open("/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/total_tokens.p", "rb"))
+
+# get word freq
+word_freq_dict = get_word_freq_dict()
 
 # get PMI
-word_freq_dict = get_word_freq()
-pair_cooc_dict = get_pair_cf()
-combined_dict = combine_wf_cf_dicts(word_freq_dict, pair_cooc_dict)
-window_size = 7
-pmi(combined_dict, window_size)
+pair2cooc_dict = get_pair2cooc()
+
+# make pmi data frame
+make_pmi_data_frame(word_freq_dict, pair2cooc_dict, total_tokens)

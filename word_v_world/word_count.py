@@ -6,6 +6,8 @@ from pathos.pools import ProcessPool
 from word_v_world import config
 from word_v_world.tokenization import tokenizer
 
+NUM_LUDWIG_WORKERS = 6
+
 
 def count_words_in_text_file(wiki_param_name: str,
                              ) -> Counter:
@@ -29,8 +31,8 @@ def count_words_in_text_file(wiki_param_name: str,
         w2param_f.update(words)
         num_processed += 1
 
-        if num_processed % 1000 == 0:
-            print(num_processed)
+        # if num_processed % 1000 == 0:
+            # print(num_processed)
 
     print(f'Took {timer() - start:.4f} secs to count words in {num_processed} docs', flush=True)
     return w2param_f
@@ -56,8 +58,15 @@ def make_master_w2f(wiki_param_names: List[str],
     return res
 
 
+def get_word_freq():
+    # count all words
+    # note: counting should use the same tokenizer used everywhere else in the project
+    wiki_param_names = ['param_{}'.format(22 + i) for i in range(NUM_LUDWIG_WORKERS)]
+    master_w2f = make_master_w2f(wiki_param_names)
+    return master_w2f
 
 
-
-
-
+def get_total_token_count(master_w2f):
+    total_words_in_wiki = sum([master_w2f[k] for k in master_w2f])
+    print(total_words_in_wiki)
+    return total_words_in_wiki

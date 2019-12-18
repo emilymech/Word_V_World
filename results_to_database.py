@@ -14,18 +14,14 @@ VERBOSE = True
     1. Update params in the update_dict dictionary
     2. Update database name'''
 
-#  TODO - run ws 7, sum (all ws 4 are done), run ws 1, summed
-# Done: All ws 4
-#       backward 1
-
 # specify which parameter configuration for which to retrieve results
 update_dict = {
     'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
     'num_machines': [6],
-    'vocab_name': ['mcrae_concepts_is_features_20191122_11-52'],
+    'vocab_name': ['mcrae_concepts_features_12_16_19'],
     'article_coverage': [1.0],
-    'window_type': ['summed'],
-    'window_size': [1]
+    'window_type': ['forward'],
+    'window_size': [7]
 }
 param2requests.update(update_dict)
 
@@ -48,7 +44,7 @@ for param_path, label in gen_param_paths(project_name,
     paths_to_ww2cf.append(pkl_paths[0])
 
 # create database
-db_name = 'summed_ws1_isfeatures.sqlite'
+db_name = 'forward_ws7.sqlite'
 conn = sqlite3.connect(db_name)
 c = conn.cursor()
 try:

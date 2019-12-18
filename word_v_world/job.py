@@ -78,6 +78,6 @@ def main(param2val):  # param2val appears auto-magically via Ludwig
         ww2cf_path.parent.mkdir(parents=True)
     pickle.dump(ww2cf, ww2cf_path.open('wb'))
 
-    print("Emily is done making a wiki co-occurrence dictionary! :)")
+    print("Emily is done making a wiki co-occurrence dictionary! Wait for the folders to finish moving!")
 
     return []
