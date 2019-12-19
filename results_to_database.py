@@ -20,7 +20,7 @@ update_dict = {
     'num_machines': [6],
     'vocab_name': ['mcrae_concepts_features_12_16_19'],
     'article_coverage': [1.0],
-    'window_type': ['forward'],
+    'window_type': ['backward'],
     'window_size': [7]
 }
 param2requests.update(update_dict)
@@ -44,7 +44,7 @@ for param_path, label in gen_param_paths(project_name,
     paths_to_ww2cf.append(pkl_paths[0])
 
 # create database
-db_name = 'forward_ws7.sqlite'
+db_name = 'backward_ws7.sqlite'
 conn = sqlite3.connect(db_name)
 c = conn.cursor()
 try:
