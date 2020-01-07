@@ -2,7 +2,10 @@ import pickle
 
 from word_v_world.pmi_calc import make_pmi_data_frame, get_pair2cooc, get_word_freq_dict
 
-total_tokens = pickle.load(open("/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/total_tokens.p", "rb"))
+pickle_path = "/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/total_tokens.pkl"
+
+with open(pickle_path, 'rb') as pickle_file:
+    total_tokens = pickle.load(pickle_file)
 
 # get word freq
 word_freq_dict = get_word_freq_dict()

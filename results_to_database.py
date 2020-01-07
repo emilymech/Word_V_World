@@ -21,7 +21,7 @@ update_dict = {
     'vocab_name': ['mcrae_concepts_features_12_16_19'],
     'article_coverage': [1.0],
     'window_type': ['backward'],
-    'window_size': [7]
+    'window_size': [4]
 }
 param2requests.update(update_dict)
 
@@ -44,7 +44,7 @@ for param_path, label in gen_param_paths(project_name,
     paths_to_ww2cf.append(pkl_paths[0])
 
 # create database
-db_name = 'backward_ws7.sqlite'
+db_name = 'backward_ws4.sqlite'
 conn = sqlite3.connect(db_name)
 c = conn.cursor()
 try:

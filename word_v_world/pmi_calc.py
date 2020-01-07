@@ -5,7 +5,10 @@ import pickle
 
 window_size = 4
 window_type = 'forward'
-all_pair_list = pickle.load(open("/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/all_pair_list.p", "rb"))
+pickle_path = "/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/all_pair_list.pkl"
+
+with open(pickle_path, 'rb') as pickle_file:
+    all_pair_list = pickle.load(pickle_file)
 
 # open connection to cooc database
 db_name = 'forward_ws4.sqlite'
@@ -19,17 +22,20 @@ c2 = conn2.cursor()
 
 
 def get_word_freq_dict():
-    command = 'select * from fs where w1 = (?)'
+    print("Getting word freq dict...")
+    command = 'select * from fs where w = (?)'
     word_freq = {}
     for pair in all_pair_list:
-        print(pair)
-        freq = [row[1] for row in c2.execute(command, pair).fetchall()]
-        print(freq)
-        word_freq[pair] = freq
+        for word in pair:
+            # print(word)
+            freq = [row[1] for row in c2.execute(command, (word,)).fetchall()]
+            # print(freq)
+            word_freq[pair] = freq # double check that this is doing the correct thing
     return word_freq
 
 
 def get_pair2cooc():
+    print("Getting pair2cooc")
     command = 'select * from cfs where w1 = (?) and w2 = (?)'
     pair2cooc = {}
     for pair in all_pair_list:
