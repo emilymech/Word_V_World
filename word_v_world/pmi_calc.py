@@ -3,6 +3,7 @@ import pandas as pd
 import sqlite3
 import pickle
 
+
 window_size = 4
 window_type = 'forward'
 pickle_path = "/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/all_pair_list.pkl"
@@ -24,14 +25,12 @@ c2 = conn2.cursor()
 def get_word_freq_dict():
     print("Getting word freq dict...")
     command = 'select * from fs where w = (?)'
-    word_freq = {}
-    for pair in all_pair_list:
-        for word in pair:
-            # print(word)
-            freq = [row[1] for row in c2.execute(command, (word,)).fetchall()]
-            # print(freq)
-            word_freq[pair] = freq # double check that this is doing the correct thing
-    return word_freq
+    word_freq_dict = dict(all_pair_list)
+    print(word_freq_dict)
+    for key, value in word_freq_dict.items():
+        word_freq_dict[key] = [row[1] for row in c2.execute(command, (key,)).fetchall()]
+    print("Word-freq dict:", word_freq_dict)
+    return word_freq_dict
 
 
 def get_pair2cooc():
@@ -39,8 +38,8 @@ def get_pair2cooc():
     command = 'select * from cfs where w1 = (?) and w2 = (?)'
     pair2cooc = {}
     for pair in all_pair_list:
-        cooc = [row[2] for row in c.execute(command, pair).fetchall()]
-        pair2cooc[pair] = cooc
+        pair2cooc[pair] = [row[2] for row in c.execute(command, pair).fetchall()]
+    print("cooc dict:", pair2cooc)
     return pair2cooc
 
 
