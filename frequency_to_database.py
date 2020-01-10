@@ -7,12 +7,14 @@ VERBOSE = True
 
 pickle_path = "/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/word_freq_dict.pkl"
 
+# TODO - delete this and frequency database if pipeline can run without it
+
 # create database
 db_name = 'frequency.sqlite'
 conn = sqlite3.connect(db_name)
 c = conn.cursor()
 try:
-    c.execute('CREATE TABLE fs (w text, f integer)')  # changed this from cfs, make sure it's correct
+    c.execute('CREATE TABLE fs (w text, f integer)')
 except sqlite3.OperationalError:   # table already exists
     pass
 
