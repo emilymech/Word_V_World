@@ -37,7 +37,11 @@ def make_pmi_data_frame(word_freq_dict, pair2cooc_dict, total_tokens):
         prob_word1 = w1f / (total_tokens * window_size)
         prob_word2 = w2f / (total_tokens * window_size)
 
-        if prob_word2 or prob_word1 or prob_word1_word2 == 0:
+        if prob_word2 == 0:
+            pmi = "NA"
+        elif prob_word1 == 0:
+            pmi = "NA"
+        elif prob_word1_word2 == 0:
             pmi = "NA"
         else:
             pmi = np.log(prob_word1_word2 / (prob_word1 * prob_word2))
