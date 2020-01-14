@@ -3,7 +3,7 @@ import pandas as pd
 
 
 window_size = 4
-window_type = 'forward'
+window_type = 'backward'
 
 
 def make_pmi_data_frame(word_freq_dict, pair2cooc_dict, total_tokens):
@@ -22,6 +22,9 @@ def make_pmi_data_frame(word_freq_dict, pair2cooc_dict, total_tokens):
     col8 = window_type
 
     for pair in pair2cooc_dict:
+        if type(pair2cooc_dict[pair]) is list:
+            pair2cooc_dict[pair] = int("".join(map(str, pair2cooc_dict[pair])))
+
         print("pair:", pair)
         print("cf:", pair2cooc_dict[pair])
 
@@ -34,7 +37,10 @@ def make_pmi_data_frame(word_freq_dict, pair2cooc_dict, total_tokens):
         prob_word1 = w1f / (total_tokens * window_size)
         prob_word2 = w2f / (total_tokens * window_size)
 
-        pmi = np.log(prob_word1_word2 / (prob_word1 * prob_word2))
+        if prob_word2 or prob_word1 or prob_word1_word2 == 0:
+            pmi = "NA"
+        else:
+            pmi = np.log(prob_word1_word2 / (prob_word1 * prob_word2))
 
         # collect the above into the columns
         col1.append(w1)
@@ -55,5 +61,5 @@ def make_pmi_data_frame(word_freq_dict, pair2cooc_dict, total_tokens):
         'window_type': col8
      })
 
-    df.to_csv('pmi_dataframe_f4.csv')
+    df.to_csv('pmi_dataframe_b4.csv')
     return

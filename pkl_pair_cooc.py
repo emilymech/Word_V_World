@@ -7,7 +7,7 @@ with open(pickle_path, 'rb') as pickle_file:
     all_pair_list = pickle.load(pickle_file)
 
 # open connection to cooc database
-db_name = 'forward_ws4.sqlite'
+db_name = 'backward_ws4.sqlite'
 conn = sqlite3.connect(db_name)
 c = conn.cursor()
 
@@ -26,4 +26,4 @@ def get_pair2cooc():
 
 if __name__ == '__main__':
     cooc_dict = get_pair2cooc()
-    pickle.dump(cooc_dict, open("/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/f4_pair_cooc.pkl", "wb"))
+    pickle.dump(cooc_dict, open("/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/b4_pair_cooc.pkl", "wb"))
