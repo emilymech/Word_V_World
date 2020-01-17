@@ -18,7 +18,7 @@ VERBOSE = True
 update_dict = {
     'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
     'num_machines': [6],
-    'vocab_name': ['mcrae_concepts_features_12_16_19'],
+    'vocab_name': ['mcrae_concepts_features_1_16_20'],
     'article_coverage': [1.0],
     'window_type': ['backward'],
     'window_size': [4]

@@ -1,10 +1,10 @@
 import sqlite3
 import pickle
 
-pickle_path = "/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/all_pair_list.pkl"
+from data import con_fe_list
 
-with open(pickle_path, 'rb') as pickle_file:
-    all_pair_list = pickle.load(pickle_file)
+all_pair_list = con_fe_list.con_fe_list
+
 
 # open connection to cooc database
 db_name = 'backward_ws4.sqlite'
@@ -13,10 +13,11 @@ c = conn.cursor()
 
 
 def get_pair2cooc():
-    print("Getting pair2cooc")
+    print("Getting pair2cooc...")
     command = 'select * from cfs where w1 = (?) and w2 = (?)'
     pair2cooc = {}
     for pair in all_pair_list:
+        # print(pair)
         pair2cooc[pair] = sum([row[2] for row in c.execute(command, pair).fetchall()])
     print("cooc dict:", pair2cooc)
     pair2cooc[pair] = [pair2cooc[pair].append(0) if pair2cooc[pair] == [] in pair2cooc else pair2cooc[pair]]

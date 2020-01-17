@@ -15,3 +15,4 @@ def get_all_pair_list():
         for adjective in full_adjective_list:
             all_pair_list.append((concept, adjective))
     return all_pair_list
+

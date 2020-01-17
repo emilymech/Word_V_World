@@ -4,6 +4,7 @@ import pandas as pd
 
 window_size = 4
 window_type = 'backward'
+run_details = 'con_fe_1.16.20'
 
 
 def make_pmi_data_frame(word_freq_dict, pair2cooc_dict, total_tokens):
@@ -20,6 +21,7 @@ def make_pmi_data_frame(word_freq_dict, pair2cooc_dict, total_tokens):
     col6 = []
     col7 = window_size
     col8 = window_type
+    col9 = run_details
 
     for pair in pair2cooc_dict:
         if type(pair2cooc_dict[pair]) is list:
@@ -62,8 +64,9 @@ def make_pmi_data_frame(word_freq_dict, pair2cooc_dict, total_tokens):
         'cf': col5,
         'pmi': col6,
         'window_size': col7,
-        'window_type': col8
+        'window_type': col8,
+        'run_details': col9
      })
 
-    df.to_csv('pmi_dataframe_b4.csv')
+    df.to_csv('pmi_b4.csv')
     return
