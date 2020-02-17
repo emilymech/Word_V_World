@@ -1,13 +1,13 @@
 import sqlite3
 import pickle
 
-from data import con_fe_list
+from data import con_fe_sent
 
-all_pair_list = con_fe_list.con_fe_list
+all_pair_list = con_fe_sent.con_fe_sent
 
 
 # open connection to cooc database
-db_name = 'backward_ws4.sqlite'
+db_name = 'sent_b7.sqlite'
 conn = sqlite3.connect(db_name)
 c = conn.cursor()
 
@@ -27,4 +27,4 @@ def get_pair2cooc():
 
 if __name__ == '__main__':
     cooc_dict = get_pair2cooc()
-    pickle.dump(cooc_dict, open("/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/b4_pair_cooc.pkl", "wb"))
+    pickle.dump(cooc_dict, open("/Volumes/GoogleDrive/My Drive/UIUC/PyCharm/Word_V_World/data/sentb7_cooc.pkl", "wb"))

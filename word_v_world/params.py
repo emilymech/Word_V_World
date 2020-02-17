@@ -1,15 +1,16 @@
-''' To Update:
+'''
+To Update:
     1. Update vocab name
     2. Update window size
-    3. Update window type'''
+    3. Update window type
+'''
 
-# DONE: backward 4, backward 7
 
 param2requests = {'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
                   'num_machines': [6],
                   'window_size': [7],
-                  'window_type': ['forward'],
-                  'vocab_name': ['mcrae_concepts_features_1_16_20'],
+                  'window_type': ['backward'],
+                  'vocab_name': ['con_fe_sent_2.16.20'],
                   'article_coverage': [1.0],
                   }
 
