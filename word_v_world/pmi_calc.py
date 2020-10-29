@@ -3,8 +3,8 @@ import pandas as pd
 
 
 window_size = 7
-window_type = 'backward'
-run_details = 'con_fe_sent_2.16.20'
+window_type = 'forward'
+run_details = 'concept_feature_10.20.20'
 
 
 def make_pmi_data_frame(word_freq_dict, pair2cooc_dict, total_tokens):
@@ -68,5 +68,5 @@ def make_pmi_data_frame(word_freq_dict, pair2cooc_dict, total_tokens):
         'run_details': col9
      })
 
-    df.to_csv('sent_2_16_b7_pmi.csv')
+    df.to_csv('10_20_20_f7_pmi.csv')
     return
