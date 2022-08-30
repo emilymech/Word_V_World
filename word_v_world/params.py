@@ -6,7 +6,7 @@ To Update:
 '''
 
 
-param2requests = {'cwc_param_name': ['param_107', 'param_108', 'param_109', 'param_110', 'param_111', 'param_112'],
+param2requests = {'cwc_param_name': ['param_22', 'param_23', 'param_24', 'param_25', 'param_26', 'param_27'],
                   'num_machines': [6],
                   'window_size': [7],
                   'window_type': ['forward'],

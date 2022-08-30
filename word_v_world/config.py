@@ -16,7 +16,7 @@ class Dirs:
 
     print(f'Setting mount path to {mnt_path}')
 
-    research_data = mnt_path / 'research_data'  # needed by ludwig Python API to retrieve results
+    research_data = mnt_path / 'ludwig_data'  # needed by ludwig Python API to retrieve results
 
     # TODO remove
     if not research_data.exists():
